@@ -1,0 +1,13 @@
+.login_page__main_container {
+  width: 100dvw;
+  height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.login_page__logo{
+  width: 270px;
+  height: 160px;
+}
