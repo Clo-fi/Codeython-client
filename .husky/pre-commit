@@ -1,0 +1,2 @@
+echo "lint 검사 중 입니다 🐸"
+yarn lint-staged
