@@ -1,8 +1,8 @@
-import Button from "../../components/common/Button";
-import Box from "./components/Box";
 import styles from "./HomePage.module.scss";
+import Button from "../../components/common/Button";
+import ListBallon from "../../components/common/ListBallon";
 
-// TODO 사이드바 완성 후 레이아웃 수정, normalize css 적용 후 필요없는 css 제거
+// TODO 사이드바 완성 후 레이아웃 수정
 const HomePage = () => {
   return (
     <main className={styles.main}>
@@ -12,7 +12,7 @@ const HomePage = () => {
             <div> 닉네임 님,</div>
             <div> 오늘도 happy coding ^^</div>
           </div>
-          <Box title="공지사항" width={360} height={212}></Box>
+          <ListBallon title="공지사항" width={360} height={212}></ListBallon>
         </div>
         <div className={styles["layout-right"]}>
           <div className={styles.profile}>
@@ -26,16 +26,16 @@ const HomePage = () => {
               alt="codeythonLogo"
             />
           </div>
-          <Box
+          <ListBallon
             title="New Arrivals"
             width={400}
             height={300}
             className={styles.arrival}
-          ></Box>
+          ></ListBallon>
         </div>
       </div>
       <div className={styles["layout-bottom"]}>
-        <Box title="랭킹" width={460} height={140}></Box>
+        <ListBallon title="랭킹" width={460} height={140}></ListBallon>
         <div className={styles.buttons}>
           <Button
             value="혼자 놀기"

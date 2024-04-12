@@ -9,7 +9,14 @@ interface Props extends PropsWithChildren {
   className?: React.HTMLAttributes<HTMLElement>["className"];
 }
 
-const Box = ({ title, width, height, children, style, className }: Props) => {
+const ListBallon = ({
+  title,
+  width,
+  height,
+  children,
+  style,
+  className,
+}: Props) => {
   return (
     <section
       className={`${styles.container} ${className}`}
@@ -21,4 +28,4 @@ const Box = ({ title, width, height, children, style, className }: Props) => {
   );
 };
 
-export default Box;
+export default ListBallon;
