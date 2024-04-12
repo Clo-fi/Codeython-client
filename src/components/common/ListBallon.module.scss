@@ -1,0 +1,32 @@
+.container {
+  display: inline-block;
+  position: relative;
+  background-color: var(--color-grey);
+  min-width: 200px;
+  max-width: 1000px;
+  min-height: 100px;
+  border-radius: 30px;
+}
+
+.title {
+  display: inline-block;
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  min-width: 200px;
+  height: 40px;
+  padding: 10px 5px;
+  background-color: var(--color-yellow);
+  border-radius: 20px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 60px 30px 40px 30px;
+}

@@ -1,0 +1,48 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 40px;
+}
+
+.layout-top {
+  position: relative;
+  display: flex;
+}
+
+.layout-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.layout-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome {
+  padding: 20px 0px 80px 0;
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.arrival {
+  position: absolute;
+  bottom: 0;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.button {
+  min-width: 100px;
+  height: 60px;
+}
