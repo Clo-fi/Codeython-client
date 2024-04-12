@@ -1,0 +1,91 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 40px;
+}
+
+.layout-top {
+  position: relative;
+  display: flex;
+}
+
+.layout-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.layout-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome {
+  padding: 20px 0px 80px 0;
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.arrival {
+  position: absolute;
+  bottom: 0;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  position: relative;
+  top: -40px;
+  padding: 10px;
+}
+.nickname {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-pink);
+  border-radius: 15px;
+  padding: 5px 10px 5px 23px;
+  text-align: center;
+
+  width: 140px;
+}
+
+.level {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: 23px;
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-white);
+  border: 3px solid var(--color-pink);
+  border-radius: 15px;
+  font-size: 12px;
+  text-align: center;
+  padding: 1px;
+}
+
+.badge {
+  display: flex;
+}
+
+.logo {
+  width: 150px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.button {
+  min-width: 100px;
+  height: 60px;
+}
