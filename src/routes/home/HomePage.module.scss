@@ -36,49 +36,6 @@
   bottom: 0;
 }
 
-.profile {
-  display: flex;
-  align-items: center;
-  position: relative;
-  top: -40px;
-  padding: 10px;
-}
-.nickname {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-pink);
-  border-radius: 15px;
-  padding: 5px 10px 5px 23px;
-  text-align: center;
-
-  width: 140px;
-}
-
-.level {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  left: 23px;
-  width: 40px;
-  height: 40px;
-  background-color: var(--color-white);
-  border: 3px solid var(--color-pink);
-  border-radius: 15px;
-  font-size: 12px;
-  text-align: center;
-  padding: 1px;
-}
-
-.badge {
-  display: flex;
-}
-
-.logo {
-  width: 150px;
-}
-
 .buttons {
   display: flex;
   flex-direction: column;
