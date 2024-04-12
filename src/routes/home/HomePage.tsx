@@ -1,7 +1,6 @@
 import styles from "./HomePage.module.scss";
 import Button from "../../components/common/Button";
 import ListBallon from "../../components/common/ListBallon";
-import ProfileSection from "../../components/common/ProfileSection";
 
 // TODO 사이드바 완성 후 레이아웃 수정
 const HomePage = () => {
@@ -16,7 +15,17 @@ const HomePage = () => {
           <ListBallon title="공지사항" width={360} height={212}></ListBallon>
         </div>
         <div className={styles["layout-right"]}>
-          <ProfileSection />
+          <div className={styles.profile}>
+            <div className={styles.badge}>
+              <span className={styles.level}>LV 3</span>
+              <span className={styles.nickname}>닉네임</span>
+            </div>
+            <img
+              className={styles.logo}
+              src="/Imgs/CodeythonLogo_star.png"
+              alt="codeythonLogo"
+            />
+          </div>
           <ListBallon
             title="New Arrivals"
             width={400}
