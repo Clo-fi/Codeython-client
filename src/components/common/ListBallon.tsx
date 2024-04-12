@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import styles from "./Box.module.scss";
+import styles from "./ListBallon.module.scss";
 
 interface Props extends PropsWithChildren {
   title: string;
