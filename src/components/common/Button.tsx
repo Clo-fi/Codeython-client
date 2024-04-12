@@ -6,15 +6,16 @@ interface Props
     HTMLButtonElement
   > {
   value: string;
+  className: React.HTMLAttributes<HTMLButtonElement>["className"];
   style?: React.HTMLAttributes<HTMLDivElement>["style"];
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button = ({ value, style, onClick, ...props }: Props) => {
+const Button = ({ value, style, className, onClick, ...props }: Props) => {
   return (
     <button
-      className={styles.container}
       style={style}
+      className={`${styles.container} ${className}`}
       onClick={onClick}
       {...props}
     >
