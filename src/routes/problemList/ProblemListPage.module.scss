@@ -1,5 +1,5 @@
 .problemList_page__container {
-  position: relative; /* 실행하기 버튼의 기준이 됩니다. */
+  position: relative; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,12 +21,18 @@
 }
 
 .problemList_select__btn {
-  position: absolute; /* 실행하기 버튼을 절대 위치로 설정합니다. */
-  top: 10px; /* 헤더 상단으로부터 10px 떨어진 위치에 배치합니다. */
-  right: calc((100vw - 100%) / 2 + 20px); /* 오른쪽 여백을 헤더의 오른쪽으로부터 10px만큼 떨어진 위치로 설정합니다. */
+  position: absolute; 
+  top: 10px; 
+  right: calc((100vw - 100%) / 2 + 20px); 
   background-color: var(--color-pink);
   top: 80px;
   height: 50px;
   font-size: 120%;
   font-weight: 400;
+}
+
+.custom-modal-style {
+  width: 400px; 
+  min-width: max-content;
+  font-size: 14px; 
 }

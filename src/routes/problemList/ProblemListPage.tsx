@@ -38,7 +38,18 @@ const ProblemListPage: React.FC = () => {
   const handleProblemSubmit = () => {
     if (selectedProblem) {
       // 선택한 문제가 있으면 해당 문제의 ID를 사용하여 URL을 생성하고 이동
-      navigate(`/practice/${selectedProblem.problemId}`);
+      Swal.fire({
+        title: `${selectedProblem.title}을(를) 연습하시겠습니까?`,
+        showCancelButton: true,
+        confirmButtonText: "혼자 놀기",
+        customClass: {
+          popup: styles['custom-modal-style'],
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate(`/practice/${selectedProblem.problemId}`);
+        }
+      });      
     } else {
       // 선택한 문제가 없으면 알림을 표시하거나 사용자에게 메시지를 전달
       Swal.fire({
