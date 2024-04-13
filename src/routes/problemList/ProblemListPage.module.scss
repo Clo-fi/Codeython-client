@@ -1,0 +1,32 @@
+.problemList_page__container {
+  position: relative; /* 실행하기 버튼의 기준이 됩니다. */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.problemList_page__header {
+  width: 100%; /* 헤더를 가로로 꽉 차게 설정 */
+  display: flex;
+  justify-content: center; /* 로고를 가운데 정렬 */
+  align-items: center; /* 로고를 세로 중앙 정렬 */
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.problemList_page__logo {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.problemList_select__btn {
+  position: absolute; /* 실행하기 버튼을 절대 위치로 설정합니다. */
+  top: 10px; /* 헤더 상단으로부터 10px 떨어진 위치에 배치합니다. */
+  right: calc((100vw - 100%) / 2 + 20px); /* 오른쪽 여백을 헤더의 오른쪽으로부터 10px만큼 떨어진 위치로 설정합니다. */
+  background-color: var(--color-pink);
+  top: 80px;
+  height: 50px;
+  font-size: 120%;
+  font-weight: 400;
+}
