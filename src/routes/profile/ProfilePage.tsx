@@ -6,7 +6,7 @@ import RecordBlock from "./components/RecordBlock";
 
 const ProfilePage = () => {
   return (
-    <main className={styles.main}>
+    <div className={styles.main}>
       <section className={styles.profile}>
         <ProfileSection />
       </section>
@@ -32,7 +32,7 @@ const ProfilePage = () => {
           ))}
         </ListBallon>
       </section>
-    </main>
+    </div>
   );
 };
 
