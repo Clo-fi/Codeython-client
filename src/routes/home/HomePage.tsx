@@ -2,6 +2,9 @@ import styles from "./HomePage.module.scss";
 import Button from "../../components/common/Button";
 import ListBallon from "../../components/common/ListBallon";
 import ProfileSection from "../../components/common/ProfileSection";
+import NoticeBlock from "./components/NoticeBlock";
+import ArrivalBlock from "./components/ArrivalBlock";
+import RankBlock from "./components/RankBlock";
 
 const HomePage = () => {
   return (
@@ -19,19 +22,46 @@ const HomePage = () => {
           width="100%"
           height={160}
           className={styles.notice}
-        ></ListBallon>
+        >
+          {["공지사항입니다공지사항입니당", "공지사항입니다공지사항입니당"].map(
+            (notice) => (
+              <NoticeBlock notice={notice} />
+            )
+          )}
+        </ListBallon>
         <ListBallon
           title="New Arrivals"
           width="100%"
-          height={240}
+          height={250}
           className={styles.arrival}
-        ></ListBallon>
+        >
+          <div className={styles.wrapper}>
+            {[
+              "미로 찾기",
+              "bfs와 dfs",
+              "문제 이름임",
+              "미로 찾기",
+              "bfs와 dfs",
+              "문제 이름임",
+            ].map((problem) => (
+              <ArrivalBlock
+                title={problem}
+                difficulty={20}
+                isPlayed={problem === "미로 찾기"}
+              />
+            ))}
+          </div>
+        </ListBallon>
         <ListBallon
           title="랭킹"
-          width="140%"
-          height={140}
+          width="160%"
+          height={220}
           className={styles.ranking}
-        ></ListBallon>
+        >
+          {["d", "d"].map(() => (
+            <RankBlock level={13} nickname="킹왕짱어쩌고" />
+          ))}
+        </ListBallon>
       </div>
       <div className={styles.buttons}>
         <Button

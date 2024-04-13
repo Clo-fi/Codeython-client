@@ -11,6 +11,7 @@
   height: inherit;
   min-height: 100vh;
   background-color: var(--color-white);
+  z-index: 10;
 
   display: flex;
   flex-direction: column;
