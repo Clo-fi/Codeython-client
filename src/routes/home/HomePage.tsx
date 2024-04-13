@@ -5,7 +5,7 @@ import ProfileSection from "../../components/common/ProfileSection";
 
 const HomePage = () => {
   return (
-    <main className={styles.main}>
+    <div className={styles.main}>
       <div className={styles.header}>
         <div className={styles.welcome}>
           <div> 닉네임 님,</div>
@@ -45,7 +45,7 @@ const HomePage = () => {
           onClick={() => {}}
         />
       </div>
-    </main>
+    </div>
   );
 };
 

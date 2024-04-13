@@ -8,7 +8,9 @@ const LayoutWithSideBar = () => {
   return (
     <>
       <SideBar nickname={nickname} exp={exp ?? 0} />
-      <Outlet />
+      <main style={{ position: "relative", paddingLeft: "250px" }}>
+        <Outlet />
+      </main>
     </>
   );
 };
