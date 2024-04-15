@@ -48,16 +48,7 @@
   align-items: center; 
   justify-content: center;
 }
-
 .level_block{
-  width: 90%;
-
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center; 
-  justify-content: space-between;
-
-  div{
     width: 25px;
     height: 22px;
     font-size: 10px;
@@ -69,7 +60,7 @@
     align-items: center; 
     justify-content: center; 
   }
-}
+
 .exp_progress{
   width: 80%;
 }
