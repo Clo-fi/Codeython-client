@@ -1,0 +1,38 @@
+.problemList_page__container {
+  position: relative; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.problemList_page__header {
+  width: 100%; /* 헤더를 가로로 꽉 차게 설정 */
+  display: flex;
+  justify-content: center; /* 로고를 가운데 정렬 */
+  align-items: center; /* 로고를 세로 중앙 정렬 */
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.problemList_page__logo {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.problemList_select__btn {
+  position: absolute; 
+  top: 10px; 
+  right: calc((100vw - 100%) / 2 + 20px); 
+  background-color: var(--color-pink);
+  top: 80px;
+  height: 50px;
+  font-size: 120%;
+  font-weight: 400;
+}
+
+.custom-modal-style {
+  width: 400px; 
+  min-width: max-content;
+  font-size: 14px; 
+}
