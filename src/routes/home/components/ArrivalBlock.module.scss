@@ -1,0 +1,44 @@
+.container {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--color-white);
+  padding: 15px 10px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.icon {
+  font-size: 40px;
+}
+.title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.tags {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  gap: 5px;
+}
+
+.difficulty {
+  align-self: flex-end;
+  padding: 5px 10px;
+  border-radius: 15px;
+  background-color: rgb(253, 201, 159);
+  font-size: 12px;
+}
+
+.isPlayed {
+  align-self: flex-end;
+  padding: 5px 10px;
+  border-radius: 15px;
+  background-color: rgb(211, 240, 167);
+  font-size: 12px;
+}

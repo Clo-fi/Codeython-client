@@ -43,8 +43,8 @@ const SideBar = ({ nickname, exp }: Props) => {
         <span>
           탈퇴하기
         </span>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
