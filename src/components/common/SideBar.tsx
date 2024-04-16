@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import styles from "./SideBar.module.scss";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CustomProgressBar from "./CustomProgressBar";
 
 interface Props {
@@ -10,12 +10,21 @@ interface Props {
 }
 
 const SideBar = ({ nickname, exp }: Props) => {
+  const location = useLocation();
   const navigate = useNavigate();
   const pageRouteHandler = (path: string) => {
     navigate(`/${path}`);
   };
+  useEffect(() => {
+    const container = document.querySelector(`.${styles.container}`);
+    container.classList.add(styles.slideInFromLeft);
+    return () => {
+      container.classList.remove(styles.slideInFromLeft);
+    };
+  }, []);
+
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles.slideInFromLeft}`}>
       <div className={styles.user_info_block}>
         <div className={styles.user_info}>
           <img className={styles.user_img} src="/Imgs/CodeythonLogo.png" />
@@ -29,13 +38,19 @@ const SideBar = ({ nickname, exp }: Props) => {
 
       <div className={styles.action_container}>
         <button
-          className={styles.action_button}
+          className={`
+          ${styles.action_button}
+          ${location.pathname === '/home' && styles.selected}
+          `}
           onClick={() => pageRouteHandler("home")}
         >
           홈
         </button>
         <button
-          className={styles.action_button}
+          className={`
+          ${styles.action_button}
+          ${location.pathname === '/profile' && styles.selected}
+          `}
           onClick={() => pageRouteHandler("profile")}
         >
           프로필
