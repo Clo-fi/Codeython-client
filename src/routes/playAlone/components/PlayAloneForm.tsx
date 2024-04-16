@@ -15,6 +15,10 @@ interface ProblemInfo {
     outputCase: string[][];
     description: string;
   }[];
+  hiddencases: {
+    inputCase: string[][];
+    outputCase: string[][];
+  }[];
   difficulty: number;
 }
 
@@ -24,7 +28,7 @@ interface PlayAloneFormProps {
 }
 
 /* return form */
-const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo }) => { 
+const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo }) => {
 
 
   return (
@@ -44,18 +48,32 @@ const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo }) => {
           </div>
         </div>
         <div className={styles.problem_testcase}>
-        <div className={styles.testcase_title_container}>
-          <div className={styles.testcase_title}>
-            입출력 예
+          <div className={styles.testcase_title_container}>
+            <div className={styles.testcase_title}>
+              입출력 예
+            </div>
           </div>
-        </div>
           <div className={styles.testcase}>
-            입출력 예 내용
+            <div className={styles.testcase_table}>
+              <div className={styles.table_header}>
+                <div className={styles.header_cell}>Input Case</div>
+                <div className={styles.header_cell}>Output Case</div>
+              </div>
+              {problemInfo.testcases[0].inputCase.map((input, index) => (
+                <div key={index} className={styles.testcase_row}>
+                  <div className={styles.cell}>{input}</div>
+                  <div className={styles.cell}>{problemInfo.testcases[0].outputCase[index]}</div>
+                </div>
+              ))}
+            </div>
+            <div className={styles.description}>
+                {problemInfo.testcases[0].description}
+            </div>
           </div>
         </div>
       </div>
       <div className={styles.codeEditor_container}>
-        <CodeEditor baseCode={problemInfo.baseCodes} testcases={problemInfo.testcases}/>
+        <CodeEditor baseCode={problemInfo.baseCodes} testcases={problemInfo.testcases} hiddencases={problemInfo.hiddencases}/>
       </div>
     </div>
   );

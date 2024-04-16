@@ -1,6 +1,7 @@
 
 
 .play_container{
+  border-top: 1px solid var(--color-darkgrey);
   display: flex;
   flex-direction: row;
   width: 100vw;
@@ -21,6 +22,7 @@
   height: 85vh;
   background-color: var(--color-grey);
   border: none;
+  border-right: 1px solid var(--color-darkgrey);
 }
 
 .problem_title {
@@ -59,8 +61,9 @@
 
 .problem_testcase {
   background-color: var(--color-grey);
-  height: 30vh;
+  height: 35vh;
   width: 100%;
+  border-top: 1px solid var(--color-darkgrey);
 
   display: flex;
   flex-direction: column;
@@ -72,5 +75,28 @@
 
 .testcase {
   text-align: left;
-  padding: 20px;
+  padding: 10px 20px 10px 20px;
+  height: 35vh;
+}
+
+.table_header {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--color-black);
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.testcase_row {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.testcase_table {
+  border-bottom: 1px solid var(--color-black);
+  margin-bottom: 10px;
 }
