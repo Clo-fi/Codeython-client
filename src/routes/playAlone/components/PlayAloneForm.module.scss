@@ -1,0 +1,76 @@
+
+
+.play_container{
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 85vh;
+  
+}
+
+.codeEditor_container{
+  position : relative;
+  width: 60vw;
+  height: 50vh;
+}
+
+.problem_container {
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  height: 85vh;
+  background-color: var(--color-grey);
+  border: none;
+}
+
+.problem_title {
+  background-color: var(--color-pink);
+  height: 8vh;
+  width: 100%;
+
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.problem_description {
+  padding: 20px;
+  background-color: var(--color-grey);
+  height: 42vh;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.testcase_title_container {
+  height: 5vh;
+  width: 100%;
+  padding: 20px;
+  background-color: var(--color-grey);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.problem_testcase {
+  background-color: var(--color-grey);
+  height: 30vh;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  text-align: left;
+}
+
+.testcase {
+  text-align: left;
+  padding: 20px;
+}
