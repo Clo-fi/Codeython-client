@@ -50,13 +50,13 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, testcases }) => {
       // 선택된 언어에 대한 기본 코드 설정
       setDefaultCode(languageState.selectedOption);
     }
-  }, [baseCode, languageState.selectedOption, setDefaultCode]);
+  }, [baseCode, languageState.selectedOption]); // 여기서 setDefaultCode를 직접 의존성으로 설정
   
-
   useEffect(() => {
     // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
     setDefaultCode(languageState.selectedOption);
-  }, [languageState.selectedOption, setDefaultCode]);
+  }, [languageState.selectedOption]); // 여기서도 setDefaultCode를 직접 의존성으로 설정
+  
   
 
   const handleOptionSelect = (option: string) => {
@@ -68,6 +68,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, testcases }) => {
   };
 
   const handleCodeChange = (newCode: string | undefined) => {
+    console.log('New code:', newCode);
     setCode(newCode ?? '');
   };
 
