@@ -9,16 +9,12 @@ interface ProblemInfo {
   content: string;
   limitFactors: { factor: string }[];
   limitTime: number;
-  baseCodes: { language: string; code: string }[];
+  baseCode: { language: string; code: string }[];
   testcases: {
     inputCase: string[][];
     outputCase: string[][];
     description: string;
-  }[];
-  hiddencases: {
-    inputCase: string[][];
-    outputCase: string[][];
-  }[];
+  };
   difficulty: number;
 }
 
@@ -59,21 +55,21 @@ const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo }) => {
                 <div className={styles.header_cell}>Input Case</div>
                 <div className={styles.header_cell}>Output Case</div>
               </div>
-              {problemInfo.testcases[0].inputCase.map((input, index) => (
+              {problemInfo.testcases.inputCase.map((input, index) => (
                 <div key={index} className={styles.testcase_row}>
                   <div className={styles.cell}>{input}</div>
-                  <div className={styles.cell}>{problemInfo.testcases[0].outputCase[index]}</div>
+                  <div className={styles.cell}>{problemInfo.testcases.outputCase[index]}</div>
                 </div>
               ))}
             </div>
             <div className={styles.description}>
-                {problemInfo.testcases[0].description}
+                {problemInfo.testcases.description}
             </div>
           </div>
         </div>
       </div>
       <div className={styles.codeEditor_container}>
-        <CodeEditor baseCode={problemInfo.baseCodes} testcases={problemInfo.testcases} hiddencases={problemInfo.hiddencases}/>
+        <CodeEditor baseCode={problemInfo.baseCode} testcases={problemInfo.testcases}/>
       </div>
     </div>
   );
