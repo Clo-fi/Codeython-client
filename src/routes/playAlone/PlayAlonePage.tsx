@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PlayAloneForm from './components/PlayAloneForm';
 import PlayHeader from './components/PlayHeader';
 import { useParams } from 'react-router-dom';
@@ -93,7 +93,7 @@ const PlayAlonePage = () => {
       {/* limitTime 전달  <PlayHeader limitTime={problemInfo.limitTime} />  */}
       <PlayHeader limitTime={exampleInfo.limitTime} />
       {/* <PlayAloneForm problemInfo={problemInfo} /> */}
-      <PlayAloneForm problemInfo={exampleInfo} />
+      <PlayAloneForm problemInfo={exampleInfo} problemId={problemId!} />
     </div>
   );
 };
