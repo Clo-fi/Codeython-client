@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import styles from './SignUpForm.module.scss'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import axios from 'axios';
-
+import instance from '../../../api/axios';
 interface FormType {
   nickname: string;
   username: string;
@@ -28,8 +27,8 @@ const SignUpForm = () => {
         return;
       }
       const { username, nickname, password } = state;
-      const response = await axios.post('http://localhost:8080', { username, nickname, password })
-
+      // const response = await axios.post('http://localhost:8080', { username, nickname, password })
+      const response = await instance.post('/api/signup', { username, nickname, password });
       console.log(response);
     } catch (error) {
       Swal.fire({
