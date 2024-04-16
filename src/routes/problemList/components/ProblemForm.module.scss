@@ -1,0 +1,70 @@
+.problemForm__container {
+  width: 1000px;
+  min-width: 500px;
+  border-radius: 20px;
+  display: flex;
+  height: 600px;
+  flex-direction: column;
+  background-color: var(--color-yellow);
+}
+
+::-webkit-scrollbar {
+  display: none;
+  /* 크롬, 사파리, 오페라, 엣지 */
+}
+
+.problemForm_component__list {
+  height: 600px;
+  margin: 15px 0 15px 0;
+  overflow-y: auto;
+}
+
+.problemForm_component__element {
+  display: flex;
+}
+
+.problemForm_component__selected {
+  border: 2px solid transparent;
+  border-radius: 10px;
+  margin: 0 10px 0 10px;
+  opacity: 70%;
+}
+
+.problemForm_component__title {
+  border-radius: 20px;
+  display: flex;
+  background-color: var(--color-white);
+  height: 50px;
+  padding: 20px;
+  margin: 10px 20px 10px 20px;
+  justify-content: center;
+  width: 60%;
+  text-align: center;
+  align-items: center;
+}
+
+.problemForm_component__difficulty {
+  border-radius: 20px;
+  display: flex;
+  background-color: var(--color-white);
+  height: 50px;
+  padding: 20px;
+  width: 20%;
+  justify-content: center;
+  margin: 10px 20px 10px 20px;
+  text-align: center;
+  align-items: center;
+}
+
+.problemForm_component__solved {
+  border-radius: 20px;
+  display: flex;
+  background-color: var(--color-white);
+  height: 50px;
+  padding: 20px;
+  margin: 10px 20px 10px 20px;
+  justify-content: center;
+  width: 10%;
+  text-align: center;
+  align-items: center;
+}
