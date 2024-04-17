@@ -17,4 +17,4 @@ spec:
           image: krmp-d2hub-idock.9rum.cc/dev-test/repo_8e8cd7b71051
           imagePullPolicy: Always
           ports:
-            - containerPort: 5173
+            - containerPort: 3000
