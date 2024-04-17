@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import styles from "./SideBar.module.scss";
 import { useLocation, useNavigate } from "react-router-dom";
