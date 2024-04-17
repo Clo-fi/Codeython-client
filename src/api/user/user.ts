@@ -7,21 +7,21 @@ import {
 } from "./dto";
 
 export const getRanks = async (): Promise<GetRankingResponse> => {
-  const { data } = await instance.get("/api/ranking");
+  const { data } = await instance.get("ranking");
   return data;
 };
 
 export const modifyProfile = async (body: PatchProfileRequest) => {
-  const { data } = await instance.patch("/api/users", body);
+  const { data } = await instance.patch("users", body);
   return data;
 };
 
 export const getRecentRecords = async (): Promise<GetRecentRecordsResponse> => {
-  const { data } = await instance.get("/api/recent-records");
+  const { data } = await instance.get("recent-records");
   return data;
 };
 
 export const getUserInfo = async (): Promise<GetUserInfoResponse> => {
-  const { data } = await instance.get("/api/users");
+  const { data } = await instance.get("users");
   return data;
 };

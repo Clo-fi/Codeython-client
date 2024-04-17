@@ -7,9 +7,10 @@ import CustomProgressBar from "./CustomProgressBar";
 interface Props {
   nickname: string;
   exp: number;
+  level: number;
 }
 
-const SideBar = ({ nickname, exp }: Props) => {
+const SideBar = ({ nickname, exp, level }: Props) => {
   const navigate = useNavigate();
   const pageRouteHandler = (path: string) => {
     navigate(`/${path}`);
@@ -22,7 +23,7 @@ const SideBar = ({ nickname, exp }: Props) => {
           <div className={styles.user_nickname}>{nickname}</div>
         </div>
         <div className={styles.level_block}>
-          <div>LV</div>
+          <div>LV {level}</div>
           <CustomProgressBar exp={exp} width={"80%"} />
         </div>
       </div>

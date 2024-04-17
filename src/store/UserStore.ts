@@ -14,7 +14,7 @@ const useUserStore = create<UserState & UserAction>((set) => ({
   nickname: "",
   exp: 0,
   level: 0,
-  setUserInfo: ({ nickname, exp }) => set({ nickname, exp }),
+  setUserInfo: ({ nickname, exp, level }) => set({ nickname, exp, level }),
 }));
 
 export default useUserStore;
