@@ -1,0 +1,30 @@
+.swal-popup {
+  border-radius: 40px;
+}
+
+.swal-title {
+  font-size: 26px;
+}
+
+.swal2-cancel {
+  background-color: var(--color-grey);
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 60px;
+}
+
+.swal2-confirm {
+  background-color: var(--color-yellow);
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 60px;
+}
+
+.swal2-error {
+  width: 5em !important;
+  height: 5em !important;
+  border-width: 0.25em !important;
+}
+.swal2-actions {
+  gap: 10px;
+}

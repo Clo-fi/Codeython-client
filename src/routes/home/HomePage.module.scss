@@ -1,0 +1,74 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 40px 40px 40px;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+.welcome {
+  position: relative;
+  top: 40px;
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.arrival {
+  position: absolute;
+  bottom: 0;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+  overflow-x: hidden;
+}
+
+.buttons {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 10px;
+}
+
+.button {
+  min-width: 100px;
+  height: 60px;
+}
+
+.contents {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  grid-template-rows: 1fr 1fr;
+  column-gap: 50px;
+  row-gap: 20px;
+}
+
+.notice {
+  align-self: flex-end;
+}
+
+.ranking {
+  align-self: center;
+}
+
+.skeleton {
+  width: 100%;
+  border-radius: 20px;
+}
+
+.arrival-skeleton {
+  width: 150px;
+  border-radius: 20px;
+}
