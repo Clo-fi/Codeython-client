@@ -1,5 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
+metadata:
+  name: frontend-deployment
 spec:
   template:
     metadata:
@@ -8,7 +10,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_8e8cd7b71051
+          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_eb44bb7abcfd:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5173
