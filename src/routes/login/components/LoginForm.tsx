@@ -10,7 +10,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [state, setState] = useState({ username: '', password: '' });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [cookies, setCookies] = useCookies(['accessToken', 'refreshToken']);
+  const [, setCookies] = useCookies(['accessToken', 'refreshToken']);
   const { setLogined } = useAuthStore();
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
