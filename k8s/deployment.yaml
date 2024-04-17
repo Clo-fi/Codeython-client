@@ -15,3 +15,5 @@ spec:
         - name: krampoline
           image: krmp-d2hub-idock.9rum.cc/dev-test/repo_c5f1968dfd6e
           imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
