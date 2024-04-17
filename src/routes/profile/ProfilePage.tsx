@@ -1,4 +1,3 @@
-import Swal from "sweetalert2";
 import Button from "../../components/common/Button";
 import ListBallon from "../../components/common/ListBallon";
 import ProfileSection from "../../components/common/ProfileSection";
@@ -8,23 +7,41 @@ import { getRecentRecords, modifyProfile } from "../../api/user/user";
 import { useState } from "react";
 import useFetching from "../../hooks/useFetching";
 import useUserStore from "../../store/UserStore";
+import axios from "axios";
+import { CustomAlert } from "../../libs/sweetAlert/alert";
 
 const ProfilePage = () => {
   const { data: records } = useFetching(getRecentRecords);
-  const [nickname, setNickname] = useState<string>("");
-  const setUserInfo = useUserStore((set) => set.setUserInfo);
+  const { setUserInfo, nickname: userNickname } = useUserStore();
+  const [nickname, setNickname] = useState<string>(userNickname);
 
   const clickModifyBtnHandler = async () => {
+    if (nickname === userNickname) {
+      CustomAlert.fire({
+        icon: "error",
+        title: "변경 사항이 없습니다.",
+      });
+      return;
+    }
+
     try {
       await modifyProfile({ nickname });
       setUserInfo();
 
-      Swal.fire({
+      CustomAlert.fire({
         icon: "success",
         title: "닉네임이 변경되었습니다.",
       });
     } catch (error) {
-      Swal.fire({
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        CustomAlert.fire({
+          icon: "warning",
+          title: "이미 존재하는 닉네임 입니다.",
+        });
+        return;
+      }
+
+      CustomAlert.fire({
         icon: "error",
         title: "닉네임이 변경에 실패했습니다.",
       });
