@@ -4,7 +4,7 @@ import Button from "../../components/common/Button";
 import ListBallon from "../../components/common/ListBallon";
 import ProfileSection from "../../components/common/ProfileSection";
 import NoticeBlock from "./components/NoticeBlock";
-import ArrivalBlock from "./components/ArrivalBlock";
+// import ArrivalBlock from "./components/ArrivalBlock";
 import RankBlock from "./components/RankBlock";
 import { getRanks } from "../../api/user/user";
 import useFetching from "../../hooks/useFetching";
@@ -101,12 +101,12 @@ const HomePage = () => {
         <Button
           value="혼자 놀기"
           className={styles.button}
-          onClick={() => {}}
+          onClick={() => { }}
         />
         <Button
           value="같이 놀기"
           className={styles.button}
-          onClick={() => {}}
+          onClick={() => { }}
         />
       </div>
     </div>
