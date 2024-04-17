@@ -1,0 +1,16 @@
+# krmp-d2hub-idock.9rum.cc/dev-test/repo_eb44bb7abcfd:latest
+
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_eb44bb7abcfd:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5173
