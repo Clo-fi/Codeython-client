@@ -3,17 +3,16 @@ kind: Ingress
 metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: 'false'
-    nginx.ingress.kubernetes.io/proxy-body-size: '64m'
   labels:
     app.kubernetes.io/managed-by: kargocd
-  name: frontend-ingress
+  name: krampoline
   namespace: default
 spec:
   rules:
     - http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              serviceName: frontend-service
+          - backend:
+              serviceName: frontend
               servicePort: 3000
+              path: /
+              pathType: Prefix
