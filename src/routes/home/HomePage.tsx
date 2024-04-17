@@ -10,8 +10,12 @@ import { getRanks } from "../../api/user/user";
 import useFetching from "../../hooks/useFetching";
 import CustomSkeleton from "../../components/common/CustomSkeleton";
 import RetryIcon from "../../assets/icons/retry.svg?react";
+import { useNavigate } from "react-router-dom";
+import useUserStore from "../../store/UserStore";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const nickname = useUserStore((store) => store.nickname);
   const {
     data: rankInfo,
     isLoading: rankIsLoading,
@@ -23,7 +27,7 @@ const HomePage = () => {
     <div className={styles.main}>
       <div className={styles.header}>
         <div className={styles.welcome}>
-          <div> 닉네임 님,</div>
+          <div> {nickname} 님,</div>
           <div> 오늘도 happy coding ^^</div>
         </div>
         <ProfileSection />
@@ -101,12 +105,12 @@ const HomePage = () => {
         <Button
           value="혼자 놀기"
           className={styles.button}
-          onClick={() => { }}
+          onClick={() => navigate("/problemlist")}
         />
         <Button
           value="같이 놀기"
           className={styles.button}
-          onClick={() => { }}
+          onClick={() => {}}
         />
       </div>
     </div>
