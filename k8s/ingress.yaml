@@ -11,8 +11,8 @@ spec:
   rules:
     - http:
         paths:
-          - frontend:
-              serviceName: krampoline
-              servicePort: 5173
-              path: /
-              pathType: Prefix
+          - backend:
+              serviceName: frontend-service # 프론트엔드 서비스의 이름
+              servicePort: 5173 # 프론트엔드 서비스의 포트
+            path: /
+            pathType: Prefix
