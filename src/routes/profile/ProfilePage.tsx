@@ -7,14 +7,18 @@ import RecordBlock from "./components/RecordBlock";
 import { getRecentRecords, modifyProfile } from "../../api/user/user";
 import { useState } from "react";
 import useFetching from "../../hooks/useFetching";
+import useUserStore from "../../store/UserStore";
 
 const ProfilePage = () => {
   const { data: records } = useFetching(getRecentRecords);
   const [nickname, setNickname] = useState<string>("");
+  const setUserInfo = useUserStore((set) => set.setUserInfo);
 
   const clickModifyBtnHandler = async () => {
     try {
       await modifyProfile({ nickname });
+      setUserInfo();
+
       Swal.fire({
         icon: "success",
         title: "닉네임이 변경되었습니다.",
