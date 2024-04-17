@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import styles from './ProblemListPage.module.scss'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { AxiosError } from 'axios';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -47,7 +45,7 @@ const ProblemListPage: React.FC = () => {
         },
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate(`/practice/${selectedProblem.problemId}`);
+          navigate(`/playalone/${selectedProblem.problemId}`);
         }
       });      
     } else {

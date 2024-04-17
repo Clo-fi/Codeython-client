@@ -104,6 +104,9 @@
 .action_button:active {
   background-color: #ebd59e;
 }
+.selected {
+  background-color: #fff9e9;
+}
 .exit_codeython_menu {
   width: 90%;
 
@@ -117,4 +120,38 @@
     align-items: flex-end;
     cursor: pointer;
   }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(40px);
+  }
+  30% {
+    transform: translateX(30px);
+  }
+  40% {
+    transform: translateX(10px);
+  }
+  60% {
+    transform: translateX(20px);
+  }
+}
+
+.container {
+  animation: slideInFromLeft 0.4s ease-out forwards,
+    bounce 0.5s ease-in-out 0.4s;
 }

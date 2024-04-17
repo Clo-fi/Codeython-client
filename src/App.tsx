@@ -5,6 +5,7 @@ import HomePage from "./routes/home/HomePage";
 import ProfilePage from "./routes/profile/ProfilePage";
 import ProblemListPage from "./routes/problemList/ProblemListPage";
 import LayoutWithSideBar from "./components/layout/LayoutWithSideBar";
+import PlayAlonePage from "./routes/playAlone/PlayAlonePage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/problemlist" element={<ProblemListPage />} />
         </Route>
+        <Route path="/playalone/:problemId" element={<PlayAlonePage />} />
       </Routes>
     </>
   );
