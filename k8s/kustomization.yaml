@@ -1,0 +1,4 @@
+namespace: default
+resources:
+  - frontend.yaml
+  - ingress.yaml
