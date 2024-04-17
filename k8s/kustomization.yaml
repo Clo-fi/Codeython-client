@@ -1,4 +1,5 @@
-namespace: default
+namespace: krampoline
 resources:
   - frontend.yaml
   - ingress.yaml
+  - service.yaml

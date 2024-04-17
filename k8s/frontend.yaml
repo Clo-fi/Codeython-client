@@ -3,18 +3,15 @@ kind: Deployment
 metadata:
   name: frontend-deployment
 spec:
-  replicas: 3
   selector:
     matchLabels:
-      app: frontend
+      app: frontend-deployment
   template:
     metadata:
       labels:
-        app: frontend
+        app: frontend-deployment
     spec:
       containers:
-        - name: frontend
+        - name: frontend-deployment
           image: krmp-d2hub-idock.9rum.cc/dev-test/repo_c5f1968dfd6e
           imagePullPolicy: Always
-          ports:
-            - containerPort: 3000
