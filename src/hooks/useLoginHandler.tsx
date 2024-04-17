@@ -10,7 +10,7 @@ const useLoginHandler = () => {
     if (!isLogined) {
       navigate('/');
     }
-  }, [isLogined, navigate])
+  }, [])
 }
 
 export default useLoginHandler;
