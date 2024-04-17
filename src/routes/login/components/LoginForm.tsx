@@ -10,18 +10,19 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [state, setState] = useState({ username: '', password: '' });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [cookies, setCookies] = useCookies(['accessToken', 'refreshToken']);
+  const [, setCookies] = useCookies(['accessToken', 'refreshToken']);
   const { setLogined } = useAuthStore();
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const { username, password } = state;
-      const response = await instance.post('/api/login', { username, password });
+      const formData = { username, password }
+      const response = await instance.post('/api/login', formData);
       console.log(response);
 
       const { accessToken, refreshToken } = response.data;
-
+      // 여기서 200 일때만 토큰 설정및 로그인 상태관리 로직 추가해도 될것 
       setCookies('accessToken', accessToken, { path: '/' })
       setCookies('refreshToken', refreshToken, { path: '/' })
       setLogined();
@@ -51,7 +52,7 @@ const LoginForm = () => {
           <input className={styles.login_page__input} value={state.password} placeholder='Password :' type='password' name="password" onChange={handleChange} required />
           <div className={styles.login_page__button_container}>
             <button className={styles.login_page__submit_button} onClick={signupNavigationHandler} type="button">회원가입</button>
-            <button onClick={() => setLogined()} type="button">테스트</button>
+            {/* <button onClick={() => setLogined()} type="button">테스트</button> */}
             <button className={styles.login_page__submit_button} type="submit">로그인</button>
           </div>
         </form>

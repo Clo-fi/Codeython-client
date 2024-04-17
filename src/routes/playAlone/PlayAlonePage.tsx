@@ -40,7 +40,7 @@ const PlayAlonePage = () => {
 
   // 문제 id를 통한 api 통신
   const { problemId } = useParams<{ problemId: string }>();
-  
+
   // 받아온 정보 상태 관리를 위한 state 정의
   const { problemInfo, setProblemInfo } = useProblemStore();
 
@@ -81,10 +81,10 @@ const PlayAlonePage = () => {
       }
     ],
     "testcases": {
-        "inputCase": [["1,2"], ["3,4"], ["5,6"]],
-        "outputCase": [["3,4"], ["5,6"], ["7,8"]],
-        "description": "this is description"
-      },
+      "inputCase": [["1,2"], ["3,4"], ["5,6"]],
+      "outputCase": [["3,4"], ["5,6"], ["7,8"]],
+      "description": "this is description"
+    },
     "difficulty": 1
   };
 
