@@ -4,10 +4,10 @@ module.exports = {
     { value: "🐛 fix", name: "🐛 fix: 버그 수정" },
     { value: "📝 docs", name: "📝 docs: 문서 수정" },
     {
-      value: "♻️  refactor",
-      name: "♻️  refactor: 리팩토링, 기타 수정",
+      value: "♻️ refactor",
+      name: "♻️ refactor: 리팩토링, 기타 수정",
     },
-    { value: "✏️  rename", name: "✏️  rename: 파일 혹은 폴더명 수정" },
+    { value: "✏️ rename", name: "✏️ rename: 파일 혹은 폴더명 수정" },
     {
       value: "❌ remove",
       name: "❌ remove: 파일, 폴더 삭제",

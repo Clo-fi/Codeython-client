@@ -1,17 +1,26 @@
+import { RecentRecord } from "../../../types/user";
 import styles from "./RecordBlock.module.scss";
 
-const RecordBlock = () => {
+interface Props {
+  record: RecentRecord;
+}
+
+const RecordBlock = ({
+  record: { date, grade, title, accuracy, memberCnt },
+}: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <span>2020.12.13</span>
+        <span>{date}</span>
         <span>|</span>
-        <span>주사위 굴리기</span>
+        <span>{title}</span>
       </div>
       <div className={styles.rank}>
-        <span>50%</span>
+        <span>${accuracy}%</span>
         <span></span>
-        <span>3등(3/7)</span>
+        <span>
+          {grade}등 ({grade}/{memberCnt})
+        </span>
       </div>
     </div>
   );
