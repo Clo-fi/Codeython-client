@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: '64m'
   labels:
     app.kubernetes.io/managed-by: kargocd
-  name: frontend-deployment
+  name: frontend-ingress
   namespace: default
 spec:
   rules:
