@@ -1,13 +1,18 @@
 import { Outlet } from "react-router-dom";
 import SideBar from "../common/SideBar";
 import useUserStore from "../../store/UserStore";
+import { useEffect } from "react";
 
 const LayoutWithSideBar = () => {
-  const { nickname, exp } = useUserStore();
+  const { nickname, exp, level, setUserInfo } = useUserStore();
+
+  useEffect(() => {
+    setUserInfo();
+  }, [setUserInfo]);
 
   return (
     <>
-      <SideBar nickname={nickname} exp={exp ?? 0} />
+      <SideBar nickname={nickname} exp={exp} level={level} />
       <main style={{ position: "relative", paddingLeft: "250px" }}>
         <Outlet />
       </main>

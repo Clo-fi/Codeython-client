@@ -7,7 +7,6 @@ import ProblemListPage from "./routes/problemList/ProblemListPage";
 import LayoutWithSideBar from "./components/layout/LayoutWithSideBar";
 import PlayAlonePage from "./routes/playAlone/PlayAlonePage";
 
-
 function App() {
   return (
     <>
