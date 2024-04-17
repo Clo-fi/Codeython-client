@@ -111,7 +111,14 @@
 .result_container {
   width: 60vw;
   height: 24vh;
+  padding: 20px;
   border-top: 1px solid var(--color-darkgrey);
   background-color: var(--color-grey);
+  overflow: scroll;
+}
+
+.execution_result {
+  margin-bottom: 10px;
+  font-size: small;
 }
 

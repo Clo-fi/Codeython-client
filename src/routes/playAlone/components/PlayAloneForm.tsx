@@ -20,11 +20,12 @@ interface ProblemInfo {
 
 /* props 타입 정의 */
 interface PlayAloneFormProps {
+  problemId: string;
   problemInfo: ProblemInfo;
 }
 
 /* return form */
-const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo }) => {
+const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo, problemId }) => {
 
 
   return (
@@ -69,7 +70,7 @@ const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo }) => {
         </div>
       </div>
       <div className={styles.codeEditor_container}>
-        <CodeEditor baseCode={problemInfo.baseCode} testcases={problemInfo.testcases}/>
+        <CodeEditor baseCode={problemInfo.baseCode} problemId={problemId} />
       </div>
     </div>
   );
