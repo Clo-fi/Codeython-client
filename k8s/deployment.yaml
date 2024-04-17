@@ -1,20 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
+  name: krampoline
 spec:
-  replicas: 3
   selector:
     matchLabels:
-      app: frontend-deployment
+      app: krampoline
   template:
     metadata:
       labels:
-        app: frontend-deployment
+        app: krampoline
     spec:
       containers:
-        - name: frontend-container
+        - name: krampoline
           image: krmp-d2hub-idock.9rum.cc/dev-test/repo_c5f1968dfd6e
           imagePullPolicy: Always
-          ports:
-            - containerPort: 3000
