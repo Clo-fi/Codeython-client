@@ -9,7 +9,6 @@ import useAuthStore from '../../../store/AuthStore';
 const LoginForm = () => {
   const navigate = useNavigate();
   const [state, setState] = useState({ username: '', password: '' });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, setCookies] = useCookies(['accessToken', 'refreshToken']);
   const { setLogined } = useAuthStore();
 
@@ -17,12 +16,12 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       const { username, password } = state;
-      const formData = { username, password }
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('password', password);
       const response = await instance.post('/login', formData);
-      console.log(response);
 
       const { accessToken, refreshToken } = response.data;
-      // 여기서 200 일때만 토큰 설정및 로그인 상태관리 로직 추가해도 될것 
       setCookies('accessToken', accessToken, { path: '/' })
       setCookies('refreshToken', refreshToken, { path: '/' })
       setLogined();

@@ -27,7 +27,6 @@ const SignUpForm = () => {
         return;
       }
       const { username, nickname, password } = state;
-      // const response = await axios.post('http://localhost:8080', { username, nickname, password })
       const response = await instance.post('/signup', { username, nickname, password });
       console.log(response);
     } catch (error) {
