@@ -10,7 +10,6 @@
     "preview": "vite preview",
     "commit": "cz",
     "prepare": "husky",
-    "postinstall": "husky install",
     "lint-staged": "lint-staged"
   },
   "dependencies": {

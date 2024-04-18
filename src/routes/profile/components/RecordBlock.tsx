@@ -1,15 +1,21 @@
 import { RecentRecord } from "../../../types/user";
 import styles from "./RecordBlock.module.scss";
 
-interface Props {
+interface Props
+  extends React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  > {
   record: RecentRecord;
 }
 
 const RecordBlock = ({
   record: { date, grade, title, accuracy, memberCnt },
+  className,
+  ...props
 }: Props) => {
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${className}`} {...props}>
       <div className={styles.title}>
         <span>{date}</span>
         <span>|</span>
