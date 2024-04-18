@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import ProblemForm from './components/ProblemForm';
 import { create } from 'zustand';
 import Button from "../../components/common/Button";
+import instance from '../../api/axios';
 
 
 const ProblemListPage: React.FC = () => {
@@ -19,6 +20,7 @@ const ProblemListPage: React.FC = () => {
     title: string;
     difficulty: number;
     isPlayed: boolean;
+    accuracy: number;
   }
 
   // zustand store 타입 정의
@@ -65,7 +67,7 @@ const ProblemListPage: React.FC = () => {
     fetchProblems: async () => {
       set({ loading: true, error: null });
       try {
-        const response = await axios.get<Problem[]>('api/problems');
+        const response = await instance.get<Problem[]>('/problems');
         set({ problems: response.data, loading: false });
       }catch (error) {
         if (axios.isAxiosError(error)) {
@@ -95,67 +97,78 @@ const ProblemListPage: React.FC = () => {
       "problemId": 1,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": true,
+      "accuracy": 0
     },
     {
       "problemId": 2,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": true,
+      "accuracy": 1
     },
     {
       "problemId": 3,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": true,
+      "accuracy": 33
     },
     {
       "problemId": 4,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": false,
+      "accuracy": 0
     },
     {
       "problemId": 5,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": true,
+      "accuracy": 15
     },
     {
       "problemId": 6,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": true,
+      "accuracy": 100
     },
     {
       "problemId": 7,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": true,
+      "accuracy": 56
     },
     {
       "problemId": 8,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": true,
+      "accuracy": 30
     },
     {
       "problemId": 9,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": true,
+      "accuracy": 25
     },
     {
       "problemId": 10,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": false,
+      "accuracy": 0
     },
     {
       "problemId": 11,
       "title": "한우 여물먹이기",
       "difficulty": 3,
-      "isPlayed": true
+      "isPlayed": false,
+      "accuracy": 0
     }
   ];
 

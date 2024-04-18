@@ -5,7 +5,7 @@ import { Editor } from '@monaco-editor/react';
 import Button from '../../../components/common/Button';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import instance from '../../../api/axios';
 
 // 언어 변경에 따른 basecode 변경을 위한 language 타입 정의
 interface LanguageState {
@@ -22,10 +22,9 @@ interface CodeEditorProps {
 
 // 코드 에디터 컴포넌트 시작
 const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
-
   const [languageState, setLanguageState] = useState<LanguageState>({
     isOpen: false,
-    options: [],
+    options: baseCode.map(item => item.language), // baseCode에서 언어 옵션 추출하여 설정
     selectedOption: null,
   });
   const [code, setCode] = useState<string>('');
@@ -40,19 +39,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
     }
   };
 
+  // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
   useEffect(() => {
-    if (baseCode && baseCode.length > 0) {
-      const languages = baseCode.map((item) => item.language);
-      setLanguageState((prevState) => ({ ...prevState, options: languages }));
-      // 선택된 언어에 대한 기본 코드 설정
-      setDefaultCode(languageState.selectedOption);
-    }
-  }, [baseCode, languageState.selectedOption, setDefaultCode]); // 여기서 setDefaultCode를 직접 의존성으로 설정
-
-  useEffect(() => {
-    // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
     setDefaultCode(languageState.selectedOption);
-  }, [languageState.selectedOption, setDefaultCode]); // 여기서도 setDefaultCode를 직접 의존성으로 설정
+  }, [languageState.selectedOption, baseCode]);
 
   const handleOptionSelect = (option: string) => {
     setLanguageState((prevState) => ({ ...prevState, selectedOption: option, isOpen: false }));
@@ -68,89 +58,85 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
   };
 
   const [executionResults, setExecutionResults] = useState<{ isCorrect: boolean; output: string }[]>([]);
-  
-  // 실행하기 버튼 
-  const handleExecute = () => {
-    const userCode = code;
-    const selectedLanguage = languageState.selectedOption;
 
-    const requestData = {
-      code: userCode,
-      language: selectedLanguage,
-    };
+  // 실행하기 버튼
+  const handleExecute = async () => {
+    try {
+      const userCode = code;
+      const selectedLanguage = languageState.selectedOption;
 
-    console.log(userCode, selectedLanguage);
+      const requestData = {
+        code: userCode,
+        language: selectedLanguage,
+      };
 
-    axios.post(`api/problem/${problemId}/execution`, requestData)
-      .then(response => {
-        const executionResult = response.data.result;
-        setExecutionResults(executionResult);
-      })
-      .catch(error => {
-        console.error('Error executing code:', error);
-        console.error('api 연결 실패');
-      });
+      console.log(userCode, selectedLanguage);
+
+      const response = await instance.post(`/problem/${problemId}/execution`, requestData);
+      const executionResult = response.data.result;
+      setExecutionResults(executionResult);
+    } catch (error) {
+      console.error('Error executing code:', error);
+      console.error('api 연결 실패');
+    }
   };
 
   // 화면 이동을 위한 navigate 변수 설정
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    const userCode = code;
-    const selectedLanguage = languageState.selectedOption;
-  
-    const requestData = {
-      code: userCode,
-      language: selectedLanguage,
-    };
-  
-    console.log(userCode, selectedLanguage);
-  
-    axios.post(`api/problem/${problemId}/result`, requestData)
-      .then(response => {
-        const accuracy = response.data.submitResult.accuracy;
-        let modalConfig;
-  
-        if (accuracy === 100) {
-          // 정확도가 100%인 경우 축하 모달 표시
-          modalConfig = {
-            title: "축하합니다!",
-            html: `정확도: ${accuracy}%<br/>문제를 성공적으로 해결하셨습니다!`,
-            showCancelButton: false,
-            confirmButtonText: "홈으로 돌아가기",
-          };
-        } else {
-          // 정확도가 100%가 아닌 경우 정확도만 표시
-          modalConfig = {
-            title: "결과",
-            html: `정확도: ${accuracy}%`,
-            showCancelButton: true,
-            confirmButtonText: "확인",
-          };
-        }
-  
-        // 모달 표시
-        Swal.fire({
-          ...modalConfig,
-          customClass: {
-            popup: styles['custom-modal-style'],
-          },
-        }).then((result) => {
-          if (result.isConfirmed && accuracy === 100) {
-            // 정확도가 100%이고 확인 버튼을 클릭한 경우 홈으로 이동
-            navigate('/home');
-          }
-        });
-      })
-      .catch(error => {
-        console.error('Error executing code:', error);
-        console.error('api 연결 실패');
-      });
-  };
-  
-  
+  const handleSubmit = async () => {
+    try {
+      const userCode = code;
+      const selectedLanguage = languageState.selectedOption;
 
-  const handleInitailizeCode = () => {
+      const requestData = {
+        code: userCode,
+        language: selectedLanguage,
+      };
+
+      console.log(userCode, selectedLanguage);
+
+      const response = await instance.post(`/problem/${problemId}/result`, requestData);
+      const accuracy = response.data.submitResult.accuracy;
+      let modalConfig;
+
+      if (accuracy === 100) {
+        // 정확도가 100%인 경우 축하 모달 표시
+        modalConfig = {
+          title: "축하합니다!",
+          html: `정확도: ${accuracy}%<br/>문제를 성공적으로 해결하셨습니다!`,
+          showCancelButton: false,
+          confirmButtonText: "홈으로 돌아가기",
+        };
+      } else {
+        // 정확도가 100%가 아닌 경우 정확도만 표시
+        modalConfig = {
+          title: "결과",
+          html: `정확도: ${accuracy}%`,
+          showCancelButton: true,
+          confirmButtonText: "확인",
+        };
+      }
+
+      // 모달 표시
+      const result = await Swal.fire({
+        ...modalConfig,
+        customClass: {
+          popup: styles['custom-modal-style'],
+        },
+      });
+
+      if (result.isConfirmed && accuracy === 100) {
+        // 정확도가 100%이고 확인 버튼을 클릭한 경우 홈으로 이동
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error('Error executing code:', error);
+      console.error('api 연결 실패');
+    }
+  };
+
+  const handleInitializeCode = () => {
     const selectedLanguage = languageState.selectedOption;
     if (selectedLanguage) {
       const defaultCode = baseCode.find((item) => item.language === selectedLanguage)?.code;
@@ -203,7 +189,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
           ))}
         </div>
         <div className={styles.button_container}>
-          <Button value="코드 초기화" className={styles.initialize_btn} onClick={handleInitailizeCode} />
+          <Button value="코드 초기화" className={styles.initialize_btn} onClick={handleInitializeCode} />
           <Button value="실행하기" className={styles.execution_btn} onClick={handleExecute} />
           <Button value="제출하기" className={styles.submit_btn} onClick={handleSubmit} />
         </div>

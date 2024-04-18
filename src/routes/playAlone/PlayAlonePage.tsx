@@ -36,7 +36,7 @@ const useProblemStore = create<ProblemState>((set) => ({
 }));
 
 
-const PlayAlonePage = () => {
+const PlayAlonePage: React.FC = () => {
 
   // 문제 id를 통한 api 통신
   const { problemId } = useParams<{ problemId: string }>();

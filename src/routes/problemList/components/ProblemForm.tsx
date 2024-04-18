@@ -6,12 +6,13 @@ interface Problem {
   title: string;
   difficulty: number;
   isPlayed: boolean;
+  accuracy : number;
 }
 
 interface ProblemFormProps {
   problems: Problem[];
-  selectedProblem: Problem | null; // 변경된 부분: null일 수 있도록 변경
-  setSelectedProblem: (problem: Problem | null) => void; // 변경된 부분: null일 수 있도록 변경
+  selectedProblem: Problem | null;
+  setSelectedProblem: (problem: Problem | null) => void; 
 }
 
 const ProblemForm: React.FC<ProblemFormProps> = ({ problems, selectedProblem, setSelectedProblem }) => {
@@ -31,7 +32,7 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ problems, selectedProblem, se
             난이도 {problem.difficulty}
             </div>
             <div className={styles.problemForm_component__solved}>
-            {problem.isPlayed ? "Played" : "Not Played"}
+            {problem.isPlayed ? problem.accuracy+"%" : "Not Played"}
             </div>
           </div>
         ))}
