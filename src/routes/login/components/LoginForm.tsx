@@ -18,7 +18,7 @@ const LoginForm = () => {
     try {
       const { username, password } = state;
       const formData = { username, password }
-      const response = await instance.post('/api/login', formData);
+      const response = await instance.post('/login', formData);
       console.log(response);
 
       const { accessToken, refreshToken } = response.data;
