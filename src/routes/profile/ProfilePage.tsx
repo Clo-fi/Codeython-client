@@ -36,7 +36,7 @@ const ProfilePage = () => {
       if (axios.isAxiosError(error) && error.response?.status === 400) {
         CustomAlert.fire({
           icon: "warning",
-          title: "이미 존재하는 닉네임 입니다.",
+          title: "사용할 수 없는 닉네임입니다.",
         });
         return;
       }
@@ -70,8 +70,15 @@ const ProfilePage = () => {
           </div>
         </ListBallon>
         <ListBallon title="내 기록" width={"100%"}>
-          {records?.recentRecords.map((record) => (
-            <RecordBlock key={record.accuracy} record={record} />
+          {records?.recentRecords.map((record, index) => (
+            <RecordBlock
+              key={record.accuracy}
+              record={record}
+              className={styles.record}
+              style={{
+                animationDelay: `${index * 0.1}s`,
+              }}
+            />
           ))}
         </ListBallon>
       </section>

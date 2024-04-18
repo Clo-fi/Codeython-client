@@ -17,6 +17,11 @@
   top: 40px;
   font-size: 40px;
   font-weight: 500;
+  animation-name: floatIn;
+  animation-duration: 2s;
+  animation-delay: 0s;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  animation-fill-mode: both;
 }
 
 .arrival {
@@ -71,4 +76,15 @@
 .arrival-skeleton {
   width: 150px;
   border-radius: 20px;
+}
+
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
