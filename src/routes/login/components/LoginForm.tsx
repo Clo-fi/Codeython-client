@@ -19,7 +19,11 @@ const LoginForm = () => {
       const formData = new FormData();
       formData.append('username', username);
       formData.append('password', password);
-      const response = await instance.post('/login', formData);
+      const response = await instance.post('/login', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
 
       const { accessToken, refreshToken } = response.data;
       setCookies('accessToken', accessToken, { path: '/' })
@@ -37,7 +41,7 @@ const LoginForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
-      [e.target.name]: e.target.value, // 입력 필드의 name 속성을 키로 사용하여 상태 업데이트
+      [e.target.name]: e.target.value,
     });
   };
 
