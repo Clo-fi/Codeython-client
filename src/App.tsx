@@ -22,8 +22,8 @@ function App() {
               <Route path="/home" element={<HomePage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/problemlist" element={<ProblemListPage />} />
-              <Route path="/playalone/:problemId" element={<PlayAlonePage />} />
             </Route>
+            <Route path="/playalone/:problemId" element={<PlayAlonePage />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/" replace />} />
