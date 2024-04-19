@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import styles from "./SideBar.module.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomProgressBar from "./CustomProgressBar";
-import useAuthStore from '../../store/AuthStore';
-import { useCookies } from 'react-cookie';
-import Swal from 'sweetalert2';
-import instance from '../../api/axios';
+import useAuthStore from "../../store/AuthStore";
+import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
+import instance from "../../api/axios";
 
 interface Props {
   nickname: string;
@@ -14,10 +14,10 @@ interface Props {
   level: number;
 }
 
-const SideBar = ({ nickname, exp }: Props) => {
+const SideBar = ({ nickname, exp, level }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [, , removeCookie] = useCookies(['accessToken', 'refreshToken']);
+  const [, , removeCookie] = useCookies(["accessToken", "refreshToken"]);
   const { setLogout } = useAuthStore();
   const pageRouteHandler = (path: string) => {
     navigate(`/${path}`);
@@ -32,11 +32,11 @@ const SideBar = ({ nickname, exp }: Props) => {
   }, []);
 
   const logoutHandler = () => {
-    removeCookie('accessToken');
-    removeCookie('refreshToken');
+    removeCookie("accessToken");
+    removeCookie("refreshToken");
     setLogout();
-    navigate('/');
-  }
+    navigate("/");
+  };
   const removeAccountHandler = () => {
     Swal.fire({
       icon: "warning",
@@ -48,18 +48,17 @@ const SideBar = ({ nickname, exp }: Props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          icon: 'error',
-          title: '정말로 탈퇴하기',
+          icon: "error",
+          title: "정말로 탈퇴하기",
           showCancelButton: true,
           confirmButtonText: "탈퇴하기",
           cancelButtonText: "돌아가기",
         }).then((result) => {
-          if (result.isConfirmed)
-            instance.delete('/api/users/delete')
-        })
+          if (result.isConfirmed) instance.delete("/api/users/delete");
+        });
       }
     });
-  }
+  };
   return (
     <div className={`${styles.container} ${styles.slideInFromLeft}`}>
       <div className={styles.user_info_block}>
@@ -68,7 +67,7 @@ const SideBar = ({ nickname, exp }: Props) => {
           <div className={styles.user_nickname}>{nickname}</div>
         </div>
         <div className={styles.level_block}>
-          {/* <div>LV {level}</div> */}
+          <div>LV {level}</div>
           <CustomProgressBar exp={exp} width={"80%"} />
         </div>
       </div>
@@ -77,7 +76,7 @@ const SideBar = ({ nickname, exp }: Props) => {
         <button
           className={`
           ${styles.action_button}
-          ${location.pathname === '/home' && styles.selected}
+          ${location.pathname === "/home" && styles.selected}
           `}
           onClick={() => pageRouteHandler("home")}
         >
@@ -86,20 +85,27 @@ const SideBar = ({ nickname, exp }: Props) => {
         <button
           className={`
           ${styles.action_button}
-          ${location.pathname === '/profile' && styles.selected}
+          ${location.pathname === "/profile" && styles.selected}
           `}
           onClick={() => pageRouteHandler("profile")}
         >
           프로필
         </button>
-        <button className={styles.action_button}>알고리즘 연습하기</button>
+        <button
+          className={styles.action_button}
+          onClick={() => navigate("/problemlist")}
+        >
+          알고리즘 연습하기
+        </button>
         <button className={styles.action_button}>코디톤 방 만들기</button>
         <button className={styles.action_button}>초대 코드 입력하기</button>
         <img src="Imgs/CodeythonLogo.png" alt="GithubLogo" />
       </div>
 
       <div className={styles.exit_codeython_menu}>
-        <button className={styles.action_button} onClick={logoutHandler}>로그아웃</button>
+        <button className={styles.action_button} onClick={logoutHandler}>
+          로그아웃
+        </button>
         <span onClick={removeAccountHandler}>탈퇴하기</span>
       </div>
     </div>
