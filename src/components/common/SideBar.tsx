@@ -93,10 +93,7 @@ const SideBar = ({ nickname, exp, level }: Props) => {
         </button>
         <button
           className={styles.action_button}
-          onClick={() => navigate("/problemlist")}
-        >
-          알고리즘 연습하기
-        </button>
+          onClick={() => navigate("/problemlist")}>알고리즘 연습하기</button>
         <button className={styles.action_button}>코디톤 방 만들기</button>
         <button className={styles.action_button}>초대 코드 입력하기</button>
         <img src="Imgs/CodeythonLogo.png" alt="GithubLogo" />
