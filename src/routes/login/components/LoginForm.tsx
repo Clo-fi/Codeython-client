@@ -41,7 +41,7 @@ const LoginForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
-      [e.target.name]: e.target.value, // 입력 필드의 name 속성을 키로 사용하여 상태 업데이트
+      [e.target.name]: e.target.value,
     });
   };
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PlayAloneForm from './components/PlayAloneForm';
 import PlayHeader from './components/PlayHeader';
 import { useParams } from 'react-router-dom';
@@ -36,7 +36,7 @@ const useProblemStore = create<ProblemState>((set) => ({
 }));
 
 
-const PlayAlonePage = () => {
+const PlayAlonePage: React.FC = () => {
 
   // 문제 id를 통한 api 통신
   const { problemId } = useParams<{ problemId: string }>();

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { create } from 'zustand';
 import styles from './ProgressBar.module.scss';
+import Swal from 'sweetalert2';
 
 // Zustand 상태 타입 정의
 interface ProgressState {
@@ -56,6 +57,16 @@ const ProgressBar: React.FC<{ limitTime: number }> = ({ limitTime }) => {
       setProgress(progressPercentage);
       if (elapsedMilliseconds >= limitTimeMilliseconds) {
         clearInterval(interval);
+      }
+      if (elapsedMilliseconds >= limitTimeMilliseconds) {
+        clearInterval(interval);
+        // 남은 시간이 0이 되면 모달 창 띄우기
+        Swal.fire({
+          title: '시간 종료',
+          text: '풀이 권장 시간이 종료되었습니다.',
+          showCancelButton: true,
+          confirmButtonText: '확인',
+        });
       }
     }, 1000);
 
