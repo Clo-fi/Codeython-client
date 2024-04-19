@@ -19,7 +19,11 @@ const LoginForm = () => {
       const formData = new FormData();
       formData.append('username', username);
       formData.append('password', password);
-      const response = await instance.post('/login', formData);
+      const response = await instance.post('/login', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
 
       const { accessToken, refreshToken } = response.data;
       setCookies('accessToken', accessToken, { path: '/' })
