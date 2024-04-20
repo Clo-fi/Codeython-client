@@ -6,7 +6,7 @@ interface Props
     HTMLButtonElement
   > {
   value: string;
-  className: React.HTMLAttributes<HTMLButtonElement>["className"];
+  className?: React.HTMLAttributes<HTMLButtonElement>["className"];
   style?: React.HTMLAttributes<HTMLDivElement>["style"];
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }

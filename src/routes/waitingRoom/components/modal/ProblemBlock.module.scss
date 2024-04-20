@@ -1,0 +1,26 @@
+.container {
+  width: 100%;
+  display: flex;
+  background-color: var(--color-yellow);
+  gap: 20px;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.container:hover {
+  opacity: 0.8;
+}
+
+.selected {
+  background-color: var(--color-pink);
+}
+
+.difficulty {
+  width: 80px;
+  text-align: center;
+}
+
+.title {
+  flex-grow: 1;
+  text-align: center;
+}
