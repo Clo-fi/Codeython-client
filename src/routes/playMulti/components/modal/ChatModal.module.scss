@@ -1,0 +1,15 @@
+.modal__chat_container {
+  position: absolute;
+  background-color: var(--color-background);
+  width: 300px;
+  height: inherit;
+  right: 0;
+  z-index: 20;
+  
+  transition: opacity 0.1s ease-in-out;
+}
+
+.modal__chat_container_none {
+  opacity: 0;
+  pointer-events: none; /* 요소가 투명해지면 이벤트도 비활성화합니다. */
+}
