@@ -15,8 +15,8 @@ const UserContainer = () => {
       <section className={styles.container}>
         <div className={styles.container_group}>
           <div className={styles.user_container}>
-            <UserBox></UserBox>
-            <UserBox></UserBox>
+            <UserBox nickname="닉네임" level={1}></UserBox>
+            <UserBox nickname="닉네임" level={2}></UserBox>
             <UserBox></UserBox>
             <UserBox></UserBox>
             <UserBox></UserBox>

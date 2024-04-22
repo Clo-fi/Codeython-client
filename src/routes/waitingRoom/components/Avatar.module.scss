@@ -1,0 +1,33 @@
+.box {
+  position: relative;
+  animation: roll-and-return 1.5s ease-in-out forwards;
+}
+.avatar {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+}
+.decoR {
+  position: absolute;
+  left: 58%;
+  top: 18%;
+  width: 20%;
+}
+
+.decoL {
+  position: absolute;
+  right: 58%;
+  top: 18%;
+  width: 20%;
+}
+
+@keyframes roll-and-return {
+  from {
+    transform: translateX(-100px) rotate(180deg);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px) rotate(360deg);
+    opacity: 1;
+  }
+}
