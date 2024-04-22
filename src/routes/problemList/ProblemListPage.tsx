@@ -49,7 +49,7 @@ const ProblemListPage: React.FC = () => {
         if (result.isConfirmed) {
           navigate(`/playalone/${selectedProblem.problemId}`);
         }
-      });      
+      });
     } else {
       // 선택한 문제가 없으면 알림을 표시하거나 사용자에게 메시지를 전달
       Swal.fire({
@@ -69,18 +69,18 @@ const ProblemListPage: React.FC = () => {
       try {
         const response = await instance.get<Problem[]>('/problems');
         set({ problems: response.data, loading: false });
-      }catch (error) {
+      } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
             // 서버로부터 응답이 있는 경우
             console.log(error.response.data);  // 서버로부터 받은 데이터
             console.log(error.response.status); // HTTP 상태 코드
             console.log(error.response.headers); // 응답 헤더
-            
+
           } else {
             // 서버로부터 응답이 없는 경우
-            console.log(error.message); 
-            
+            console.log(error.message);
+
           }
         } else {
           // AxiosError가 아닌 다른 에러인 경우

@@ -8,6 +8,7 @@ import LayoutWithSideBar from "./components/layout/LayoutWithSideBar";
 import PlayAlonePage from "./routes/playAlone/PlayAlonePage";
 import useAuthStore from './store/AuthStore';
 import WaitingRoomPage from './routes/waitingRoom/WaitingRoomPage';
+import PlayMultiPage from './routes/playMulti/PlayMultiPage';
 
 function App() {
   const { isLogined } = useAuthStore();
@@ -17,19 +18,16 @@ function App() {
       <Routes>
         <Route path="/" element={isLogined ? <Navigate to="/home" replace /> : <LoginPage />} />
         <Route path="/signup" element={isLogined ? <Navigate to="/home" replace /> : <SignUpPage />} />
-        {isLogined ? (
-          <>
-            <Route element={<LayoutWithSideBar />}>
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/problemlist" element={<ProblemListPage />} />
-            </Route>
-            <Route path="/playalone/:problemId" element={<PlayAlonePage />} />
-            <Route path="/waiting/:roomId" element={<WaitingRoomPage />} />
-          </>
-        ) : (
-          <Route path="*" element={<Navigate to="/" replace />} />
-        )}
+        <>
+          <Route element={<LayoutWithSideBar />}>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/problemlist" element={<ProblemListPage />} />
+          </Route>
+          <Route path="/playalone/:problemId" element={<PlayAlonePage />} />
+          <Route path="/waiting/:roomId" element={<WaitingRoomPage />} />
+          <Route path='/playmulti/:problemId/:roomId' element={<PlayMultiPage />} />
+        </>
       </Routes>
     </>
   );
