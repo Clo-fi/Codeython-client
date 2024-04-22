@@ -2,4 +2,35 @@
   background-color: var(--color-white);
   aspect-ratio: 1 / 1;
   border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+
+  position: relative;
+}
+
+.user_info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background-color: var(--color-yellow);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.level {
+}
+
+.nickname {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 13px;
+  width: 80px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
 }

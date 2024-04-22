@@ -61,7 +61,7 @@ const PlayAlonePage: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  /* 화면 확인을 위한 예시 데이터 */
+  /* 화면 확인을 위한 예시 데이터 
   const exampleInfo: ProblemInfo = {
     "title": "Add Two Numbers",
     "content": "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.",
@@ -87,13 +87,14 @@ const PlayAlonePage: React.FC = () => {
     },
     "difficulty": 1
   };
+  */
 
   return (
     <div>
-      {/* limitTime 전달  <PlayHeader limitTime={problemInfo.limitTime} />  */}
-      <PlayHeader limitTime={exampleInfo.limitTime} />
-      {/* <PlayAloneForm problemInfo={problemInfo} /> */}
-      <PlayAloneForm problemInfo={exampleInfo} problemId={problemId!} />
+      {/* limitTime 전달  <PlayHeader limitTime={exampleInfo.limitTime} />  */}
+      <PlayHeader limitTime={problemInfo.limitTime} />
+      {/* <PlayAloneForm problemInfo={exampleInfo} /> */}
+      <PlayAloneForm problemInfo={problemInfo} problemId={problemId!} />
     </div>
   );
 };
