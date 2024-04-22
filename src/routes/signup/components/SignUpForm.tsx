@@ -29,6 +29,14 @@ const SignUpForm = () => {
       const { username, nickname, password } = state;
       const response = await instance.post('/signup', { username, nickname, password });
       console.log(response);
+      Swal.fire({
+        icon: "success",
+        title: "회원가입 성공",
+        timer: 1500,
+        showConfirmButton: false,
+      }).then(() => {
+        navigate('/');
+      });
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -52,9 +60,9 @@ const SignUpForm = () => {
       </div>
       <div className={styles.signup_page__form_container}>
         <form onSubmit={onSubmitHandler} className={styles.signup_page__form}>
-          <input className={styles.signup_page__input} placeholder='닉네임 :' type='text' name="nickname" value={state.nickname} onChange={handleChange} required />
-          <input className={styles.signup_page__input} placeholder='ID : ' type='text' name="username" value={state.username} onChange={handleChange} required />
-          <input className={styles.signup_page__input} placeholder='Password :' type='password' name="password" value={state.password} onChange={handleChange} required />
+          <input className={styles.signup_page__input} placeholder='닉네임 : 2 ~ 10글자' type='text' name="nickname" value={state.nickname} onChange={handleChange} required maxLength={10} />
+          <input className={styles.signup_page__input} placeholder='ID : 6 ~ 20 글자 영문과 숫자' type='text' name="username" value={state.username} onChange={handleChange} required maxLength={20} />
+          <input className={styles.signup_page__input} placeholder='Password : 6 ~ 20 글자' type='password' name="password" value={state.password} onChange={handleChange} required maxLength={20} />
           <input className={styles.signup_page__input} placeholder='Confirm Password :' type='password' name="confirmPassword" value={state.confirmPassword} onChange={handleChange} required />
           <div className={styles.signup_page__button_container}>
             <button type='submit' className={styles.signup_page__submit_button}>가입하기</button>
