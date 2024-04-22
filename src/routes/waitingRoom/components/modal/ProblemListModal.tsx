@@ -3,6 +3,8 @@ import styles from "./ProblemListModal.module.scss";
 import Button from "../../../../components/common/Button";
 import { useState } from "react";
 import ProblemBlock from "./ProblemBlock";
+import useFetching from "../../../../hooks/useFetching";
+import { getProblemList } from "../../../../api/problem/problem";
 
 interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,6 +12,7 @@ interface Props {
 
 const Modal = ({ setModal }: Props) => {
   const [selected, setSelected] = useState<null | number>(null);
+  const { data } = useFetching(getProblemList);
 
   return (
     <>
@@ -22,13 +25,10 @@ const Modal = ({ setModal }: Props) => {
               <div className={styles.title}>제목</div>
             </div>
             <div className={styles.list}>
-              {[
-                { title: "줄다리기", difficulty: 1, problemId: 1 },
-                { title: "줄다리기", difficulty: 2, problemId: 2 },
-                { title: "줄다리기", difficulty: 3, problemId: 3 },
-              ].map((p) => (
+              {data?.map((p) => (
                 <ProblemBlock
                   {...p}
+                  key={p.problemId}
                   onClick={(id) => setSelected(id)}
                   isSelected={p.problemId === selected}
                 />
