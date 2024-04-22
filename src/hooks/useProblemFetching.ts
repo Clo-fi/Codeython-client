@@ -27,9 +27,9 @@ const useProblemFetching = (problemId: string) => {
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching problem info: ', error);
-        // setTimeout(() => {
-        //   fetchProblemInfo();
-        // }, 5000);
+        setTimeout(() => {
+          fetchProblemInfo();
+        }, 5000);
       }
     };
 
