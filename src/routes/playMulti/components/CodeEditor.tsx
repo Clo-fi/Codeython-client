@@ -17,10 +17,11 @@ interface LanguageState {
 interface CodeEditorProps {
   baseCode: { language: string; code: string }[];
   problemId: string;
+  roomId: string;
 }
 
 // 코드 에디터 컴포넌트 시작
-const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) => {
   const [languageState, setLanguageState] = useState<LanguageState>({
     isOpen: false,
     options: baseCode.map(item => item.language), // baseCode에서 언어 옵션 추출하여 설정
@@ -88,14 +89,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
       const userCode = code;
       const selectedLanguage = languageState.selectedOption;
 
-      const requestData = {
-        code: userCode,
-        language: selectedLanguage,
-      };
-
       console.log(userCode, selectedLanguage);
-
-      const response = await instance.post(`/problem/${problemId}/result`, requestData);
+      const response = await instance.post(`/problem/${problemId}/result`, { code, language: selectedLanguage, roomId });
       const accuracy = response.data.submitResult.accuracy;
       let modalConfig;
 
@@ -105,10 +100,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
           title: "축하합니다!",
           html: `정확도: ${accuracy}%<br/>문제를 성공적으로 해결하셨습니다!`,
           showCancelButton: false,
-          confirmButtonText: "홈으로 돌아가기",
+          confirmButtonText: "홈으로 돌만아가기",
         };
       } else {
-        // 정확도가 100%가 아닌 경우 정확도만 표시
+        // 정확도가 100%가 아닌 경우 정확도 표시
         modalConfig = {
           title: "결과",
           html: `정확도: ${accuracy}%`,

@@ -20,7 +20,8 @@ export interface ProblemInfo {
 
 const PlayMultiPage = () => {
   const { problemId } = useParams<{ problemId: string }>();
-  // const { problemInfo, isLoading } = useProblemFetching(problemId!);
+  const { roomId } = useParams<{ roomId: string }>();
+  const { problemInfo, isLoading } = useProblemFetching(problemId!);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const exampleInfo: ProblemInfo = {
@@ -54,10 +55,10 @@ const PlayMultiPage = () => {
 
     <>
       {/* 위에 테스트 코드 아래 본 코드 */}
-      <PlayHeader problemInfo={exampleInfo} />
-      <PlayMultiForm problemInfo={exampleInfo} problemId={problemId!} />
-      {/* <PlayHeader problemInfo={problemInfo!} isLoading={isLoading} />
-      <PlayMultiForm problemInfo={problemInfo!} isLoading={isLoading} problemId={problemId!} /> */}
+      {/* <PlayHeader problemInfo={exampleInfo} />
+      <PlayMultiForm problemInfo={exampleInfo} problemId={problemId!} roomId={roomId!} /> */}
+      <PlayHeader problemInfo={problemInfo!} isLoading={isLoading} />
+      <PlayMultiForm problemInfo={problemInfo!} isLoading={isLoading} problemId={problemId!} roomId={roomId!} />
 
     </>
   );

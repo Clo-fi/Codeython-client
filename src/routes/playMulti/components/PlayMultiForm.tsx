@@ -26,10 +26,11 @@ interface PlayMultiFormProps {
   problemId: string;
   problemInfo: ProblemInfo;
   isLoading: boolean;
+  roomId: string;
 }
 
 /* return form */
-const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ isLoading, problemInfo, problemId }) => {
+const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ isLoading, roomId, problemInfo, problemId }) => {
   const { isPeopleToggleActive, isChatToggleActive } = useToggleStore();
   return (
     <>
@@ -75,13 +76,11 @@ const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ isLoading, problemInfo, p
           <div className={styles.problem_container}>
             <div className={styles.problem_title}>
               <div className={styles.title}>
-                {/* 문제 제목 */}
                 {problemInfo.title}
               </div>
             </div>
             <div className={styles.problem_description}>
               <div className={styles.description}>
-                {/* 문제 내용 */}
                 {problemInfo.content}
               </div>
             </div>
@@ -111,7 +110,7 @@ const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ isLoading, problemInfo, p
             </div>
           </div>
           <div className={styles.codeEditor_container}>
-            <CodeEditor baseCode={problemInfo.baseCode} problemId={problemId} />
+            <CodeEditor baseCode={problemInfo.baseCode} problemId={problemId} roomId={roomId} />
           </div>
           <ChatModal isChatToggleActive={isChatToggleActive} />
           <PeopleModal isPeopleToggleActive={isPeopleToggleActive} />
