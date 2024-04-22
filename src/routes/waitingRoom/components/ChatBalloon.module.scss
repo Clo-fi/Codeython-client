@@ -1,0 +1,27 @@
+.container {
+  width: 100%;
+  display: flex;
+  gap: 1px;
+  padding: 2px 0;
+  border-bottom: 1px solid var(--color-grey);
+}
+
+.my_container {
+  width: 100%;
+  display: flex;
+  gap: 1px;
+  color: rgb(207, 52, 124);
+}
+
+.nickname {
+}
+
+.me {
+}
+
+.message {
+}
+
+.my_message {
+  color: rgb(164, 56, 56);
+}
