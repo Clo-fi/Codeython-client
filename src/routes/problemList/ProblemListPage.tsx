@@ -90,7 +90,7 @@ const ProblemListPage: React.FC = () => {
     },
   }));
 
-  /* 화면 확인을 위한 예시 데이터 */
+  /* 화면 확인을 위한 예시 데이터
 
   const problemsData: Problem[] = [
     {
@@ -171,6 +171,7 @@ const ProblemListPage: React.FC = () => {
       "accuracy": 0
     }
   ];
+   */
 
   // 문제 리스트 상태관리
   const { problems, loading, error, fetchProblems } = useProblemStore();
@@ -204,7 +205,7 @@ const ProblemListPage: React.FC = () => {
         <img className={styles.problemList_page__logo} src="/Imgs/CodeythonLogo_star.png" alt="codeythonLogo" />
         <Button value="선택 완료" className={styles.problemList_select__btn} onClick={handleProblemSubmit}></Button>
       </div>
-      <ProblemForm problems={problemsData} selectedProblem={selectedProblem} setSelectedProblem={setSelectedProblem} />
+      <ProblemForm problems={problems} selectedProblem={selectedProblem} setSelectedProblem={setSelectedProblem} />
     </div>
   )
 }
