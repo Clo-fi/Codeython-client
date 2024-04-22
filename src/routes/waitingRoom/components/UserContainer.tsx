@@ -1,8 +1,11 @@
+import { useState } from "react";
 import Button from "../../../components/common/Button";
 import UserBox from "./UserBox";
 import styles from "./UserContainer.module.scss";
+import ProblemListModal from "./modal/ProblemListModal";
 
 const UserContainer = () => {
+  const [problemListModal, setProblemListModal] = useState(false);
   return (
     <>
       <section className={styles.header}>
@@ -12,8 +15,8 @@ const UserContainer = () => {
       <section className={styles.container}>
         <div className={styles.container_group}>
           <div className={styles.user_container}>
-            <UserBox></UserBox>
-            <UserBox></UserBox>
+            <UserBox nickname="닉네임" level={1}></UserBox>
+            <UserBox nickname="닉네임" level={2}></UserBox>
             <UserBox></UserBox>
             <UserBox></UserBox>
             <UserBox></UserBox>
@@ -22,7 +25,10 @@ const UserContainer = () => {
           <div className={styles.info_wrapper}>
             <div className={styles.info_badge}>
               <div>설정된 문제 이름</div>
-              <div className={styles.change_btn}>
+              <div
+                className={styles.change_btn}
+                onClick={() => setProblemListModal(true)}
+              >
                 <div>문제</div>
                 <div>변경</div>
               </div>
@@ -35,6 +41,7 @@ const UserContainer = () => {
           </div>
         </div>
       </section>
+      {problemListModal && <ProblemListModal setModal={setProblemListModal} />}
     </>
   );
 };
