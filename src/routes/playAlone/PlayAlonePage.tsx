@@ -48,7 +48,7 @@ const PlayAlonePage: React.FC = () => {
   useEffect(() => {
     const fetchProblemInfo = async () => {
       try {
-        const response = await axios.get(`/api/problems/${problemId}`);
+        const response = await axios.get(`/problems/${problemId}`);
         setProblemInfo(response.data);
       } catch (error) {
         console.error('Error fetching problem info:', error);
