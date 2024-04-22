@@ -18,7 +18,6 @@ function App() {
       <Routes>
         <Route path="/" element={isLogined ? <Navigate to="/home" replace /> : <LoginPage />} />
         <Route path="/signup" element={isLogined ? <Navigate to="/home" replace /> : <SignUpPage />} />
-        {/* {isLogined ? ( */}
         <>
           <Route element={<LayoutWithSideBar />}>
             <Route path="/home" element={<HomePage />} />
@@ -27,11 +26,8 @@ function App() {
           </Route>
           <Route path="/playalone/:problemId" element={<PlayAlonePage />} />
           <Route path="/waiting/:roomId" element={<WaitingRoomPage />} />
-          <Route path='/playmulti/:problemId' element={<PlayMultiPage />} />
+          <Route path='/playmulti/:problemId/:roomId' element={<PlayMultiPage />} />
         </>
-        {/* ) : (
-          <Route path="*" element={<Navigate to="/" replace />} />
-        )} */}
       </Routes>
     </>
   );
