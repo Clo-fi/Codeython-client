@@ -5,6 +5,7 @@ export interface UserInfo {
 }
 
 export interface RecentRecord {
+  recordId: number;
   date: string;
   title: string;
   accuracy: number;
