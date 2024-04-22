@@ -49,7 +49,7 @@ const ProblemListPage: React.FC = () => {
         if (result.isConfirmed) {
           navigate(`/playalone/${selectedProblem.problemId}`);
         }
-      });      
+      });
     } else {
       // 선택한 문제가 없으면 알림을 표시하거나 사용자에게 메시지를 전달
       Swal.fire({
@@ -69,18 +69,18 @@ const ProblemListPage: React.FC = () => {
       try {
         const response = await instance.get<Problem[]>('/problems');
         set({ problems: response.data, loading: false });
-      }catch (error) {
+      } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
             // 서버로부터 응답이 있는 경우
             console.log(error.response.data);  // 서버로부터 받은 데이터
             console.log(error.response.status); // HTTP 상태 코드
             console.log(error.response.headers); // 응답 헤더
-            
+
           } else {
             // 서버로부터 응답이 없는 경우
-            console.log(error.message); 
-            
+            console.log(error.message);
+
           }
         } else {
           // AxiosError가 아닌 다른 에러인 경우
@@ -90,7 +90,7 @@ const ProblemListPage: React.FC = () => {
     },
   }));
 
-  /* 화면 확인을 위한 예시 데이터 */
+  /* 화면 확인을 위한 예시 데이터
 
   const problemsData: Problem[] = [
     {
@@ -171,6 +171,7 @@ const ProblemListPage: React.FC = () => {
       "accuracy": 0
     }
   ];
+   */
 
   // 문제 리스트 상태관리
   const { problems, loading, error, fetchProblems } = useProblemStore();
@@ -204,7 +205,7 @@ const ProblemListPage: React.FC = () => {
         <img className={styles.problemList_page__logo} src="/Imgs/CodeythonLogo_star.png" alt="codeythonLogo" />
         <Button value="선택 완료" className={styles.problemList_select__btn} onClick={handleProblemSubmit}></Button>
       </div>
-      <ProblemForm problems={problemsData} selectedProblem={selectedProblem} setSelectedProblem={setSelectedProblem} />
+      <ProblemForm problems={problems} selectedProblem={selectedProblem} setSelectedProblem={setSelectedProblem} />
     </div>
   )
 }
