@@ -12,6 +12,8 @@ import CustomSkeleton from "../../components/common/CustomSkeleton";
 import RetryIcon from "../../assets/icons/retry.svg?react";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../store/UserStore";
+import { getProblemList } from "../../api/problem/problem";
+import ArrivalBlock from "./components/ArrivalBlock";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -22,6 +24,9 @@ const HomePage = () => {
     isError: rankIsError,
     refresh: refreshRank,
   } = useFetching(getRanks);
+
+  const { data: problemList, isLoading: problemListIsLoading } =
+    useFetching(getProblemList);
 
   return (
     <div className={styles.main}>
@@ -54,32 +59,31 @@ const HomePage = () => {
           className={styles.arrival}
         >
           <div className={styles.wrapper}>
-            <CustomSkeleton
-              height={150}
-              className={styles["arrival-skeleton"]}
-            />
-            <CustomSkeleton
-              height={150}
-              className={styles["arrival-skeleton"]}
-            />
-            <CustomSkeleton
-              height={150}
-              className={styles["arrival-skeleton"]}
-            />
-            {/* {[
-              "미로 찾기",
-              "bfs와 dfs",
-              "문제 이름임",
-              "미로 찾기",
-              "bfs와 dfs",
-              "문제 이름임",
-            ].map((problem) => (
+            {problemListIsLoading && (
+              <>
+                <CustomSkeleton
+                  height={150}
+                  className={styles["arrival-skeleton"]}
+                />
+                <CustomSkeleton
+                  height={150}
+                  className={styles["arrival-skeleton"]}
+                />
+                <CustomSkeleton
+                  height={150}
+                  className={styles["arrival-skeleton"]}
+                />
+              </>
+            )}
+
+            {problemList?.map((problem) => (
               <ArrivalBlock
-                title={problem}
-                difficulty={20}
-                isPlayed={problem === "미로 찾기"}
+                key={problem.problemId}
+                title={problem.title}
+                difficulty={problem.difficulty}
+                isPlayed={problem.isPlayed}
               />
-            ))} */}
+            ))}
           </div>
         </ListBallon>
         <ListBallon
