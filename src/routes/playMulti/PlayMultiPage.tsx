@@ -4,20 +4,6 @@ import PlayMultiForm from './components/PlayMultiForm';
 
 import useProblemFetching from '../../hooks/useProblemFetching';
 
-export interface ProblemInfo {
-  title: string;
-  content: string;
-  limitFactors: { factor: string }[];
-  limitTime: number;
-  baseCode: { language: string; code: string }[];
-  testcases: {
-    inputCase: string[][];
-    outputCase: string[][];
-    description: string;
-  };
-  difficulty: number;
-}
-
 const PlayMultiPage = () => {
   const { problemId } = useParams<{ problemId: string }>();
   const { roomId } = useParams<{ roomId: string }>();
