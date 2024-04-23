@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import styles from "./HomePage.module.scss";
 import Button from "../../components/common/Button";
 import ListBallon from "../../components/common/ListBallon";
 import ProfileSection from "../../components/common/ProfileSection";
 import NoticeBlock from "./components/NoticeBlock";
-// import ArrivalBlock from "./components/ArrivalBlock";
+import ArrivalBlock from "./components/ArrivalBlock";
 import RankBlock from "./components/RankBlock";
 import { getRanks } from "../../api/user/user";
 import useFetching from "../../hooks/useFetching";
@@ -13,11 +12,11 @@ import RetryIcon from "../../assets/icons/retry.svg?react";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../store/UserStore";
 import { getProblemList } from "../../api/problem/problem";
-import ArrivalBlock from "./components/ArrivalBlock";
+import MoreIcon from "../../assets/icons/more.svg?react";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const nickname = useUserStore((store) => store.nickname);
+  const nickname = useUserStore((state) => state.nickname);
   const {
     data: rankInfo,
     isLoading: rankIsLoading,
@@ -38,12 +37,7 @@ const HomePage = () => {
         <ProfileSection />
       </div>
       <div className={styles.contents}>
-        <ListBallon
-          title="공지사항"
-          width="100%"
-          height={160}
-          className={styles.notice}
-        >
+        <ListBallon title="공지사항" width="100%" className={styles.notice}>
           {/* <CustomSkeleton height={41} className={styles.skeleton} />
           <CustomSkeleton height={41} className={styles.skeleton} /> */}
           {["✨신규 문제 업데이트 완료", "📍코디톤 version 1.0 출시"].map(
@@ -55,7 +49,6 @@ const HomePage = () => {
         <ListBallon
           title="New Arrivals"
           width="100%"
-          height={250}
           className={styles.arrival}
         >
           <div className={styles.wrapper}>
@@ -75,7 +68,6 @@ const HomePage = () => {
                 />
               </>
             )}
-
             {problemList?.map((problem) => (
               <ArrivalBlock
                 key={problem.problemId}
@@ -86,12 +78,7 @@ const HomePage = () => {
             ))}
           </div>
         </ListBallon>
-        <ListBallon
-          title="랭킹"
-          width="160%"
-          height={220}
-          className={styles.ranking}
-        >
+        <ListBallon title="랭킹" width="160%" className={styles.ranking}>
           {rankIsLoading && (
             <>
               <CustomSkeleton height={41} className={styles.skeleton} />
@@ -100,9 +87,21 @@ const HomePage = () => {
             </>
           )}
           {rankIsError && <RetryIcon onClick={refreshRank} />}
-          {rankInfo?.ranker.map(() => (
-            <RankBlock level={13} nickname="킹왕짱어쩌고" />
+          {rankInfo?.ranker.map((ranker) => (
+            <RankBlock level={ranker.rank} nickname={ranker.nickname} />
           ))}
+          {rankInfo?.myRank && (
+            <>
+              <div className={styles.more_icon_wrapper}>
+                <MoreIcon
+                  width={200}
+                  height={200}
+                  className={styles.more_icon}
+                />
+              </div>
+              <RankBlock level={rankInfo.myRank} nickname={nickname} />
+            </>
+          )}
         </ListBallon>
       </div>
       <div className={styles.buttons}>
