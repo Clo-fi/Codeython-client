@@ -9,7 +9,7 @@
   justify-content: center;
   gap: 5px;
   background-color: var(--color-white);
-  padding: 10px 15px;
+  padding: 8px 15px;
   border-radius: 20px;
   text-align: center;
   font-size: 14px;
@@ -18,6 +18,9 @@
 .level {
   @extend %balloon;
   flex: 1;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .nickname {
