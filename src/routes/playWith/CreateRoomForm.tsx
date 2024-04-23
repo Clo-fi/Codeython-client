@@ -3,6 +3,8 @@ import styles from './CreateRoomForm.module.scss';
 import Button from '../../components/common/Button';
 import { create } from 'zustand';
 import instance from '../../api/axios';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 interface CreateFactor {
   roomName: string;
@@ -10,7 +12,7 @@ interface CreateFactor {
   limitMemberCnt: number;
   isSecret: boolean;
   password: string | null ;
-  isSoloplay: boolean;
+  isSoloPlay: boolean;
   setRoomName: (name: string) => void;
   setLimitMemberCnt: (cnt: number) => void;
   toggleIsSecret: () => void;
@@ -38,7 +40,7 @@ const useCreateFactorStore = create<CreateFactor>((set) => ({
   limitMemberCnt: 4,
   isSecret: false,
   password: '',
-  isSoloplay: true,
+  isSoloPlay: true,
   setRoomName: (name) => set({ roomName: name }),
   setLimitMemberCnt: (cnt) => set({ limitMemberCnt: cnt }),
   toggleIsSecret: () => set((state) => ({
@@ -53,7 +55,8 @@ const useCreateFactorStore = create<CreateFactor>((set) => ({
 const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedProblem, setSelectedProblem }) => {
   const [selectedLimit, setSelectedLimit] = useState(4);
   const [showProblemList, setShowProblemList] = useState(false);
-  const { roomName, problemId, limitMemberCnt, isSecret, password, isSoloplay, setRoomName, toggleIsSecret, setPassword, setLimitMemberCnt } = useCreateFactorStore();
+  const { roomName, problemId, limitMemberCnt, isSecret, password, isSoloPlay, setRoomName, toggleIsSecret, setPassword, setLimitMemberCnt } = useCreateFactorStore();
+  const navigate = useNavigate();
 
   const handleLimitCnt = (cnt: number) => () => {
     setLimitMemberCnt(cnt);
@@ -78,15 +81,53 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedPr
         limitMemberCnt,
         isSecret,
         password: isSecret ? password : null, // isSecret이 false일 경우, password를 null로 설정
-        isSoloplay
+        isSoloPlay
       };
   
       const response = await instance.post('/rooms', postData);
       console.log('방 생성 성공:', response.data);
+  
+      const { roomId } = response.data;
+      await enterRoom(roomId); 
+  
     } catch (error) {
       console.error('방 생성 오류:', error);
     }
   };
+  
+  const enterRoom = async (roomId:number) => {
+    const payload = { password: isSecret ? password : null };
+    try {
+      const enterResponse = await instance.post(`/rooms/${roomId}`, payload);
+      const {
+        problemId,
+        problemTitle,
+        limitTime,
+        difficulty,
+        roomName,
+        inviteCode,
+        isSoloplay: isSoloPlay
+      } = enterResponse.data;
+  
+      // 쿼리 파라미터로 인코딩하여 URL 생성
+      const queryParams = new URLSearchParams({
+        problemId: problemId.toString(),
+        problemTitle,
+        limitTime: limitTime.toString(), // 숫자인 경우 문자열로 변환
+        difficulty: difficulty.toString(),
+        roomName,
+        inviteCode,
+        isSoloplay: isSoloPlay.toString(), // 불리언인 경우 문자열로 변환
+        roomId: roomId.toString() // 숫자인 경우 문자열로 변환
+      }).toString();
+  
+      // navigate 함수를 사용하여 쿼리 파라미터와 함께 페이지 이동
+      navigate(`/waiting/${roomId}?${queryParams}`);
+    } catch (error) {
+      Swal.fire("오류", "방 입장에 실패했습니다. 다시 시도해주세요.", "error");
+    }
+  };
+  
   
 
   return (
