@@ -10,13 +10,14 @@ interface ProblemInfo {
   limitFactors: { factor: string }[];
   limitTime: number;
   baseCode: { language: string; code: string }[];
-  testcases: {
+  testcase: {
     inputCase: string[][];
     outputCase: string[][];
     description: string;
-  };
+  }[];
   difficulty: number;
 }
+
 
 /* props 타입 정의 */
 interface PlayAloneFormProps {
@@ -56,15 +57,15 @@ const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo, problemId })
                 <div className={styles.header_cell}>Input Case</div>
                 <div className={styles.header_cell}>Output Case</div>
               </div>
-              {problemInfo.testcases.inputCase.map((input, index) => (
+              {problemInfo.testcase[0].inputCase.map((input, index) => (
                 <div key={index} className={styles.testcase_row}>
                   <div className={styles.cell}>{input}</div>
-                  <div className={styles.cell}>{problemInfo.testcases.outputCase[index]}</div>
+                  <div className={styles.cell}>{problemInfo.testcase[0].outputCase[index]}</div>
                 </div>
               ))}
             </div>
             <div className={styles.description}>
-                {problemInfo.testcases.description}
+                {problemInfo.testcase[0].description}
             </div>
           </div>
         </div>
