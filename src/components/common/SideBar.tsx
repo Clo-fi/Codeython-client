@@ -30,7 +30,37 @@ const SideBar = ({ nickname, exp, level }: Props) => {
       container.classList.remove(styles.slideInFromLeft);
     };
   }, []);
-
+  const submitCode = () => {
+    Swal.fire({
+      title: "초대 코드 입력하기",
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off"
+      },
+      showCancelButton: true,
+      cancelButtonText: '돌아가기',
+      confirmButtonText: '초대코드 입력',
+      preConfirm: async (code) => {
+        try {
+          const response = await instance.post(`/api/rooms/direct/${code}`);
+          if (response.status !== 200) {
+            return Swal.showValidationMessage(`
+              ${JSON.stringify(response.data)}
+            `);
+          }
+        } catch (error) {
+          Swal.showValidationMessage(`
+            Request failed: ${error}
+          `);
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(`/waiting/${result.value.code}`)
+      }
+    });
+  }
   const logoutHandler = () => {
     removeCookie("accessToken");
     removeCookie("refreshToken");
@@ -95,7 +125,8 @@ const SideBar = ({ nickname, exp, level }: Props) => {
           className={styles.action_button}
           onClick={() => navigate("/problemlist")}>알고리즘 연습하기</button>
         <button className={styles.action_button}>코디톤 방 만들기</button>
-        <button className={styles.action_button}>초대 코드 입력하기</button>
+        <button className={styles.action_button}
+          onClick={submitCode}>초대 코드 입력하기</button>
         <img src="Imgs/CodeythonLogo.png" alt="GithubLogo" />
       </div>
 

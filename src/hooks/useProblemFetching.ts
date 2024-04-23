@@ -1,19 +1,21 @@
+import { ProblemInfo } from './../types/problem';
 import { useEffect, useState } from 'react';
 import instance from '../api/axios';
 
-interface ProblemInfo {
-  title: string;
-  content: string;
-  limitFactors: { factor: string }[];
-  limitTime: number;
-  baseCode: { language: string; code: string }[];
-  testcases: {
-    inputCase: string[][];
-    outputCase: string[][];
-    description: string;
-  };
-  difficulty: number;
-}
+
+// interface ProblemInfo {
+//   title: string;
+//   content: string;
+//   limitFactors: { factor: string }[];
+//   limitTime: number;
+//   baseCode: { language: string; code: string }[];
+//   testcase: {
+//     inputCase: string[][];
+//     outputCase: string[][];
+//     description: string;
+//   };
+//   difficulty: number;
+// }
 
 const useProblemFetching = (problemId: string) => {
   const [problemInfo, setProblemInfo] = useState<ProblemInfo | null>(null);
@@ -27,9 +29,9 @@ const useProblemFetching = (problemId: string) => {
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching problem info: ', error);
-        // setTimeout(() => {
-        //   fetchProblemInfo();
-        // }, 5000);
+        setTimeout(() => {
+          fetchProblemInfo();
+        }, 5000);
       }
     };
 

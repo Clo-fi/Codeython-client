@@ -3,8 +3,12 @@ import Button from "../../../components/common/Button";
 import UserBox from "./UserBox";
 import styles from "./UserContainer.module.scss";
 import ProblemListModal from "./modal/ProblemListModal";
+import { UserInfo } from "../../../types/user";
+interface Props {
+  users: UserInfo[];
+}
 
-const UserContainer = () => {
+const UserContainer = ({ users }: Props) => {
   const [problemListModal, setProblemListModal] = useState(false);
   return (
     <>
@@ -15,12 +19,12 @@ const UserContainer = () => {
       <section className={styles.container}>
         <div className={styles.container_group}>
           <div className={styles.user_container}>
-            <UserBox nickname="닉네임" level={1}></UserBox>
-            <UserBox nickname="닉네임" level={2}></UserBox>
-            <UserBox></UserBox>
-            <UserBox></UserBox>
-            <UserBox></UserBox>
-            <UserBox></UserBox>
+            {users?.map((user) => (
+              <UserBox nickname={user.nickname} level={1} />
+            ))}
+            {new Array(6 - users.length).fill(0).map(() => (
+              <UserBox />
+            ))}
           </div>
           <div className={styles.info_wrapper}>
             <div className={styles.info_badge}>

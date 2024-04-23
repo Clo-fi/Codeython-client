@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import styles from './PlayHeader.module.scss';
 import ProgressBar from './ProgressBar';
 import useToggleStore from '../../../store/ToggleStore';
-import { ProblemInfo } from '../PlayMultiPage';
+import { ProblemInfo } from '../../../types/problem';
 
 interface Props {
   problemInfo: ProblemInfo;
