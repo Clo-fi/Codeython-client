@@ -1,0 +1,38 @@
+.RoomList_page__container {
+  position: relative; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.RoomList_page__header {
+  width: 100%; 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.RoomList_page__logo {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.RoomList_refresh__btn {
+  position: absolute; 
+  top: 10px; 
+  right: calc((100vw - 100%) / 2 + 20px); 
+  background-color: var(--color-pink);
+  top: 80px;
+  height: 50px;
+  font-size: 120%;
+  font-weight: 400;
+}
+
+.custom-modal-style {
+  width: 400px; 
+  min-width: max-content;
+  font-size: 14px; 
+}
