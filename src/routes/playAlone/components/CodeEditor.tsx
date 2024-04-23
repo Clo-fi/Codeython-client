@@ -105,7 +105,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
       console.log(grade);
       console.log(gainExp);
 
-      if(accuracy==100){
+      if (accuracy == 100) {
         Swal.fire({
           title: "정답입니다!",
           showCancelButton: true,
@@ -126,7 +126,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
           },
         })
       }
-      
+
     } catch (error) {
       console.error('Error executing code:', error);
     }

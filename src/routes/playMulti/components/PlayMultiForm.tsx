@@ -5,17 +5,20 @@ import useToggleStore from '../../../store/ToggleStore';
 import PeopleModal from './modal/PeopleModal';
 import ChatModal from './modal/ChatModal';
 import { ProblemInfo } from '../../../types/problem';
+import { UserInfo } from '../../../types/user';
+import { ChatInfo } from '../PlayMultiPage';
 
-/* props 타입 정의 */
 interface PlayMultiFormProps {
   problemId: string;
   problemInfo: ProblemInfo;
   isLoading: boolean;
   roomId: string;
+  users: UserInfo[];
+  chatList: ChatInfo[];
 }
 
 /* return form */
-const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ isLoading, roomId, problemInfo, problemId }) => {
+const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ chatList, users, isLoading, roomId, problemInfo, problemId }) => {
   const { isPeopleToggleActive, isChatToggleActive } = useToggleStore();
   return (
     <>
@@ -92,13 +95,13 @@ const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ isLoading, roomId, proble
                   {problemInfo.testcase[0].description}
                 </div>
               </div>
-            </div>
+            </div>t
           </div>
-          <div className={styles.codeEditor_container}>
+          <div className={styles.codeEditor_conainer}>
             <CodeEditor baseCode={problemInfo.baseCode} problemId={problemId} roomId={roomId} />
           </div>
-          <ChatModal isChatToggleActive={isChatToggleActive} />
-          <PeopleModal isPeopleToggleActive={isPeopleToggleActive} />
+          <ChatModal chatList={chatList} isChatToggleActive={isChatToggleActive} />
+          <PeopleModal users={users} isPeopleToggleActive={isPeopleToggleActive} />
         </div>
       )}
     </>
