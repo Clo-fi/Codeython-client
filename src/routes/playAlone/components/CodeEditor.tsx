@@ -42,7 +42,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
   // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
   useEffect(() => {
     setDefaultCode(languageState.selectedOption);
-  }, [languageState.selectedOption, baseCode, setDefaultCode]);
+  }, [languageState.selectedOption, baseCode]);
 
   const handleOptionSelect = (option: string) => {
     setLanguageState((prevState) => ({ ...prevState, selectedOption: option, isOpen: false }));
