@@ -6,8 +6,9 @@ import ChatPopup from "./components/ChatPopUp";
 import { useWebSocket } from "../../libs/stomp/useWebSocket";
 import { MESSAGE_TYPE, decode } from "../../libs/stomp/decoder";
 import { UserInfo } from "../../types/user";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Chat } from "../../types/chat";
+import { CustomAlert } from "../../libs/sweetAlert/alert";
 
 const WaitingRoomPage = () => {
   const { nickname, exp, level, setUserInfo } = useUserStore();
@@ -15,6 +16,8 @@ const WaitingRoomPage = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
   const [chatList, setChatList] = useState<Chat[]>([]);
   const { roomId } = useParams();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUserInfo();
@@ -32,6 +35,15 @@ const WaitingRoomPage = () => {
           setUsers(data);
         } else if (type === MESSAGE_TYPE.CHAT) {
           setChatList((prev) => [...prev, data]);
+        } else if (type === MESSAGE_TYPE.GAME_START) {
+          CustomAlert.fire({
+            icon: "info",
+            title: "게임이 곧 시작됩니다!!",
+            timer: 1500,
+            showConfirmButton: false,
+          }).then(() => {
+            navigate(`/playmulti/${searchParams.get("problemId")}/${roomId}`);
+          });
         }
       });
 
@@ -46,7 +58,7 @@ const WaitingRoomPage = () => {
     return () => {
       // TODO: unsubscribe
     };
-  }, [setUserInfo, socketClient, roomId, nickname]);
+  }, [setUserInfo, socketClient, roomId, nickname, navigate, searchParams]);
 
   return (
     <>

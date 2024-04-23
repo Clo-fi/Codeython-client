@@ -7,7 +7,7 @@ import { UserInfo } from "../../../types/user";
 import { withEnterRoom } from "../WithEnterRoom";
 import useFetching from "../../../hooks/useFetching";
 import { postEnterRoom } from "../../../api/game/game";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useWebSocket } from "../../../libs/stomp/useWebSocket";
 
 interface Props {
   users: UserInfo[];
@@ -15,13 +15,11 @@ interface Props {
 }
 
 const UserContainer = withEnterRoom(({ users, roomId }: Props) => {
+  const clientSocket = useWebSocket();
   const [problemListModal, setProblemListModal] = useState(false);
 
   const fetchFunc = useCallback(() => postEnterRoom(roomId!), [roomId]);
   const { data: roomData } = useFetching(fetchFunc);
-  const [searchParams] = useSearchParams();
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -53,11 +51,11 @@ const UserContainer = withEnterRoom(({ users, roomId }: Props) => {
               </div>
             </div>
             <Button
-              onClick={() =>
-                navigate(
-                  `/playmulti/${searchParams.get("problemId")}/${roomId}`
-                )
-              }
+              onClick={() => {
+                clientSocket?.publish({
+                  destination: `/pub/room/${roomId}/gameStart`,
+                });
+              }}
               value={"게임 시작"}
               className={styles.start_btn}
             />
