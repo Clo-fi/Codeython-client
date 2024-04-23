@@ -8,7 +8,6 @@ import { MESSAGE_TYPE, decode } from "../../libs/stomp/decoder";
 import { UserInfo } from "../../types/user";
 import { useParams } from "react-router-dom";
 import { Chat } from "../../types/chat";
-// import instance from "../../api/axios";
 
 const WaitingRoomPage = () => {
   const { nickname, exp, level, setUserInfo } = useUserStore();
@@ -20,12 +19,6 @@ const WaitingRoomPage = () => {
   useEffect(() => {
     setUserInfo();
   }, [setUserInfo]);
-
-  // useEffect(() => {
-  //   instance.post("rooms/1", {
-  //     password: "1020",
-  //   });
-  // }, []);
 
   useEffect(() => {
     if (!socketClient) return;
@@ -58,19 +51,8 @@ const WaitingRoomPage = () => {
   return (
     <>
       <SideBar nickname={nickname} exp={exp} level={level} />
-      <main
-        style={{ position: "relative", paddingLeft: "250px" }}
-        // onClick={() => {
-        //   if (!socketClient) return;
-        //   socketClient.publish({
-        //     destination: `/pub/room/${roomId}/leave`,
-        //     headers: {
-        //       nickname,
-        //     },
-        //   });
-        // }}
-      >
-        <UserContainer users={users} />
+      <main style={{ position: "relative", paddingLeft: "250px" }}>
+        <UserContainer users={users} roomId={roomId} />
       </main>
       <ChatPopup chatList={chatList} />
     </>
