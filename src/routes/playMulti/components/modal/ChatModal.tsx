@@ -1,53 +1,65 @@
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './ChatModal.module.scss';
+import useUserStore from '../../../../store/UserStore';
+import { ChatInfo } from '../../PlayMultiPage';
+import { useWebSocket } from '../../../../libs/stomp/useWebSocket';
+import { useParams } from 'react-router-dom';
 
-interface Chat {
-  username: string;
-  message: string;
+interface ChatModalProps {
+  isChatToggleActive: boolean;
+  chatList: ChatInfo[];
 }
-const ChatModal = ({ isChatToggleActive }: { isChatToggleActive: boolean }) => {
-  const dummydata: Chat[] = [
-    { username: '한우혁', message: 'ㅎㅇ' },
-    { username: '김에린', message: '하나둘셋qw  qw  sadsadassddasdsadsadsaasdasdqw  qw  2321312321' },
-    { username: '김에린', message: '하나둘셋qw  qw  sadsadassddasdsadsadsaasdasdqw  qw  2321312321' },
-    { username: '김민지', message: '셋둘하나' },
-    { username: '김민지', message: '셋둘하나' },
-    { username: '김에린', message: '하나둘셋qw  qw  sadsadassddasdsadsadsaasdasdqw  qw  2321312321' },
-    { username: '김민지', message: '셋둘하나' },
-    { username: '한우혁', message: '121ㅎㅇ하나둘셋qw  qw  sadsadassddasdsadsadsaasdasdqw  qw  2321312321' },
-    { username: '한우혁', message: '121ㅎ21ㅇ' },
-  ];
-  const user: string = '한우혁';
 
+const ChatModal = ({ chatList, isChatToggleActive }: ChatModalProps) => {
+  const { nickname } = useUserStore();
+  const { roomId } = useParams<{ roomId: string }>();
+  const socketClient = useWebSocket();
   const [message, setMessage] = useState<string>('');
+  const chatBoxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // chatBoxRef의 current가 null이 아닌 경우에만 실행
+    if (chatBoxRef.current) {
+      // 채팅이 추가될 때마다 스크롤을 아래로 내림
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [chatList]); // chatList가 업데이트될 때마다 실행
+
+
   const sendMessageHandle = (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
-    console.log(message)
+
+    if (!socketClient) return;
+
+    socketClient.publish({
+      destination: `/pub/room/${roomId}/chat`,
+      body: JSON.stringify({ from: nickname, message })
+    });
+    setMessage('');
   }
   return (
     <div className={`${styles.modal__chat_container} ${isChatToggleActive ? '' : styles.modal__chat_container_none}`}>
-      <div className={styles.modal__chat_box}>
-        {dummydata.map((state, index) => (
-          <div key={index} className={state.username === user ? styles.modal__chat_my_box : ''}>
-            {index > 0 && dummydata[index - 1].username === state.username ? null : (
-              <p className={state.username === user ? styles.modal__chat_my_name : styles.modal__chat_username}> {state.username !== user ? state.username : 'me'}</p>
+      <div className={styles.modal__chat_box} ref={chatBoxRef}>
+        {chatList && chatList.length > 0 && chatList.map((item, index) => (
+          <div key={index} className={item.from === nickname ? styles.modal__chat_my_box : ''}>
+            {index > 0 && chatList[index - 1].from === item.from ? null : (
+              <p className={item.from === nickname ? styles.modal__chat_my_name : styles.modal__chat_username}>
+                {item.from !== nickname ? item.from : 'me'}
+              </p>
             )}
-            <p className={state.username === user ? styles.modal__chat_my_message : styles.modal__chat_message}><span>{state.message}</span></p>
+            <p className={item.from === nickname ? styles.modal__chat_my_message : styles.modal__chat_message}>
+              <span>{item.message}</span>
+            </p>
           </div>
         ))}
-
       </div>
-
       <form className={styles.modal__chat_form} action="submit" onSubmit={sendMessageHandle}>
-        <input className={styles.modal__chat_input} type="text" onChange={(e) => setMessage(e.target.value)} />
+        <input className={styles.modal__chat_input} value={message} type="text" onChange={(e) => setMessage(e.target.value)} />
         <button className={styles.modal__chat_submit} type='submit'>
           <img src="/Imgs/sendMessage.png" alt="sendBtn" />
         </button>
       </form>
-
-
-
     </div>
   );
 }

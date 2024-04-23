@@ -8,8 +8,8 @@ interface Props {
   message?: string;
 }
 
-const UserBox = ({ nickname, level, message }: Props) => {
-  console.log(message); // TODO 채팅 메세지 띄우기
+const UserBox = ({ nickname, level }: Props) => {
+  // TODO 채팅 메세지 띄우기
   return (
     <div className={styles.box}>
       {nickname && level && (

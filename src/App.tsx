@@ -39,11 +39,11 @@ function App() {
           <Route path="/playalone/:problemId" element={<PlayAlonePage />} />
           <Route element={<WebSocketProvider />}>
             <Route path="/waiting/:roomId" element={<WaitingRoomPage />} />
+            <Route
+              path="/playmulti/:problemId/:roomId"
+              element={<PlayMultiPage />}
+            />
           </Route>
-          <Route
-            path="/playmulti/:problemId/:roomId"
-            element={<PlayMultiPage />}
-          />
         </>
       </Routes>
     </>

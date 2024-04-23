@@ -54,7 +54,7 @@ const ProfilePage = () => {
         <ProfileSection />
       </section>
       <section className={styles.container}>
-        <ListBallon title="닉네임 수정하기" width={"100%"}>
+        <ListBallon title="닉네임 수정하기" width={"100%"} isThin={true}>
           <div className={styles.content}>
             <input
               type="text"

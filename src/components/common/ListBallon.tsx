@@ -7,6 +7,7 @@ interface Props extends PropsWithChildren {
   height?: number | string;
   style?: React.HTMLAttributes<HTMLElement>["style"];
   className?: React.HTMLAttributes<HTMLElement>["className"];
+  isThin?: boolean;
 }
 
 const ListBallon = ({
@@ -16,6 +17,7 @@ const ListBallon = ({
   children,
   style,
   className,
+  isThin,
 }: Props) => {
   return (
     <section
@@ -23,7 +25,9 @@ const ListBallon = ({
       style={{ ...style, width, height }}
     >
       <div className={styles.title}>{title}</div>
-      <div className={styles.content}>{children}</div>
+      <div className={isThin ? styles.thin_content : styles.content}>
+        {children}
+      </div>
     </section>
   );
 };
