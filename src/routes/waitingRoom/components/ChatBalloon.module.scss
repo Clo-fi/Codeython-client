@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   display: flex;
-  gap: 1px;
+  gap: 5px;
   padding: 2px 0;
   border-bottom: 1px solid var(--color-grey);
 }
@@ -20,6 +20,7 @@
 }
 
 .message {
+  word-break: break-all;
 }
 
 .my_message {

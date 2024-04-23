@@ -4,15 +4,17 @@ import { useEffect, useState } from "react";
 import UserContainer from "./components/UserContainer";
 import ChatPopup from "./components/ChatPopUp";
 import { useWebSocket } from "../../libs/stomp/useWebSocket";
-import { decode } from "../../libs/stomp/decoder";
+import { MESSAGE_TYPE, decode } from "../../libs/stomp/decoder";
 import { UserInfo } from "../../types/user";
 import { useParams } from "react-router-dom";
+import { Chat } from "../../types/chat";
 // import instance from "../../api/axios";
 
 const WaitingRoomPage = () => {
   const { nickname, exp, level, setUserInfo } = useUserStore();
   const socketClient = useWebSocket();
   const [users, setUsers] = useState<UserInfo[]>([]);
+  const [chatList, setChatList] = useState<Chat[]>([]);
   const { roomId } = useParams();
 
   useEffect(() => {
@@ -29,30 +31,48 @@ const WaitingRoomPage = () => {
     if (!socketClient) return;
 
     socketClient.onConnect = () => {
-      console.log("소켓 연결 완료!!");
+      console.log("소켓 연결");
       socketClient.subscribe(`/sub/room/${roomId}`, (message) => {
-        const data = decode(message);
-        setUsers(data);
-        console.log(data);
+        const { type, data } = decode(message);
+
+        if (type === MESSAGE_TYPE.USER) {
+          setUsers(data);
+        } else if (type === MESSAGE_TYPE.CHAT) {
+          setChatList((prev) => [...prev, data]);
+        }
       });
 
       socketClient.publish({
         destination: `/pub/room/${roomId}/join`,
+        headers: {
+          nickname,
+        },
       });
     };
 
     return () => {
-      console.log("cleanup");
+      // TODO: unsubscribe
     };
   }, [setUserInfo, socketClient, roomId, nickname]);
 
   return (
     <>
       <SideBar nickname={nickname} exp={exp} level={level} />
-      <main style={{ position: "relative", paddingLeft: "250px" }}>
+      <main
+        style={{ position: "relative", paddingLeft: "250px" }}
+        // onClick={() => {
+        //   if (!socketClient) return;
+        //   socketClient.publish({
+        //     destination: `/pub/room/${roomId}/leave`,
+        //     headers: {
+        //       nickname,
+        //     },
+        //   });
+        // }}
+      >
         <UserContainer users={users} />
       </main>
-      <ChatPopup />
+      <ChatPopup chatList={chatList} />
     </>
   );
 };

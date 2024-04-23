@@ -10,6 +10,7 @@ interface Props {
 
 const UserContainer = ({ users }: Props) => {
   const [problemListModal, setProblemListModal] = useState(false);
+
   return (
     <>
       <section className={styles.header}>
@@ -20,10 +21,10 @@ const UserContainer = ({ users }: Props) => {
         <div className={styles.container_group}>
           <div className={styles.user_container}>
             {users?.map((user) => (
-              <UserBox nickname={user.nickname} level={1} />
+              <UserBox nickname={user.nickname} level={1} key={user.nickname} />
             ))}
-            {new Array(6 - users.length).fill(0).map(() => (
-              <UserBox />
+            {new Array(6 - users.length).fill(0).map((_, idx) => (
+              <UserBox key={idx} />
             ))}
           </div>
           <div className={styles.info_wrapper}>
