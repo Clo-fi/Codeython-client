@@ -25,8 +25,8 @@
 }
 
 .arrival {
-  position: absolute;
-  bottom: 0;
+  aspect-ratio: 8 / 3;
+  align-self: flex-end;
 }
 
 .wrapper {
@@ -55,17 +55,19 @@
 .contents {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1.5fr;
   column-gap: 50px;
-  row-gap: 20px;
+  row-gap: 70px;
 }
 
 .notice {
   align-self: flex-end;
+  aspect-ratio: 2.4 / 1;
 }
 
 .ranking {
-  align-self: center;
+  align-self: flex-start;
+  // aspect-ratio: 3 / 1;
 }
 
 .skeleton {
@@ -76,6 +78,17 @@
 .arrival-skeleton {
   width: 150px;
   border-radius: 20px;
+}
+
+.more_icon_wrapper {
+  width: 100%;
+  padding-left: 27%;
+}
+
+.more_icon {
+  width: 25px;
+  height: 25px;
+  align-self: flex-start;
 }
 
 @keyframes floatIn {

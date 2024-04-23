@@ -22,7 +22,7 @@ const useProblemFetching = (problemId: string) => {
   useEffect(() => {
     const fetchProblemInfo = async () => {
       try {
-        const response = await instance.get(`/problem/${problemId}`);
+        const response = await instance.get(`/problems/${problemId}`);
         setProblemInfo(response.data);
         setIsLoading(false);
       } catch (error) {
