@@ -3,49 +3,74 @@ import PlayHeader from './components/PlayHeader';
 import PlayMultiForm from './components/PlayMultiForm';
 
 import useProblemFetching from '../../hooks/useProblemFetching';
+import { useWebSocket } from '../../libs/stomp/useWebSocket';
+import useUserStore from '../../store/UserStore';
+import { UserInfo } from '../../types/user';
+import { useEffect, useState } from 'react';
+import { MESSAGE_TYPE, decode } from '../../libs/stomp/decoder';
+
+export interface ChatInfo {
+  from: string;
+  message: string;
+}[];
 
 const PlayMultiPage = () => {
   const { problemId } = useParams<{ problemId: string }>();
   const { roomId } = useParams<{ roomId: string }>();
   const { problemInfo, isLoading } = useProblemFetching(problemId!);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const exampleInfo: ProblemInfo = {
-  //   "title": "Add Two Numbers",
-  //   "content": "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.",
-  //   "limitFactors": [
-  //     { "factor": "The number of nodes in each linked list is in the range [1, 100]." },
-  //     { "factor": "0 <= Node.val <= 9" }
-  //   ],
-  //   "limitTime": 3,
-  //   "baseCode": [
-  //     {
-  //       "language": "java",
-  //       "code": "class Main {\n  public static void Main() {\n  }\n}"
-  //     },
-  //     {
-  //       "language": "javascript",
-  //       "code": "class Solution {\n  public ListNode addTwoNumbers(ListNode l1, ListNode l2) {\n  }\n}"
-  //     }
-  //   ],
-  //   "testcases": {
-  //     "inputCase": [["1,2"], ["3,4"], ["5,6"]],
-  //     "outputCase": [["3,4"], ["5,6"], ["7,8"]],
-  //     "description": "this is description"
-  //   },
-  //   "difficulty": 1
-  // };
+  const { nickname } = useUserStore();
+  const [users, setUsers] = useState<UserInfo[]>([]);
+  const [chatList, setChatList] = useState<ChatInfo[]>([]);
 
+  const { setUserInfo } = useUserStore();
+  const socketClient = useWebSocket();
 
+  useEffect(() => {
+    setUserInfo();
+  }, [setUserInfo]);
+
+  useEffect(() => {
+    if (!socketClient) return;
+    socketClient.onConnect = () => {
+      socketClient.subscribe(`/sub/room/${roomId}`, (message) => {
+        const { type, data } = decode(message);
+
+        if (type === MESSAGE_TYPE.USER) {
+          setUsers(data);
+          console.log(data);
+        } else if (type === MESSAGE_TYPE.CHAT) {
+          setChatList((prev) => [...prev, data]);
+          console.log(data);
+        }
+      })
+
+      socketClient.publish({
+        destination: `/pub/room/${roomId}/join`,
+      });
+    }
+    return () => {
+      if (socketClient) {
+        socketClient.publish({
+          destination: `/pub/room/${roomId}/leave`,
+          headers: { nickname }
+        });
+        console.log('디스커넥트');
+      }
+    }
+
+  }, [socketClient])
+
+  console.log(users);
   return (
-
     <>
-      {/* 위에 테스트 코드 아래 본 코드 */}
-      {/* <PlayHeader problemInfo={exampleInfo} />
-      <PlayMultiForm problemInfo={exampleInfo} problemId={problemId!} roomId={roomId!} /> */}
       <PlayHeader problemInfo={problemInfo!} isLoading={isLoading} />
-      <PlayMultiForm problemInfo={problemInfo!} isLoading={isLoading} problemId={problemId!} roomId={roomId!} />
-
+      <PlayMultiForm
+        users={users} chatList={chatList}
+        problemInfo={problemInfo!}
+        isLoading={isLoading}
+        problemId={problemId!}
+        roomId={roomId!} />
     </>
   );
 }
