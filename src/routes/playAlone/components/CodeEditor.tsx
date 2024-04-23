@@ -42,7 +42,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
   // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
   useEffect(() => {
     setDefaultCode(languageState.selectedOption);
-  }, [languageState.selectedOption, baseCode]);
+  }, [languageState.selectedOption, baseCode, setDefaultCode]);
 
   const handleOptionSelect = (option: string) => {
     setLanguageState((prevState) => ({ ...prevState, selectedOption: option, isOpen: false }));
@@ -68,16 +68,16 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
       const requestData = {
         code: userCode,
         language: selectedLanguage,
+        roomId: null
       };
 
       console.log(userCode, selectedLanguage);
 
-      const response = await instance.post(`/problem/${problemId}/execution`, requestData);
-      const executionResult = response.data.result;
+      const response = await instance.post(`/problems/${problemId}/execution`, requestData);
+      const executionResult = response.data;
       setExecutionResults(executionResult);
     } catch (error) {
       console.error('Error executing code:', error);
-      console.error('api 연결 실패');
     }
   };
 
@@ -92,47 +92,43 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
       const requestData = {
         code: userCode,
         language: selectedLanguage,
+        roomId: null,
       };
 
       console.log(userCode, selectedLanguage);
 
-      const response = await instance.post(`/problem/${problemId}/result`, requestData);
-      const accuracy = response.data.submitResult.accuracy;
-      let modalConfig;
+      const response = await instance.post(`/problems/${problemId}/result`, requestData);
+      const accuracy = response.data.accuracy;
+      const grade = response.data.grade;
+      const gainExp = response.data.gainExp;
+      console.log(accuracy);
+      console.log(grade);
+      console.log(gainExp);
 
-      if (accuracy === 100) {
-        // 정확도가 100%인 경우 축하 모달 표시
-        modalConfig = {
-          title: "축하합니다!",
-          html: `정확도: ${accuracy}%<br/>문제를 성공적으로 해결하셨습니다!`,
-          showCancelButton: false,
-          confirmButtonText: "홈으로 돌아가기",
-        };
-      } else {
-        // 정확도가 100%가 아닌 경우 정확도만 표시
-        modalConfig = {
-          title: "결과",
-          html: `정확도: ${accuracy}%`,
+      if(accuracy==100){
+        Swal.fire({
+          title: "정답입니다!",
           showCancelButton: true,
-          confirmButtonText: "확인",
-        };
+          confirmButtonText: "나가기",
+          customClass: {
+            popup: styles['custom-modal-style'],
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/home');
+          }
+        });
+      } else {
+        Swal.fire({
+          title: `정확도 : ${accuracy}`,
+          customClass: {
+            popup: styles['custom-modal-style'],
+          },
+        })
       }
-
-      // 모달 표시
-      const result = await Swal.fire({
-        ...modalConfig,
-        customClass: {
-          popup: styles['custom-modal-style'],
-        },
-      });
-
-      if (result.isConfirmed && accuracy === 100) {
-        // 정확도가 100%이고 확인 버튼을 클릭한 경우 홈으로 이동
-        navigate('/home');
-      }
+      
     } catch (error) {
       console.error('Error executing code:', error);
-      console.error('api 연결 실패');
     }
   };
 
