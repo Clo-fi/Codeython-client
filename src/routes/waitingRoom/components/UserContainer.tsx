@@ -8,13 +8,15 @@ import { withEnterRoom } from "../WithEnterRoom";
 import useFetching from "../../../hooks/useFetching";
 import { postEnterRoom } from "../../../api/game/game";
 import { useWebSocket } from "../../../libs/stomp/useWebSocket";
+import { Chat } from "../../../types/chat";
 
 interface Props {
   users: UserInfo[];
   roomId: string | undefined;
+  chatList: Chat[];
 }
 
-const UserContainer = withEnterRoom(({ users, roomId }: Props) => {
+const UserContainer = withEnterRoom(({ users, roomId, chatList }: Props) => {
   const clientSocket = useWebSocket();
   const [problemListModal, setProblemListModal] = useState(false);
 
@@ -33,11 +35,27 @@ const UserContainer = withEnterRoom(({ users, roomId }: Props) => {
         <div className={styles.container_group}>
           <div className={styles.user_container}>
             {users?.map((user) => (
-              <UserBox nickname={user.nickname} level={1} key={user.nickname} />
+              <UserBox
+                nickname={user.nickname}
+                level={1}
+                key={user.nickname}
+                message={
+                  chatList.reverse().find((item) => item.from === user.nickname)
+                    ?.message
+                }
+              />
             ))}
-            {new Array(6 - users.length).fill(0).map((_, idx) => (
+            {new Array(4 - users.length).fill(0).map((_, idx) => (
               <UserBox key={idx} />
             ))}
+            {new Array(6 - 4).fill(0).map(
+              (
+                _,
+                idx // TODO 하드코딩 limitCnt로 변경
+              ) => (
+                <UserBox key={idx} isClosed={true} />
+              )
+            )}
           </div>
           <div className={styles.info_wrapper}>
             <div className={styles.info_badge}>

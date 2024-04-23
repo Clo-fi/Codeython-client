@@ -15,6 +15,7 @@ const WaitingRoomPage = () => {
   const socketClient = useWebSocket();
   const [users, setUsers] = useState<UserInfo[]>([]);
   const [chatList, setChatList] = useState<Chat[]>([]);
+  const [tmpChatList, setTmpChatList] = useState<Chat[]>([]);
   const { roomId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -35,6 +36,15 @@ const WaitingRoomPage = () => {
           setUsers(data);
         } else if (type === MESSAGE_TYPE.CHAT) {
           setChatList((prev) => [...prev, data]);
+          setTmpChatList((prev) => [...prev, data]);
+          setTimeout(() => {
+            setTmpChatList((prev) =>
+              prev.filter(
+                (item) =>
+                  !(item.from === data.from && item.message == data.message)
+              )
+            );
+          }, 3000);
         } else if (type === MESSAGE_TYPE.GAME_START) {
           CustomAlert.fire({
             icon: "info",
@@ -64,7 +74,7 @@ const WaitingRoomPage = () => {
     <>
       <SideBar nickname={nickname} exp={exp} level={level} />
       <main style={{ position: "relative", paddingLeft: "250px" }}>
-        <UserContainer users={users} roomId={roomId} />
+        <UserContainer users={users} roomId={roomId} chatList={tmpChatList} />
       </main>
       <ChatPopup chatList={chatList} />
     </>

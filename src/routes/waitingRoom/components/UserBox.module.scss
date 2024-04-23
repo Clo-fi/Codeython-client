@@ -34,3 +34,87 @@
   text-overflow: ellipsis;
   text-wrap: nowrap;
 }
+.avatar {
+  position: relative;
+}
+
+.message {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+.chat_locate {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat {
+  position: absolute;
+  text-align: center;
+  opacity: 0;
+  animation: fadeInOut 2s ease-in-out;
+  background: var(--color-grey);
+  border-radius: 1em;
+  max-width: 100%;
+  // min-height: 25%;
+  padding: 5px 10px;
+  top: 0;
+  left: 0;
+  // margin-left: -35%;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.chat:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 53%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: var(--color-grey);
+  border-bottom: 0;
+  margin-left: -10px;
+  margin-bottom: -10px;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.closed {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10%;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
