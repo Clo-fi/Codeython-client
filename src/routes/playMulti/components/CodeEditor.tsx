@@ -67,6 +67,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
       const requestData = {
         code: userCode,
         language: selectedLanguage,
+        roomId: roomId,
       };
 
       console.log(userCode, selectedLanguage);
@@ -76,7 +77,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
       setExecutionResults(executionResult);
     } catch (error) {
       console.error('Error executing code:', error);
-      console.error('api 연결 실패');
     }
   };
 
@@ -87,8 +87,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
       const userCode = code;
       const selectedLanguage = languageState.selectedOption;
 
+      const requestData = {
+        code: userCode,
+        language: selectedLanguage,
+        roomId: roomId,
+      };
+
       console.log(userCode, selectedLanguage);
-      const response = await instance.post(`/problems/${problemId}/result`, { code, language: selectedLanguage, roomId });
+      const response = await instance.post(`/problems/${problemId}/result`, requestData);
       const { accuracy, grade, gainExp } = response.data
 
       Swal.fire({
