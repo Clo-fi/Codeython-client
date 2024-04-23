@@ -9,6 +9,8 @@ import PlayAlonePage from "./routes/playAlone/PlayAlonePage";
 import useAuthStore from './store/AuthStore';
 import WaitingRoomPage from './routes/waitingRoom/WaitingRoomPage';
 import PlayMultiPage from './routes/playMulti/PlayMultiPage';
+import RoomListPage from "./routes/playWith/RoomListPage";
+import CreateRoomPage from "./routes/playWith/CreateRoomPage";
 
 function App() {
   const { isLogined } = useAuthStore();
@@ -23,6 +25,8 @@ function App() {
             <Route path="/home" element={<HomePage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/problemlist" element={<ProblemListPage />} />
+            <Route path="/roomlist" element={<RoomListPage />} />
+            <Route path="/createroom" element={<CreateRoomPage />} />
           </Route>
           <Route path="/playalone/:problemId" element={<PlayAlonePage />} />
           <Route path="/waiting/:roomId" element={<WaitingRoomPage />} />
