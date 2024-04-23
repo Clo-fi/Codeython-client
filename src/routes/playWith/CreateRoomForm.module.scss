@@ -45,12 +45,13 @@
   overflow: hidden;
   margin-top: 10px;
   cursor: pointer;
-
+  display: flex;
+  flex-direction: column;
 }
 
 .selected_problem {
   width: 55vw;
-  height: 30px;
+  height: 40px;
   background-color: var(--color-yellow);
   border-radius: 10px;
   margin-bottom: 5px;
@@ -66,18 +67,19 @@
   width: 55vw;
   height: 90%;
   display: flex;
+  flex-direction: column;
   overflow: hidden;
   border-radius: 10px;
   margin-bottom: 5px;
   text-align: center;
   justify-content: center;
-  
 }
 
 .problem_item{
   width: 55vw;
   height: 20px;
   background-color: var(--color-white);
+
 }
 
 .limit_section {
