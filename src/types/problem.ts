@@ -5,3 +5,17 @@ export interface Problem {
   accuracy: number;
   isPlayed: boolean;
 }
+
+export interface ProblemInfo {
+  title: string;
+  content: string;
+  limitFactors: { factor: string }[];
+  limitTime: number;
+  baseCode: { language: string; code: string }[];
+  testcase: {
+    inputCase: string[][];
+    outputCase: string[][];
+    description: string;
+  }[];
+  difficulty: number;
+}

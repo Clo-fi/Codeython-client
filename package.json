@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.11.5",
     "@monaco-editor/react": "^4.6.0",
     "@mui/material": "^5.15.15",
+    "@stomp/stompjs": "^7.0.0",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "react": "^18.2.0",
@@ -25,11 +26,15 @@
     "react-router-dom": "^6.22.3",
     "sass": "^1.74.1",
     "socket.io-client": "^4.7.5",
+    "sockjs-client": "^1.6.1",
     "sweetalert2": "^11.10.7",
     "vite-plugin-svgr": "^4.2.0",
+    "ws": "^8.16.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@types/sockjs-client": "^1.5.4",
+    "@types/stompjs": "^2.3.9",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
