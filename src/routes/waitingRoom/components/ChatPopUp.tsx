@@ -6,12 +6,16 @@ import { Chat } from "../../../types/chat";
 import { useWebSocket } from "../../../libs/stomp/useWebSocket";
 import { useParams } from "react-router-dom";
 import useUserStore from "../../../store/UserStore";
+import ChatIcon from "../../../assets/icons/chat.svg?react";
+import MinimizeIcon from "../../../assets/icons/minimize.svg?react";
 
 interface Props {
   chatList: Chat[];
+  setOnPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  onPopup: boolean;
 }
 
-function ChatPopup({ chatList }: Props) {
+function ChatPopup({ chatList, setOnPopup, onPopup }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({
     x: 0,
@@ -23,7 +27,6 @@ function ChatPopup({ chatList }: Props) {
   const nickname = useUserStore((state) => state.nickname);
   const inputRef = useRef<null | HTMLInputElement>(null);
   const scrollRef = useRef<null | HTMLDivElement>(null);
-  const iconRef = useRef<null | HTMLDivElement>(null);
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
@@ -79,14 +82,21 @@ function ChatPopup({ chatList }: Props) {
     }
   }, [chatList]);
 
+  if (!onPopup)
+    return (
+      <div onClick={() => setOnPopup(true)} className={styles.popup_closed}>
+        <ChatIcon />
+      </div>
+    );
+
   return (
     <div
       className={styles.popup}
-      style={{ left: `${position.x}px`, top: `${position.y}px` }} // TODO 채팅 마지막 공백 추가
+      style={{ left: `${position.x}px`, top: `${position.y}px` }}
     >
       <div className={styles.section_wrapper}>
         <div className={styles.topbar} onMouseDown={onMouseDown}>
-          topbar
+          <MinimizeIcon onClick={() => setOnPopup(false)} />
         </div>
         <div className={styles.chatting_section} ref={scrollRef}>
           {chatList.map((chat) => (
@@ -109,9 +119,12 @@ function ChatPopup({ chatList }: Props) {
             }
           }}
         />
-        <div ref={iconRef}>
-          <SendIcon width={20} height={20} onClick={sendChat} />
-        </div>
+        <SendIcon
+          width={20}
+          height={20}
+          onClick={sendChat}
+          className={styles.send_icon}
+        />
       </div>
     </div>
   );
