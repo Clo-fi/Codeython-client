@@ -9,6 +9,7 @@ import { useWebSocket } from "../../../libs/stomp/useWebSocket";
 import { Chat } from "../../../types/chat";
 import { useSearchParams } from "react-router-dom";
 import useUserStore from "../../../store/UserStore";
+import { CustomAlert } from "../../../libs/sweetAlert/alert";
 
 interface Props {
   users: UserInfo[];
@@ -77,6 +78,13 @@ const UserContainer = withEnterRoom(
               {owner === nickname && (
                 <Button
                   onClick={() => {
+                    if (users.length <= 1) {
+                      CustomAlert.fire({
+                        icon: "error",
+                        title: "다른 플레이어를 기다려 주세요.",
+                      });
+                      return;
+                    }
                     clientSocket?.publish({
                       destination: `/pub/room/${roomId}/gameStart`,
                     });
