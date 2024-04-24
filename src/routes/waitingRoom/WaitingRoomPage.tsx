@@ -93,12 +93,23 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
         exp={exp}
         level={level}
         onOut={() => {
-          socketClient?.publish({
-            destination: `/pub/room/${roomId}/leave`,
-            headers: { nickname },
-          });
+          CustomAlert.fire({
+            icon: "question",
+            title: "퇴장하시겠습니까?",
+            showConfirmButton: true,
+            confirmButtonText: "퇴장하기",
+            showCancelButton: true,
+            cancelButtonText: "돌아가기",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              socketClient?.publish({
+                destination: `/pub/room/${roomId}/leave`,
+                headers: { nickname },
+              });
 
-          navigate("/roomList");
+              navigate("/roomList");
+            }
+          });
         }}
       />
       <main style={{ position: "relative", paddingLeft: "250px" }}>
