@@ -6,7 +6,7 @@ import CustomProgressBar from "./CustomProgressBar";
 import useAuthStore from "../../store/AuthStore";
 import { useCookies } from "react-cookie";
 import instance from "../../api/axios";
-import { CustomAlert } from "../../libs/sweetAlert/alert";
+import { CustomAlert } from '../../libs/sweetAlert/alert';
 
 interface Props {
   nickname: string;
@@ -52,46 +52,36 @@ const SideBar = ({ nickname, exp, level }: Props) => {
           throw new Error(`Request failed: ${error}`);
         }
       },
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          if (result.value && result.value.inviteCode) {
-            const {
-              problemTitle,
-              limitTime,
-              difficulty,
-              roomName,
-              inviteCode,
-              isSoloPlay,
-              roomId,
-            } = result.value;
-            navigate(
-              `/waiting/${roomId}?problemTitle=${problemTitle}&limitTime=${limitTime}&difficulty=${difficulty}&roomName=${roomName}&inviteCode=${inviteCode}&isSoloPlay=${isSoloPlay}`
-            );
-          } else {
-            // 값이 없거나 잘못된 값이 반환된 경우에 대한 처리
-            CustomAlert.fire({
-              icon: "error",
-              title: "코드를 찾을 수 없음",
-              text: "입력한 코드가 유효하지 않습니다. 다시 시도하세요.",
-            });
-          }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (result.value && result.value.inviteCode) {
+          const { problemTitle, limitTime, difficulty, roomName, inviteCode, isSoloPlay, roomId, limitMemberCnt } = result.value;
+          navigate(`/waiting/${roomId}?problemTitle=${problemTitle}&limitTime=${limitTime}&difficulty=${difficulty}&roomName=${roomName}&inviteCode=${inviteCode}&isSoloPlay=${isSoloPlay}&=${limitMemberCnt}`);
+        } else {
+          // 값이 없거나 잘못된 값이 반환된 경우에 대한 처리
+          CustomAlert.fire({
+            icon: 'error',
+            title: '코드를 찾을 수 없음',
+            text: '입력한 코드가 유효하지 않습니다. 다시 시도하세요.',
+          });
         }
-      })
-      .catch((error) => {
-        CustomAlert.fire({
-          icon: "error",
-          title: "요청 실패",
-          text: error.message,
-        });
+      }
+    }).catch((error) => {
+      CustomAlert.fire({
+        icon: 'error',
+        title: '요청 실패',
+        text: error.message,
       });
-  };
+    });
+  }; // 여기에 괄호가 필요합니다.
+
   const logoutHandler = () => {
     removeCookie("accessToken");
     removeCookie("refreshToken");
     setLogout();
     navigate("/");
   };
+
   const removeAccountHandler = () => {
     CustomAlert.fire({
       icon: "warning",
@@ -114,6 +104,7 @@ const SideBar = ({ nickname, exp, level }: Props) => {
       }
     });
   };
+
   return (
     <div className={`${styles.container} ${styles.slideInFromLeft}`}>
       <div className={styles.user_info_block}>

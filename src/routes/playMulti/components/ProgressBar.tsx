@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { create } from 'zustand';
 import styles from './ProgressBar.module.scss';
 import { CustomAlert } from '../../../libs/sweetAlert/alert';
+import { useWebSocket } from '../../../libs/stomp/useWebSocket';
+import { useParams } from 'react-router-dom';
 
 // Zustand 상태 타입 정의
 interface ProgressState {
@@ -43,6 +45,10 @@ const ProgressBar: React.FC<{ limitTime: number }> = ({ limitTime }) => {
   const { showElapsedTime, toggleTimeDisplay } = useTimeDisplayStore();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+
+  const { roomId } = useParams<{ roomId: string }>();
+  const socketClient = useWebSocket();
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -69,6 +75,9 @@ const ProgressBar: React.FC<{ limitTime: number }> = ({ limitTime }) => {
       }
       if (elapsedMilliseconds >= limitTimeMilliseconds) {
         clearInterval(interval);
+        socketClient?.publish({
+          destination: `/pub/room/${roomId}/join`,
+        });
         CustomAlert.fire({
           title: '시간 종료',
           text: '풀이 권장 시간이 종료되었습니다.',
