@@ -19,6 +19,7 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
   const [tmpChatList, setTmpChatList] = useState<Chat[]>([]);
   const { roomId } = useParams();
   const [searchParams] = useSearchParams();
+  const [owner, setOwner] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +36,11 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
 
         if (type === MESSAGE_TYPE.USER) {
           setUsers(data);
+          for (const user of data) {
+            if (user.isOwner) {
+              setOwner(user.nickname);
+            }
+          }
         } else if (type === MESSAGE_TYPE.CHAT) {
           setChatList((prev) => [...prev, data]);
           setTmpChatList((prev) => [...prev, data]);
@@ -87,7 +93,12 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
         }}
       />
       <main style={{ position: "relative", paddingLeft: "250px" }}>
-        <UserContainer users={users} roomId={roomId} chatList={tmpChatList} />
+        <UserContainer
+          users={users}
+          roomId={roomId}
+          chatList={tmpChatList}
+          owner={owner}
+        />
       </main>
       <ChatPopup chatList={chatList} />
     </>
