@@ -15,7 +15,6 @@ interface LanguageState {
   selectedOption: string | null;
 }
 
-
 interface ExecutionError {
   errorMessage: string | null;
   responseMessage: string | null;
@@ -39,7 +38,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
   const [code, setCode] = useState<string>('');
   const [executionResults, setExecutionResults] = useState<{ isCorrect: boolean; output: string }[]>([]);
   const [executionError, setExecutionError] = useState<ExecutionError>({ errorMessage: null, responseMessage: null });
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const setDefaultCode = (selectedLanguage: string | null) => {
     if (selectedLanguage) {
@@ -66,28 +65,43 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
     console.log('New code:', newCode);
     setCode(newCode ?? '');
   };
+  const ClearFunc = () => {
+    setExecutionResults([]);
+    setExecutionError({ errorMessage: null, responseMessage: null });
+  }
 
   const handleExecute = async () => {
     try {
-      const userCode = code;
-      const selectedLanguage = languageState.selectedOption;
 
+      ClearFunc();
+      setIsLoading(true);
+
+      const selectedLanguage = languageState.selectedOption;
       const requestData = {
-        code: userCode,
+        code,
         language: selectedLanguage,
         roomId: roomId
       };
 
-      console.log(userCode, selectedLanguage);
+      if (selectedLanguage === null) {
+        CustomAlert.fire({
+          icon: 'warning',
+          title: '언어를 선택해주세요!!',
+          timer: 500
+        })
+      }
+      console.log(code, selectedLanguage);
 
       const response = await instance.post(`/problems/${problemId}/execution`, requestData);
       const executionResult = response.data;
       setExecutionResults(executionResult);
-      setExecutionError({ errorMessage: null, responseMessage: null }); // 실행 성공 시 에러 스테이트 초기화
+      setExecutionError({ errorMessage: null, responseMessage: null });
     } catch (err: any) {
       console.error('Error executing code:', err);
-      setExecutionResults([]); // 에러 발생 시 실행 결과 초기화
+      setExecutionResults([]);
       setExecutionError({ errorMessage: err.toString(), responseMessage: err.response?.data.message || null }); // 에러 스테이트에 에러 저장
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -96,11 +110,21 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
     try {
       const selectedLanguage = languageState.selectedOption;
 
+      ClearFunc();
+      setIsLoading(true);
       const requestData = {
         code,
         language: selectedLanguage,
         roomId
       };
+
+      if (selectedLanguage === null) {
+        CustomAlert.fire({
+          icon: 'warning',
+          title: '언어를 선택해주세요!!',
+          timer: 1200
+        })
+      }
 
       console.log(code, selectedLanguage);
       const response = await instance.post(`/problems/${problemId}/result`, requestData);
@@ -151,6 +175,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
       console.error('Error executing code:', err);
       setExecutionResults([]);
       setExecutionError({ errorMessage: err.toString(), responseMessage: err.response?.data.message || null }); // 에러 스테이트에 에러 저장
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -198,6 +224,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
           <div className={styles.result_title}>실행 결과</div>
         </div>
         <div className={styles.result_container}>
+          {isLoading && (
+            <div className={styles.execution_loading}>
+              데이터를 불러오는 중입니다...
+            </div>
+          )}
           {executionError.errorMessage && (
             <div className={styles.execution_error}>
               실행 중 에러가 발생했습니다: {executionError.errorMessage}
@@ -208,7 +239,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
               서버 응답 오류: {executionError.responseMessage}
             </div>
           )}
-          {executionResults.length > 0 && (
+          {!isLoading && executionResults.length > 0 && (
             executionResults.map((result, index) => (
               <div key={index} className={styles.execution_result}>
                 <div>입출력 예 {index + 1}번째 : {result.isCorrect ? '성공' : '실패'}</div>
