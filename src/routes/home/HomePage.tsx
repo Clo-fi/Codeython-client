@@ -17,6 +17,7 @@ import MoreIcon from "../../assets/icons/more.svg?react";
 const HomePage = () => {
   const navigate = useNavigate();
   const nickname = useUserStore((state) => state.nickname);
+  const myLevel = useUserStore((state) => state.level);
   const {
     data: rankInfo,
     isLoading: rankIsLoading,
@@ -88,7 +89,11 @@ const HomePage = () => {
           )}
           {rankIsError && <RetryIcon onClick={refreshRank} />}
           {rankInfo?.ranker.map((ranker) => (
-            <RankBlock level={ranker.rank} nickname={ranker.nickname} />
+            <RankBlock
+              level={ranker.level}
+              nickname={ranker.nickname}
+              rank={ranker.rank}
+            />
           ))}
           {rankInfo?.myRank && (
             <>
@@ -99,7 +104,11 @@ const HomePage = () => {
                   className={styles.more_icon}
                 />
               </div>
-              <RankBlock level={rankInfo.myRank} nickname={nickname} />
+              <RankBlock
+                level={myLevel}
+                nickname={nickname}
+                rank={rankInfo.myRank}
+              />
             </>
           )}
         </ListBallon>
@@ -113,7 +122,7 @@ const HomePage = () => {
         <Button
           value="같이 놀기"
           className={styles.button}
-          onClick={() => {}}
+          onClick={() => navigate("/roomList")}
         />
       </div>
     </div>
