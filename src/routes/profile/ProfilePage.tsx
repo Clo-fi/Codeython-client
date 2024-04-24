@@ -70,17 +70,16 @@ const ProfilePage = () => {
           </div>
         </ListBallon>
         <ListBallon title="내 기록" width={"100%"}>
-          {!Array.isArray(records) &&
-            records?.recentRecords.map((record, index) => (
-              <RecordBlock
-                key={record.recordId}
-                record={record}
-                className={styles.record}
-                style={{
-                  animationDelay: `${index * 0.1}s`,
-                }}
-              />
-            ))}
+          {records?.map((record, index) => (
+            <RecordBlock
+              key={record.recordId}
+              record={record}
+              className={styles.record}
+              style={{
+                animationDelay: `${index * 0.1}s`,
+              }}
+            />
+          ))}
         </ListBallon>
       </section>
     </div>
