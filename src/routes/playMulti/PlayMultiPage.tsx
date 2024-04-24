@@ -19,7 +19,7 @@ const PlayMultiPage = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const { problemInfo, isLoading } = useProblemFetching(problemId!);
 
-  // const { nickname } = useUserStore();
+  const { nickname } = useUserStore();
   const [users, setUsers] = useState<UserInfo[]>([]);
   const [chatList, setChatList] = useState<ChatInfo[]>([]);
 
@@ -33,25 +33,23 @@ const PlayMultiPage = () => {
   useEffect(() => {
     if (!socketClient) return;
 
-    socketClient.onConnect = () => {
-      console.log('커넥트 부분')
-      socketClient?.subscribe(`/sub/room/${roomId}`, (message) => {
-        console.log('구독 부분')
-        const { type, data } = decode(message);
-        if (type === MESSAGE_TYPE.USER) {
-          setUsers(data);
-          console.log(data);
-        } else if (type === MESSAGE_TYPE.CHAT) {
-          setChatList((prev) => [...prev, data]);
-          console.log(data);
-        }
-      })
-
-      socketClient.publish({
-        destination: `/pub/room/${roomId}/join`,
-      });
+    socketClient?.subscribe(`/sub/room/${roomId}`, (message) => {
+      console.log('구독 부분')
+      const { type, data } = decode(message);
+      if (type === MESSAGE_TYPE.USER) {
+        setUsers(data);
+        console.log(data);
+      } else if (type === MESSAGE_TYPE.CHAT) {
+        setChatList((prev) => [...prev, data]);
+        console.log(data);
+      }
     }
-    // ---- 
+    )
+
+    socketClient?.publish({
+      destination: `/pub/room/${roomId}/join`,
+    });
+
     // return () => {
     //   socketClient?.publish({
     //     destination: `/pub/room/${roomId}/leave`,
@@ -60,17 +58,8 @@ const PlayMultiPage = () => {
     //   console.log('디스커넥트');
     // }
 
-  }, [roomId, socketClient])
+  }, [nickname, roomId, socketClient])
 
-  // useEffect(() => {
-  //   return () => {
-  //     socketClient?.publish({
-  //       destination: `/pub/room/${roomId}/leave`,
-  //       headers: { nickname }
-  //     });
-  //     console.log('디스커넥트');
-  //   }
-  // }, [socketClient]);
   return (
     <>
       <PlayHeader problemInfo={problemInfo!} isLoading={isLoading} />
