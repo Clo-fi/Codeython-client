@@ -140,7 +140,7 @@ const RoomListForm: React.FC = () => {
                 )}
               </div>
               <div className={styles.roomForm_component__soloOrnot}>
-                {room.isSoloplay ? <span>개인전</span> : <span>팀전</span>}
+                {room.isSoloplay ? <span>팀전</span> : <span>개인전</span>}
               </div>
               <div className={styles.roomForm_component__member}>
                 {" "}
