@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import styles from './SignUpForm.module.scss'
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import instance from '../../../api/axios';
+import { CustomAlert } from '../../../libs/sweetAlert/alert';
+
 interface FormType {
   nickname: string;
   username: string;
@@ -19,7 +20,7 @@ const SignUpForm = () => {
 
     try {
       if (state.password !== state.confirmPassword) {
-        Swal.fire({
+        CustomAlert.fire({
           icon: 'error',
           title: '비밀번호 확인 실패',
           text: '비밀번호와 비밀번호 확인이 일치하지 않습니다.',
@@ -29,7 +30,7 @@ const SignUpForm = () => {
       const { username, nickname, password } = state;
       const response = await instance.post('/signup', { username, nickname, password });
       console.log(response);
-      Swal.fire({
+      CustomAlert.fire({
         icon: "success",
         title: "회원가입 성공",
         timer: 1500,
@@ -38,7 +39,7 @@ const SignUpForm = () => {
         navigate('/');
       });
     } catch (error) {
-      Swal.fire({
+      CustomAlert.fire({
         icon: 'error',
         title: '오류 발생',
         text: '회원가입 중 오류가 발생했습니다.',

@@ -3,21 +3,21 @@ import styles from './PlayHeader.module.scss';
 import ProgressBar from './ProgressBar';
 import Button from '../../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { CustomAlert } from '../../../libs/sweetAlert/alert';
 
 // props로 받아온 limitTime 타입 정의
 interface PlayHeaderProps {
-  limitTime: number; 
+  limitTime: number;
 }
 
-const PlayHeader: React.FC<PlayHeaderProps> = ({ limitTime }) => { 
+const PlayHeader: React.FC<PlayHeaderProps> = ({ limitTime }) => {
 
   const navigate = useNavigate();
 
   // 나가기 버튼 함수
   const handleOut = () => {
 
-    Swal.fire({
+    CustomAlert.fire({
       title: "정말 나가시겠습니까?",
       showCancelButton: true,
       confirmButtonText: "나가기",

@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CustomProgressBar from "./CustomProgressBar";
 import useAuthStore from "../../store/AuthStore";
 import { useCookies } from "react-cookie";
-import Swal from "sweetalert2";
 import instance from "../../api/axios";
+import { CustomAlert } from '../../libs/sweetAlert/alert';
 
 interface Props {
   nickname: string;
@@ -31,7 +31,7 @@ const SideBar = ({ nickname, exp, level }: Props) => {
     };
   }, []);
   const submitCode = () => {
-    Swal.fire({
+    CustomAlert.fire({
       title: "초대 코드 입력하기",
       input: "text",
       inputAttributes: {
@@ -42,7 +42,8 @@ const SideBar = ({ nickname, exp, level }: Props) => {
       confirmButtonText: "초대코드 입력",
       preConfirm: async (code) => {
         try {
-          const response = await instance.post(`/api/rooms/direct/${code}`);
+          const response = await instance.post(`/rooms/direct/${code}`);
+          console.log(response);
           if (response.status !== 200) {
             throw new Error(JSON.stringify(response.data));
           }
@@ -51,7 +52,6 @@ const SideBar = ({ nickname, exp, level }: Props) => {
           throw new Error(`Request failed: ${error}`);
         }
       },
-      allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
       if (result.isConfirmed) {
         if (result.value && result.value.inviteCode) {
@@ -59,7 +59,7 @@ const SideBar = ({ nickname, exp, level }: Props) => {
           navigate(`/waiting/${roomId}?problemTitle=${problemTitle}&limitTime=${limitTime}&difficulty=${difficulty}&roomName=${roomName}&inviteCode=${inviteCode}&isSoloPlay=${isSoloPlay}`);
         } else {
           // 값이 없거나 잘못된 값이 반환된 경우에 대한 처리
-          Swal.fire({
+          CustomAlert.fire({
             icon: 'error',
             title: '코드를 찾을 수 없음',
             text: '입력한 코드가 유효하지 않습니다. 다시 시도하세요.',
@@ -67,7 +67,7 @@ const SideBar = ({ nickname, exp, level }: Props) => {
         }
       }
     }).catch((error) => {
-      Swal.fire({
+      CustomAlert.fire({
         icon: 'error',
         title: '요청 실패',
         text: error.message,
@@ -81,7 +81,7 @@ const SideBar = ({ nickname, exp, level }: Props) => {
     navigate("/");
   };
   const removeAccountHandler = () => {
-    Swal.fire({
+    CustomAlert.fire({
       icon: "warning",
       title: "정말로 탈퇴 하시겠습니까?",
       text: "결정을 되돌릴 수 없습니다.",
@@ -90,7 +90,7 @@ const SideBar = ({ nickname, exp, level }: Props) => {
       cancelButtonText: "돌아가기",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
+        CustomAlert.fire({
           icon: "error",
           title: "정말로 탈퇴하기",
           showCancelButton: true,

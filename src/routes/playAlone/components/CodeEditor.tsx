@@ -3,9 +3,9 @@ import styles from './CodeEditor.module.scss';
 import SelectLanguageBtn from './SelectLanguage';
 import { Editor } from '@monaco-editor/react';
 import Button from '../../../components/common/Button';
-import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../../api/axios';
+import { CustomAlert } from '../../../libs/sweetAlert/alert';
 
 interface LanguageState {
   isOpen: boolean;
@@ -47,7 +47,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
   // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
   useEffect(() => {
     setDefaultCode(languageState.selectedOption);
-  }, [languageState.selectedOption, baseCode, setDefaultCode]);
+  }, [languageState.selectedOption, baseCode]);
 
   const handleOptionSelect = (option: string) => {
     setLanguageState((prevState) => ({ ...prevState, selectedOption: option, isOpen: false }));
@@ -115,7 +115,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
       console.log(gainExp);
 
       if (accuracy == 100) {
-        Swal.fire({
+        CustomAlert.fire({
           title: "정답입니다!",
           showCancelButton: true,
           confirmButtonText: "나가기",
@@ -128,7 +128,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
           }
         });
       } else {
-        Swal.fire({
+        CustomAlert.fire({
           title: `정확도 : ${accuracy}`,
           customClass: {
             popup: styles['custom-modal-style'],
