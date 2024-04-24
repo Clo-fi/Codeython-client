@@ -43,7 +43,7 @@ const HomePage = () => {
           <CustomSkeleton height={41} className={styles.skeleton} /> */}
           {["✨신규 문제 업데이트 완료", "📍코디톤 version 1.0 출시"].map(
             (notice) => (
-              <NoticeBlock notice={notice} />
+              <NoticeBlock notice={notice} key={notice} />
             )
           )}
         </ListBallon>
@@ -90,6 +90,7 @@ const HomePage = () => {
           {rankIsError && <RetryIcon onClick={refreshRank} />}
           {rankInfo?.ranker.map((ranker) => (
             <RankBlock
+              key={ranker.nickname}
               level={ranker.level}
               nickname={ranker.nickname}
               rank={ranker.rank}

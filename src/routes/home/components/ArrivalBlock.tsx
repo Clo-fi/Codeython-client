@@ -15,7 +15,7 @@ const ArrivalBlock = ({ title, difficulty, isPlayed }: Props) => {
       </div>
       <div className={styles.tags}>
         <div className={styles.difficulty}>난이도 {difficulty}</div>
-        {!isPlayed && <div className={styles.isPlayed}>성공</div>}
+        {isPlayed && <div className={styles.isPlayed}>성공</div>}
       </div>
     </div>
   );
