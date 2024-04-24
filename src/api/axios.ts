@@ -3,7 +3,7 @@ import { Cookies } from "react-cookie";
 import useTokenRefresh from '../hooks/useTokenRefresh';
 
 const instance = axios.create({
-  baseURL: `${import.meta.env.VITE_BASE_URL}/api`,
+  baseURL: `${import.meta.env.VITE_BASE_URL}api`,
   headers: {
     "Content-Type": "application/json",
   },
