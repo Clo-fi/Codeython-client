@@ -75,11 +75,14 @@
   justify-content: center;
 }
 
-.problem_item{
+.problem_item {
   width: 55vw;
   height: 20px;
   background-color: var(--color-white);
+}
 
+.problem_item:hover {
+  background-color: var(--color-grey);
 }
 
 .limit_section {
@@ -131,7 +134,7 @@
   align-items: center;
 }
 
-.secret_checkbox{
+.secret_checkbox {
   height: 35%;
   width: 25vw;
   background-color: var(--color-white);
@@ -163,8 +166,7 @@
   flex-direction: row;
 }
 
-
-.create_btn{
+.create_btn {
   height: 100%;
   width: 23vw;
   background-color: var(--color-yellow);
@@ -173,5 +175,5 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: 20px;
 }
-

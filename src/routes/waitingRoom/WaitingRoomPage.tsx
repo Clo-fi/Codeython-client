@@ -22,7 +22,7 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
   const [searchParams] = useSearchParams();
   const [owner, setOwner] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [onPopUp, setonPopUp] = useState(true);
+  const [onPopUp, setonPopUp] = useState(false);
 
   useEffect(() => {
     setUserInfo();

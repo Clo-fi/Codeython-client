@@ -4,7 +4,7 @@ import Button from "../../components/common/Button";
 import { create } from "zustand";
 import instance from "../../api/axios";
 import { useNavigate } from "react-router-dom";
-import { CustomAlert } from '../../libs/sweetAlert/alert';
+import { CustomAlert } from "../../libs/sweetAlert/alert";
 
 interface CreateFactor {
   roomName: string;
@@ -46,7 +46,7 @@ const useCreateFactorStore = create<CreateFactor>((set) => ({
   toggleIsSecret: () =>
     set((state) => ({
       isSecret: !state.isSecret,
-      password: !state.isSecret ? "" : state.password, // 비밀방을 비활성화할 때 빈 문자열로 설정
+      password: state.isSecret ? "" : state.password, // 비밀방을 비활성화할 때 빈 문자열로 설정
     })),
   setPassword: (password) => set({ password }),
 }));
@@ -107,10 +107,10 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
       await enterRoom(roomId);
     } catch (error) {
       CustomAlert.fire({
-        icon: 'error',
-        title: '방 생성 실패!!',
-        text: '방 이름과 문제를 확인해주세요!!'
-      })
+        icon: "error",
+        title: "방 생성 실패!!",
+        text: "방 이름과 문제를 확인해주세요!!",
+      });
       console.error("방 생성 오류:", error);
     }
   };
@@ -127,7 +127,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
         roomName,
         inviteCode,
         isSoloPlay,
-        limitMemberCnt
+        limitMemberCnt,
       } = enterResponse.data;
 
       // 쿼리 파라미터로 인코딩하여 URL 생성
@@ -140,7 +140,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
         inviteCode,
         isSoloplay: isSoloPlay.toString(), // 불리언인 경우 문자열로 변환
         roomId: roomId.toString(), // 숫자인 경우 문자열로 변환
-        limitMemberCnt
+        limitMemberCnt,
       }).toString();
 
       // navigate 함수를 사용하여 쿼리 파라미터와 함께 페이지 이동
@@ -151,8 +151,8 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
       CustomAlert.fire({
         icon: "error",
         title: "에러 발생!",
-        text: "방 입장에 실패했습니다. 다시 시도해주세요"
-      })
+        text: "방 입장에 실패했습니다. 다시 시도해주세요",
+      });
     }
   };
 
