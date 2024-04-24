@@ -1,6 +1,7 @@
 /*! minireset.css v0.0.6 | MIT License | github.com/jgthms/minireset.css */
 @import "./theme.scss";
 @import "../libs/sweetAlert/alert.scss";
+@import "./font.scss";
 
 // Blocks
 html,
@@ -103,4 +104,8 @@ button {
 
 button:disabled {
   cursor: default;
+}
+
+* {
+  font-family: "TmoneyRound-Regular";
 }
