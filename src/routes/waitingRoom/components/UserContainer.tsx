@@ -37,9 +37,9 @@ const UserContainer = withEnterRoom(
             <div className={styles.user_container}>
               {users?.map((user) => (
                 <UserBox
+                  key={user.nickname}
                   nickname={user.nickname}
                   level={1}
-                  key={user.nickname}
                   message={
                     chatList
                       .reverse()
@@ -47,17 +47,18 @@ const UserContainer = withEnterRoom(
                   }
                 />
               ))}
-              {new Array(4 - users.length).fill(0).map((_, idx) => (
-                <UserBox key={idx} />
-              ))}
-              {new Array(6 - 4).fill(0).map(
-                (
-                  _,
-                  idx // TODO 하드코딩 limitCnt로 변경
-                ) => (
-                  <UserBox key={idx} isClosed={true} />
-                )
-              )}
+              {new Array(
+                Number(searchParams.get("limitMemberCnt")) - users.length
+              )
+                .fill(0)
+                .map((_, idx) => (
+                  <UserBox key={idx} />
+                ))}
+              {new Array(6 - Number(searchParams.get("limitMemberCnt")))
+                .fill(0)
+                .map((_, idx) => (
+                  <UserBox key={idx + 10} isClosed={true} />
+                ))}
             </div>
             <div className={styles.info_wrapper}>
               <div className={styles.info_badge}>
