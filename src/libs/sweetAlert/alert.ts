@@ -2,7 +2,7 @@ import Swal, { SweetAlertOptions } from "sweetalert2";
 
 export const CustomAlert = {
   fire: ({ ...options }: SweetAlertOptions) => {
-    Swal.fire({
+    return Swal.fire({
       customClass: {
         popup: "swal-popup",
         title: "swal-title",
