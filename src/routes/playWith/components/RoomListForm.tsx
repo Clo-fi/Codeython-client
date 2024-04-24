@@ -85,6 +85,8 @@ const RoomListForm: React.FC = () => {
           roomName,
           inviteCode,
           isSoloPlay,
+          problemId,
+          limitMemberCnt,
         } = response.data;
 
         const queryParams = new URLSearchParams({
@@ -95,6 +97,8 @@ const RoomListForm: React.FC = () => {
           inviteCode,
           isSoloPlay: isSoloPlay.toString(),
           roomId: roomId.toString(),
+          problemId,
+          limitMemberCnt,
         }).toString();
 
         navigate(`/waiting/${roomId}?${queryParams}`);
