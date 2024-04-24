@@ -25,7 +25,6 @@ const SideBar = ({ nickname, exp, level, onOut }: Props) => {
         <button className={styles.action_button} onClick={() => onOut()}>
           방 나가기
         </button>
-        <button className={styles.action_button}>채팅</button>
       </div>
     </div>
   );
