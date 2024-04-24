@@ -10,6 +10,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Chat } from "../../types/chat";
 import { CustomAlert } from "../../libs/sweetAlert/alert";
 import withCheckingNavigationType from "../../hoc/withCheckingNavigationType";
+import { StompSubscription } from "@stomp/stompjs";
 
 const WaitingRoomPage = withCheckingNavigationType(() => {
   const { nickname, exp, level, setUserInfo } = useUserStore();
@@ -29,43 +30,48 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
   useEffect(() => {
     if (!socketClient) return;
 
+    let subscription: StompSubscription;
+
     socketClient.onConnect = () => {
       console.log("소켓 연결");
-      socketClient.subscribe(`/sub/room/${roomId}`, (message) => {
-        const { type, data } = decode(message);
+      subscription = socketClient.subscribe(
+        `/sub/room/${roomId}`,
+        (message) => {
+          const { type, data } = decode(message);
 
-        if (type === MESSAGE_TYPE.USER) {
-          if (data instanceof Array) {
-            setUsers(data);
-          }
-
-          for (const user of data) {
-            if (user.isOwner) {
-              setOwner(user.nickname);
+          if (type === MESSAGE_TYPE.USER) {
+            if (data instanceof Array) {
+              setUsers(data);
             }
+
+            for (const user of data) {
+              if (user.isOwner) {
+                setOwner(user.nickname);
+              }
+            }
+          } else if (type === MESSAGE_TYPE.CHAT) {
+            setChatList((prev) => [...prev, data]);
+            setTmpChatList((prev) => [...prev, data]);
+            setTimeout(() => {
+              setTmpChatList((prev) =>
+                prev.filter(
+                  (item) =>
+                    !(item.from === data.from && item.message == data.message)
+                )
+              );
+            }, 3000);
+          } else if (type === MESSAGE_TYPE.GAME_START) {
+            CustomAlert.fire({
+              icon: "info",
+              title: "게임이 곧 시작됩니다!!",
+              timer: 1500,
+              showConfirmButton: false,
+            }).then(() => {
+              navigate(`/playmulti/${searchParams.get("problemId")}/${roomId}`);
+            });
           }
-        } else if (type === MESSAGE_TYPE.CHAT) {
-          setChatList((prev) => [...prev, data]);
-          setTmpChatList((prev) => [...prev, data]);
-          setTimeout(() => {
-            setTmpChatList((prev) =>
-              prev.filter(
-                (item) =>
-                  !(item.from === data.from && item.message == data.message)
-              )
-            );
-          }, 3000);
-        } else if (type === MESSAGE_TYPE.GAME_START) {
-          CustomAlert.fire({
-            icon: "info",
-            title: "게임이 곧 시작됩니다!!",
-            timer: 1500,
-            showConfirmButton: false,
-          }).then(() => {
-            navigate(`/playmulti/${searchParams.get("problemId")}/${roomId}`);
-          });
         }
-      });
+      );
 
       socketClient.publish({
         destination: `/pub/room/${roomId}/join`,
@@ -76,7 +82,7 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
     };
 
     return () => {
-      // TODO: unsubscribe
+      subscription.unsubscribe();
     };
   }, [setUserInfo, socketClient, roomId, nickname, navigate, searchParams]);
 
