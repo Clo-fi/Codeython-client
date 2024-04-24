@@ -18,8 +18,8 @@ interface Props {
 function ChatPopup({ chatList, setOnPopup, onPopup }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({
-    x: 0,
-    y: window.innerHeight - 300,
+    x: 20,
+    y: window.innerHeight - 320,
   });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const socketClient = useWebSocket();
