@@ -1,0 +1,60 @@
+.main {
+  position: relative;
+  padding-left: 250px;
+}
+
+.spinner {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+}
+
+.room_info {
+  position: absolute;
+  right: 60px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.invite_code {
+  padding: 10px;
+  width: 100%;
+
+  border-radius: 14px;
+  width: 200px;
+  background-color: var(--color-pastelblue);
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+.room_name {
+  position: absolute;
+  left: 60px;
+  bottom: 32px;
+  padding: 10px;
+  width: 100%;
+
+  border: 2px solid var(--color-brown);
+  border-radius: 14px;
+  width: 200px;
+
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}

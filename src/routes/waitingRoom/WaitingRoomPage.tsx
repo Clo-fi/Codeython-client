@@ -11,6 +11,8 @@ import { Chat } from "../../types/chat";
 import { CustomAlert } from "../../libs/sweetAlert/alert";
 import withCheckingNavigationType from "../../hoc/withCheckingNavigationType";
 import { StompSubscription } from "@stomp/stompjs";
+import styles from "./WaitingRoomPage.module.scss";
+import Spinner from "../../assets/spinner.svg?react";
 
 const WaitingRoomPage = withCheckingNavigationType(() => {
   const { nickname, exp, level, setUserInfo } = useUserStore();
@@ -115,19 +117,37 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
           });
         }}
       />
-      <main style={{ position: "relative", paddingLeft: "250px" }}>
-        <UserContainer
-          users={users}
-          roomId={roomId}
-          chatList={tmpChatList}
-          owner={owner}
-        />
+      <main className={styles.main}>
+        {users.length <= 0 && (
+          <div className={styles.spinner}>
+            <Spinner width={150} height={150} />
+          </div>
+        )}
+        {users.length > 0 && (
+          <>
+            <section className={styles.header}>
+              <img className={styles.logo} src="/Imgs/CodeythonLogo_star.png" />
+              <div className={styles.room_info}>
+                <div>{searchParams.get("roomName")}</div>
+                <div className={styles.invite_code}>
+                  초대 코드 : {searchParams.get("inviteCode")}
+                </div>
+              </div>
+            </section>
+            <UserContainer
+              users={users}
+              roomId={roomId}
+              chatList={tmpChatList}
+              owner={owner}
+            />
+            <ChatPopup
+              chatList={chatList}
+              onPopup={onPopUp}
+              setOnPopup={setonPopUp}
+            />
+          </>
+        )}
       </main>
-      <ChatPopup
-        chatList={chatList}
-        onPopup={onPopUp}
-        setOnPopup={setonPopUp}
-      />
     </>
   );
 });
