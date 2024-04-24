@@ -45,16 +45,17 @@ const UserContainer = withEnterRoom(
                       .reverse()
                       .find((item) => item.from === user.nickname)?.message
                   }
+                  isOwner={owner === user.nickname}
                 />
               ))}
               {new Array(
-                Number(searchParams.get("limitMemberCnt")) - users.length
+                Number(searchParams.get("limitMemberCnt") ?? 6) - users.length
               )
                 .fill(0)
                 .map((_, idx) => (
                   <UserBox key={idx} />
                 ))}
-              {new Array(6 - Number(searchParams.get("limitMemberCnt")))
+              {new Array(6 - Number(searchParams.get("limitMemberCnt") ?? 6))
                 .fill(0)
                 .map((_, idx) => (
                   <UserBox key={idx + 10} isClosed={true} />

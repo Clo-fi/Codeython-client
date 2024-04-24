@@ -73,13 +73,15 @@ const SideBar = ({ nickname, exp, level }: Props) => {
         text: error.message,
       });
     });
-  };
+  }; // 여기에 괄호가 필요합니다.
+
   const logoutHandler = () => {
     removeCookie("accessToken");
     removeCookie("refreshToken");
     setLogout();
     navigate("/");
   };
+
   const removeAccountHandler = () => {
     CustomAlert.fire({
       icon: "warning",
@@ -102,6 +104,7 @@ const SideBar = ({ nickname, exp, level }: Props) => {
       }
     });
   };
+
   return (
     <div className={`${styles.container} ${styles.slideInFromLeft}`}>
       <div className={styles.user_info_block}>
@@ -135,13 +138,19 @@ const SideBar = ({ nickname, exp, level }: Props) => {
           프로필
         </button>
         <button
-          className={styles.action_button}
+          className={`
+          ${styles.action_button}
+          ${location.pathname === "/problemlist" && styles.selected}
+          `}
           onClick={() => navigate("/problemlist")}
         >
           알고리즘 연습하기
         </button>
         <button
-          className={styles.action_button}
+          className={`
+          ${styles.action_button}
+          ${location.pathname === "/createroom" && styles.selected}
+          `}
           onClick={() => navigate("/createroom")}
         >
           코디톤 방 만들기
