@@ -35,7 +35,10 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
         const { type, data } = decode(message);
 
         if (type === MESSAGE_TYPE.USER) {
-          setUsers(data);
+          if (data instanceof Array) {
+            setUsers(data);
+          }
+
           for (const user of data) {
             if (user.isOwner) {
               setOwner(user.nickname);
