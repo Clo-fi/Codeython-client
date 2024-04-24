@@ -22,6 +22,7 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
   const [searchParams] = useSearchParams();
   const [owner, setOwner] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [onPopUp, setonPopUp] = useState(true);
 
   useEffect(() => {
     setUserInfo();
@@ -120,7 +121,11 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
           owner={owner}
         />
       </main>
-      <ChatPopup chatList={chatList} />
+      <ChatPopup
+        chatList={chatList}
+        onPopup={onPopUp}
+        setOnPopup={setonPopUp}
+      />
     </>
   );
 });
