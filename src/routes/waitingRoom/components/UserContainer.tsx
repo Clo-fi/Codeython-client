@@ -45,6 +45,7 @@ const UserContainer = withEnterRoom(
                       .reverse()
                       .find((item) => item.from === user.nickname)?.message
                   }
+                  isOwner={owner === user.nickname}
                 />
               ))}
               {new Array(
