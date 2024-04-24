@@ -16,4 +16,5 @@ export interface RecentRecord {
 export interface Ranker {
   nickname: string;
   rank: number;
+  level: number;
 }

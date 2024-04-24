@@ -5,9 +5,10 @@ interface Props {
   nickname: string;
   exp: number;
   level: number;
+  onOut: () => void;
 }
 
-const SideBar = ({ nickname, exp, level }: Props) => {
+const SideBar = ({ nickname, exp, level, onOut }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.user_info_block}>
@@ -21,7 +22,9 @@ const SideBar = ({ nickname, exp, level }: Props) => {
         </div>
       </div>
       <div className={styles.action_container}>
-        <button className={styles.action_button}>방 나가기</button>
+        <button className={styles.action_button} onClick={() => onOut()}>
+          방 나가기
+        </button>
         <button className={styles.action_button}>채팅</button>
       </div>
     </div>

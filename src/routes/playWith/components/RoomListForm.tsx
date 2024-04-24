@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { create } from "zustand";
-import Swal from "sweetalert2";
+
 import { useNavigate } from "react-router-dom";
-import styles from './RoomListForm.module.scss';
+import styles from "./RoomListForm.module.scss";
 import instance from "../../../api/axios";
+import { CustomAlert } from "../../../libs/sweetAlert/alert";
 
 interface Room {
   roomId: number;
@@ -29,10 +30,14 @@ const useRoomListStore = create<RoomListStore>((set) => ({
   fetchRooms: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await instance.get<Room[]>('/rooms');
+      const response = await instance.get<Room[]>("/rooms");
       set({ rooms: response.data, loading: false });
     } catch (error) {
-      set({ rooms: [], loading: false, error: "방 목록을 불러오는 데 실패했습니다." });
+      set({
+        rooms: [],
+        loading: false,
+        error: "방 목록을 불러오는 데 실패했습니다.",
+      });
     }
   },
 }));
@@ -47,21 +52,21 @@ const RoomListForm: React.FC = () => {
 
   const handleRoomSelect = (room: Room) => async () => {
     if (room.isSecret) {
-      const { value: password } = await Swal.fire({
+      const { value: password } = await CustomAlert.fire({
         title: "방 비밀번호 입력",
         input: "password",
         inputAttributes: {
-          autocapitalize: 'off'
+          autocapitalize: "off",
         },
         showCancelButton: true,
         confirmButtonText: "확인",
-        cancelButtonText: "취소"
+        cancelButtonText: "취소",
       });
 
       if (password) {
         navigateToRoom(room.roomId, password);
       } else {
-        navigateToRoom(room.roomId, null);
+        return;
       }
     } else {
       navigateToRoom(room.roomId, null);
@@ -71,7 +76,7 @@ const RoomListForm: React.FC = () => {
   const navigateToRoom = async (roomId: number, password: string | null) => {
     const payload = { password };
     try {
-      const response = await instance.post(`/rooms/${roomId}/enter`, payload);
+      const response = await instance.post(`/rooms/${roomId}`, payload);
       if (response.status === 200) {
         const {
           problemTitle,
@@ -79,7 +84,7 @@ const RoomListForm: React.FC = () => {
           difficulty,
           roomName,
           inviteCode,
-          isSoloPlay
+          isSoloPlay,
         } = response.data;
 
         const queryParams = new URLSearchParams({
@@ -89,13 +94,17 @@ const RoomListForm: React.FC = () => {
           roomName,
           inviteCode,
           isSoloPlay: isSoloPlay.toString(),
-          roomId: roomId.toString()
+          roomId: roomId.toString(),
         }).toString();
 
         navigate(`/waiting/${roomId}?${queryParams}`);
       }
     } catch (error) {
-      Swal.fire("오류", "입장에 실패했습니다. 다시 시도해주세요.", "error");
+      CustomAlert.fire({
+        icon: "error",
+        title: "오류",
+        text: "입장에 실패했습니다. 다시 시도해주세요.",
+      });
     }
   };
 
@@ -115,20 +124,36 @@ const RoomListForm: React.FC = () => {
   return (
     <div className={styles.roomForm__container}>
       <div className={styles.roomForm_component__list}>
-        {rooms.length > 0 ? rooms.map(room => (
-          <div
-            className={styles.roomForm_component__element}
-            key={room.roomId}
-            onClick={handleRoomSelect(room)}
-          >
-            <div className={styles.roomForm_component__title}>{room.roomName} | {room.problemTitle} {room.isSecret ? <img src="Imgs/lock.png" className={styles.lock_icon}></img> : <></>}</div>
-            <div className={styles.roomForm_component__soloOrnot}>{room.isSoloplay ? <span>개인전</span> : <span>팀전</span>}</div>
-            <div className={styles.roomForm_component__member}> {room.playMemberCnt}/{room.limitMemberCnt} </div>
-          </div>
-        )) : <div>No rooms available.</div>}
+        {rooms.length > 0 ? (
+          rooms.map((room) => (
+            <div
+              className={styles.roomForm_component__element}
+              key={room.roomId}
+              onClick={handleRoomSelect(room)}
+            >
+              <div className={styles.roomForm_component__title}>
+                {room.roomName} | {room.problemTitle}{" "}
+                {room.isSecret ? (
+                  <img src="Imgs/lock.png" className={styles.lock_icon}></img>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <div className={styles.roomForm_component__soloOrnot}>
+                {room.isSoloplay ? <span>개인전</span> : <span>팀전</span>}
+              </div>
+              <div className={styles.roomForm_component__member}>
+                {" "}
+                {room.playMemberCnt}/{room.limitMemberCnt}{" "}
+              </div>
+            </div>
+          ))
+        ) : (
+          <div>No rooms available.</div>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default RoomListForm;

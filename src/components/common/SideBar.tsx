@@ -35,11 +35,11 @@ const SideBar = ({ nickname, exp, level }: Props) => {
       title: "초대 코드 입력하기",
       input: "text",
       inputAttributes: {
-        autocapitalize: "off"
+        autocapitalize: "off",
       },
       showCancelButton: true,
-      cancelButtonText: '돌아가기',
-      confirmButtonText: '초대코드 입력',
+      cancelButtonText: "돌아가기",
+      confirmButtonText: "초대코드 입력",
       preConfirm: async (code) => {
         try {
           const response = await instance.post(`/api/rooms/direct/${code}`);
@@ -51,7 +51,7 @@ const SideBar = ({ nickname, exp, level }: Props) => {
           throw new Error(`Request failed: ${error}`);
         }
       },
-      allowOutsideClick: () => !Swal.isLoading()
+      allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
       if (result.isConfirmed) {
         if (result.value && result.value.inviteCode) {
@@ -74,7 +74,6 @@ const SideBar = ({ nickname, exp, level }: Props) => {
       });
     });
   };
-
   const logoutHandler = () => {
     removeCookie("accessToken");
     removeCookie("refreshToken");
@@ -136,20 +135,20 @@ const SideBar = ({ nickname, exp, level }: Props) => {
           프로필
         </button>
         <button
-          className={`
-          ${styles.action_button}
-          ${location.pathname === "/problemlist" && styles.selected}
-          `}
-          onClick={() => navigate("/problemlist")}>알고리즘 연습하기</button>
+          className={styles.action_button}
+          onClick={() => navigate("/problemlist")}
+        >
+          알고리즘 연습하기
+        </button>
         <button
-          className={`
-         ${styles.action_button}
-         ${location.pathname === "/createroom" && styles.selected}
-         `}
-          onClick={() => navigate('/createroom')}
-        >코디톤 방 만들기</button>
-        <button className={styles.action_button}
-          onClick={submitCode}>초대 코드 입력하기</button>
+          className={styles.action_button}
+          onClick={() => navigate("/createroom")}
+        >
+          코디톤 방 만들기
+        </button>
+        <button className={styles.action_button} onClick={submitCode}>
+          초대 코드 입력하기
+        </button>
         <img src="Imgs/CodeythonLogo.png" alt="GithubLogo" />
       </div>
 

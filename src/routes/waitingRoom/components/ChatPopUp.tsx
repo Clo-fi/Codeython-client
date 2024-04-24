@@ -23,6 +23,7 @@ function ChatPopup({ chatList }: Props) {
   const nickname = useUserStore((state) => state.nickname);
   const inputRef = useRef<null | HTMLInputElement>(null);
   const scrollRef = useRef<null | HTMLDivElement>(null);
+  const iconRef = useRef<null | HTMLDivElement>(null);
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
@@ -98,8 +99,19 @@ function ChatPopup({ chatList }: Props) {
         </div>
       </div>
       <div className={styles.input_section}>
-        <input type="text" className={styles.input} ref={inputRef} />
-        <SendIcon width={20} height={20} onClick={sendChat} />
+        <input
+          type="text"
+          className={styles.input}
+          ref={inputRef}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              sendChat();
+            }
+          }}
+        />
+        <div ref={iconRef}>
+          <SendIcon width={20} height={20} onClick={sendChat} />
+        </div>
       </div>
     </div>
   );
