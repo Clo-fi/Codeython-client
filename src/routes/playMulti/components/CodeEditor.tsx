@@ -26,13 +26,6 @@ interface CodeEditorProps {
   roomId: string;
 }
 
-interface SuccessState {
-  accuracy: number;
-  grade: number;
-  gainExp: number;
-}
-
-// 코드 에디터 컴포넌트 시작
 const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) => {
   const [languageState, setLanguageState] = useState<LanguageState>({
     isOpen: false,
@@ -44,13 +37,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
   const socketClient = useWebSocket();
   const { nickname } = useUserStore();
   const [code, setCode] = useState<string>('');
-  const [successState, setSuccessState] = useState<SuccessState | null>();
   const [executionResults, setExecutionResults] = useState<{ isCorrect: boolean; output: string }[]>([]);
   const [executionError, setExecutionError] = useState<ExecutionError>({ errorMessage: null, responseMessage: null });
 
 
-  // 선택된 언어에 대한 기본 코드를 설정하는 함수
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const setDefaultCode = (selectedLanguage: string | null) => {
     if (selectedLanguage) {
       const defaultCode = baseCode.find((item) => item.language === selectedLanguage)?.code;
@@ -60,7 +50,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
     }
   };
 
-  // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
   useEffect(() => {
     setDefaultCode(languageState.selectedOption);
   }, [languageState.selectedOption, baseCode]);
@@ -105,59 +94,56 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
 
   const handleSubmit = async () => {
     try {
-      const userCode = code;
       const selectedLanguage = languageState.selectedOption;
 
       const requestData = {
-        code: userCode,
+        code,
         language: selectedLanguage,
-        roomId: roomId,
+        roomId
       };
 
-      console.log(userCode, selectedLanguage);
+      console.log(code, selectedLanguage);
       const response = await instance.post(`/problems/${problemId}/result`, requestData);
-      setSuccessState(response.data as SuccessState);
+      const responseData = response.data;
 
-      if (successState) {
-        const { accuracy, grade, gainExp } = successState;
-        CustomAlert.fire({
-          icon: 'success',
-          title: '제출 성공!!',
-          text: `정확도 : ${accuracy}%`,
-          showCancelButton: false,
-          confirmButtonText: "확인",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            if (accuracy === 100) {
-              CustomAlert.fire({
-                icon: 'success',
-                title: `${grade}등 이에요!!`,
-                text: `경험치 ${gainExp} 만큼 받았어요!`,
-                confirmButtonText: "홈으로 돌아가기",
-                showCancelButton: true,
-                cancelButtonText: '에디터로 돌아가기'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  socketClient?.publish({
-                    destination: `/pub/room/${roomId}/leave`,
-                    headers: { nickname }
-                  });
-                  console.log('디스커넥트');
-                  navigate('/home')
-                }
-              });
-            } else {
-              CustomAlert.fire({
-                icon: 'info',
-                title: '정확도 100이 아닙니다',
-                text: '계속 노력해 주세요.',
-                confirmButtonText: "확인",
-                timer: 1000
-              });
-            }
+      CustomAlert.fire({
+        icon: 'success',
+        title: '제출 성공!!',
+        text: `정확도 : ${responseData.accuracy}%`,
+        showCancelButton: false,
+        confirmButtonText: "확인",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (responseData.accuracy === 100) {
+            CustomAlert.fire({
+              icon: 'success',
+              title: `${responseData.grade}등 이에요!!`,
+              text: `경험치 ${responseData.gainExp} 만큼 받았어요!`,
+              confirmButtonText: "홈으로 돌아가기",
+              showCancelButton: true,
+              cancelButtonText: '에디터로 돌아가기'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                socketClient?.publish({
+                  destination: `/pub/room/${roomId}/leave`,
+                  headers: { nickname }
+                });
+                console.log('디스커넥트');
+                navigate('/home')
+              }
+            });
+          } else {
+            CustomAlert.fire({
+              icon: 'info',
+              title: `현재 정확도 : ${responseData.accuracy}% 입니다!!`,
+              text: '계속 노력해 주세요.',
+              confirmButtonText: "확인",
+              timer: 1000
+            });
           }
-        })
-      }
+        }
+      });
+
       const executionResult = response.data;
       setExecutionResults(executionResult);
       setExecutionError({ errorMessage: null, responseMessage: null });
@@ -230,12 +216,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
               </div>
             ))
           )}
-          {/* {executionResults.map((result, index) => (
-            <div key={index} className={styles.execution_result}>
-              <div>입출력 예 {index + 1}번째 : {result.isCorrect ? '성공' : '실패'}</div>
-              <div>output : {result.output}</div>
-            </div>
-          ))} */}
         </div>
         <div className={styles.button_container}>
           <button className={styles.editor__button} onClick={handleInitializeCode} >코드 초기화</button>
