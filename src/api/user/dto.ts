@@ -2,11 +2,7 @@ import { Ranker, RecentRecord, UserInfo } from "../../types/user";
 
 export interface GetUserInfoResponse extends UserInfo {}
 
-export type GetRecentRecordsResponse =
-  | []
-  | {
-      recentRecords: RecentRecord[];
-    };
+export type GetRecentRecordsResponse = RecentRecord[];
 
 export interface GetRankingResponse {
   ranker: Ranker[];
