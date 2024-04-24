@@ -106,7 +106,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
       const response = await instance.post(`/problems/${problemId}/result`, requestData);
       const responseData = response.data;
 
-<<<<<<< HEAD
       CustomAlert.fire({
         icon: 'success',
         title: '제출 성공!!',
@@ -141,45 +140,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
               confirmButtonText: "확인",
               timer: 1000
             });
-=======
-      if (successState) {
-        const { accuracy, grade, gainExp } = successState;
-        CustomAlert.fire({
-          icon: 'success',
-          title: '제출 성공!!',
-          text: `정확도 : ${accuracy}%`,
-          showCancelButton: false,
-          confirmButtonText: "확인",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            if (accuracy === 100) {
-              CustomAlert.fire({
-                icon: 'success',
-                title: `${grade}등 이에요!!`,
-                text: `경험치 ${gainExp} 만큼 받았어요!`,
-                confirmButtonText: "홈으로 돌아가기",
-                showCancelButton: true,
-                cancelButtonText: '에디터로 돌아가기'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  socketClient?.publish({
-                    destination: `/pub/room/${roomId}/leave`,
-                    headers: { nickname }
-                  });
-                  console.log('디스커넥트');
-                  navigate('/home')
-                }
-              });
-            } else {
-              CustomAlert.fire({
-                icon: 'info',
-                title: '정확도 100이 아닙니다',
-                text: '계속 노력해 주세요.',
-                confirmButtonText: "확인",
-                timer: 1000
-              });
-            }
->>>>>>> upstream/develop
           }
         }
       });
