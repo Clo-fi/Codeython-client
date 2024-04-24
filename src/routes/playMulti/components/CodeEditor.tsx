@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import styles from './CodeEditor.module.scss';
 import SelectLanguageBtn from './SelectLanguage';
@@ -6,18 +7,27 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../../api/axios';
 
-// 언어 변경에 따른 basecode 변경을 위한 language 타입 정의
 interface LanguageState {
   isOpen: boolean;
   options: string[];
   selectedOption: string | null;
 }
 
-// 코드 에디터가 받는 Props 타입 정의
+
+interface ExecutionError {
+  errorMessage: string | null;
+  responseMessage: string | null;
+}
 interface CodeEditorProps {
   baseCode: { language: string; code: string }[];
   problemId: string;
   roomId: string;
+}
+
+interface SuccessState {
+  accuracy: number;
+  grade: number;
+  gainExp: number;
 }
 
 // 코드 에디터 컴포넌트 시작
@@ -27,9 +37,16 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
     options: baseCode.map(item => item.language), // baseCode에서 언어 옵션 추출하여 설정
     selectedOption: null,
   });
+  const navigate = useNavigate();
+
   const [code, setCode] = useState<string>('');
+  const [successState, setSuccessState] = useState<SuccessState | null>();
+  const [executionResults, setExecutionResults] = useState<{ isCorrect: boolean; output: string }[]>([]);
+  const [executionError, setExecutionError] = useState<ExecutionError>({ errorMessage: null, responseMessage: null });
+
 
   // 선택된 언어에 대한 기본 코드를 설정하는 함수
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const setDefaultCode = (selectedLanguage: string | null) => {
     if (selectedLanguage) {
       const defaultCode = baseCode.find((item) => item.language === selectedLanguage)?.code;
@@ -42,7 +59,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
   // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
   useEffect(() => {
     setDefaultCode(languageState.selectedOption);
-  }, [languageState.selectedOption, baseCode]);
+  }, [languageState.selectedOption, baseCode, setDefaultCode]);
 
   const handleOptionSelect = (option: string) => {
     setLanguageState((prevState) => ({ ...prevState, selectedOption: option, isOpen: false }));
@@ -57,8 +74,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
     setCode(newCode ?? '');
   };
 
-  const [executionResults, setExecutionResults] = useState<{ isCorrect: boolean; output: string }[]>([]);
-
   const handleExecute = async () => {
     try {
       const userCode = code;
@@ -67,20 +82,22 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
       const requestData = {
         code: userCode,
         language: selectedLanguage,
-        roomId: roomId,
+        roomId: null
       };
 
       console.log(userCode, selectedLanguage);
 
       const response = await instance.post(`/problems/${problemId}/execution`, requestData);
-      const executionResult = response.data.result;
+      const executionResult = response.data;
       setExecutionResults(executionResult);
-    } catch (error) {
-      console.error('Error executing code:', error);
+      setExecutionError({ errorMessage: null, responseMessage: null }); // 실행 성공 시 에러 스테이트 초기화
+    } catch (err: any) {
+      console.error('Error executing code:', err);
+      setExecutionResults([]); // 에러 발생 시 실행 결과 초기화
+      setExecutionError({ errorMessage: err.toString(), responseMessage: err.response?.data.message || null }); // 에러 스테이트에 에러 저장
     }
   };
 
-  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     try {
@@ -95,43 +112,50 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
 
       console.log(userCode, selectedLanguage);
       const response = await instance.post(`/problems/${problemId}/result`, requestData);
-      const { accuracy, grade, gainExp } = response.data
+      setSuccessState(response.data as SuccessState);
 
-      Swal.fire({
-        icon: 'success',
-        title: '제출 성공',
-        text: `정확도 : ${accuracy}`,
-        showCancelButton: false,
-        confirmButtonText: "확인",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          if (accuracy === 100) {
-            Swal.fire({
-              icon: 'success',
-              title: `${grade}`,
-              text: `${gainExp} + `,
-              confirmButtonText: "홈으로 돌아가기",
-              showCancelButton: true,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                navigate('/home')
-              }
-            });
-          } else {
-            Swal.fire({
-              icon: 'info',
-              title: '정확도 100이 아닙니다',
-              text: '계속 노력해 주세요.',
-              confirmButtonText: "확인",
-              timer: 1000
-            });
+      if (successState) {
+        const { accuracy, grade, gainExp } = successState;
+        Swal.fire({
+          icon: 'success',
+          title: '제출 성공!!',
+          text: `정확도 : ${accuracy}%`,
+          showCancelButton: false,
+          confirmButtonText: "확인",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (accuracy === 100) {
+              Swal.fire({
+                icon: 'success',
+                title: `${grade}등 이에요!!`,
+                text: `경험치 ${gainExp} 만큼 받았어요!`,
+                confirmButtonText: "홈으로 돌아가기",
+                showCancelButton: true,
+                cancelButtonText: '에디터로 돌아가기'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  navigate('/home')
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: 'info',
+                title: '정확도 100이 아닙니다',
+                text: '계속 노력해 주세요.',
+                confirmButtonText: "확인",
+                timer: 1000
+              });
+            }
           }
-        }
-      })
-
-    } catch (error) {
-      console.error('Error executing code:', error);
-      console.error('api 연결 실패');
+        })
+      }
+      const executionResult = response.data;
+      setExecutionResults(executionResult);
+      setExecutionError({ errorMessage: null, responseMessage: null });
+    } catch (err: any) {
+      console.error('Error executing code:', err);
+      setExecutionResults([]);
+      setExecutionError({ errorMessage: err.toString(), responseMessage: err.response?.data.message || null }); // 에러 스테이트에 에러 저장
     }
   };
 
@@ -179,12 +203,30 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
           <div className={styles.result_title}>실행 결과</div>
         </div>
         <div className={styles.result_container}>
-          {executionResults.map((result, index) => (
+          {executionError.errorMessage && (
+            <div className={styles.execution_error}>
+              실행 중 에러가 발생했습니다: {executionError.errorMessage}
+            </div>
+          )}
+          {executionError.responseMessage && (
+            <div className={styles.execution_error}>
+              서버 응답 오류: {executionError.responseMessage}
+            </div>
+          )}
+          {executionResults.length > 0 && (
+            executionResults.map((result, index) => (
+              <div key={index} className={styles.execution_result}>
+                <div>입출력 예 {index + 1}번째 : {result.isCorrect ? '성공' : '실패'}</div>
+                <div>output : {result.output}</div>
+              </div>
+            ))
+          )}
+          {/* {executionResults.map((result, index) => (
             <div key={index} className={styles.execution_result}>
               <div>입출력 예 {index + 1}번째 : {result.isCorrect ? '성공' : '실패'}</div>
               <div>output : {result.output}</div>
             </div>
-          ))}
+          ))} */}
         </div>
         <div className={styles.button_container}>
           <button className={styles.editor__button} onClick={handleInitializeCode} >코드 초기화</button>
