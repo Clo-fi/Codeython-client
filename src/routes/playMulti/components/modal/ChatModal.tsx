@@ -19,12 +19,10 @@ const ChatModal = ({ chatList, isChatToggleActive }: ChatModalProps) => {
   const chatBoxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // chatBoxRef의 current가 null이 아닌 경우에만 실행
     if (chatBoxRef.current) {
-      // 채팅이 추가될 때마다 스크롤을 아래로 내림
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
-  }, [chatList]); // chatList가 업데이트될 때마다 실행
+  }, [chatList]);
 
 
   const sendMessageHandle = (e: React.FormEvent<HTMLElement>) => {

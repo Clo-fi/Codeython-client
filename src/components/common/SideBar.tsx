@@ -44,21 +44,34 @@ const SideBar = ({ nickname, exp, level }: Props) => {
         try {
           const response = await instance.post(`/api/rooms/direct/${code}`);
           if (response.status !== 200) {
-            return Swal.showValidationMessage(`
-              ${JSON.stringify(response.data)}
-            `);
+            throw new Error(JSON.stringify(response.data));
           }
+          return response.data; // 요청이 성공한 경우 값 반환
         } catch (error) {
-          Swal.showValidationMessage(`
-            Request failed: ${error}
-          `);
+          throw new Error(`Request failed: ${error}`);
         }
       },
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate(`/waiting/${result.value.code}`);
+        if (result.value && result.value.inviteCode) {
+          const { problemTitle, limitTime, difficulty, roomName, inviteCode, isSoloPlay, roomId } = result.value;
+          navigate(`/waiting/${roomId}?problemTitle=${problemTitle}&limitTime=${limitTime}&difficulty=${difficulty}&roomName=${roomName}&inviteCode=${inviteCode}&isSoloPlay=${isSoloPlay}`);
+        } else {
+          // 값이 없거나 잘못된 값이 반환된 경우에 대한 처리
+          Swal.fire({
+            icon: 'error',
+            title: '코드를 찾을 수 없음',
+            text: '입력한 코드가 유효하지 않습니다. 다시 시도하세요.',
+          });
+        }
       }
+    }).catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: '요청 실패',
+        text: error.message,
+      });
     });
   };
   const logoutHandler = () => {

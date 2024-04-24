@@ -7,17 +7,20 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../../api/axios';
 
-// 언어 변경에 따른 basecode 변경을 위한 language 타입 정의
 interface LanguageState {
   isOpen: boolean;
   options: string[];
   selectedOption: string | null;
 }
 
-// 코드 에디터가 받는 Props 타입 정의
 interface CodeEditorProps {
   baseCode: { language: string; code: string }[];
   problemId: string;
+}
+
+interface ExecutionError {
+  errorMessage: string | null;
+  responseMessage: string | null;
 }
 
 // 코드 에디터 컴포넌트 시작
@@ -28,6 +31,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
     selectedOption: null,
   });
   const [code, setCode] = useState<string>('');
+  const [executionResults, setExecutionResults] = useState<{ isCorrect: boolean; output: string }[]>([]);
+  const [executionError, setExecutionError] = useState<ExecutionError>({ errorMessage: null, responseMessage: null });
 
   // 선택된 언어에 대한 기본 코드를 설정하는 함수
   const setDefaultCode = (selectedLanguage: string | null) => {
@@ -42,7 +47,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
   // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
   useEffect(() => {
     setDefaultCode(languageState.selectedOption);
-  }, [languageState.selectedOption, baseCode]);
+  }, [languageState.selectedOption, baseCode, setDefaultCode]);
 
   const handleOptionSelect = (option: string) => {
     setLanguageState((prevState) => ({ ...prevState, selectedOption: option, isOpen: false }));
@@ -57,9 +62,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
     setCode(newCode ?? '');
   };
 
-  const [executionResults, setExecutionResults] = useState<{ isCorrect: boolean; output: string }[]>([]);
-
   // 실행하기 버튼
+
+
   const handleExecute = async () => {
     try {
       const userCode = code;
@@ -76,11 +81,15 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
       const response = await instance.post(`/problems/${problemId}/execution`, requestData);
       const executionResult = response.data;
       setExecutionResults(executionResult);
-    } catch (error) {
-      console.error('Error executing code:', error);
+      setExecutionError({ errorMessage: null, responseMessage: null }); // 실행 성공 시 에러 스테이트 초기화
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error('Error executing code:', err);
+      setExecutionResults([]); // 에러 발생 시 실행 결과 초기화
+      setExecutionError({ errorMessage: err.toString(), responseMessage: err.response?.data.message || null }); // 에러 스테이트에 에러 저장
     }
   };
-
+  console.log(executionError)
   // 화면 이동을 위한 navigate 변수 설정
   const navigate = useNavigate();
 
@@ -177,12 +186,25 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
           <div className={styles.result_title}>실행 결과</div>
         </div>
         <div className={styles.result_container}>
-          {executionResults.map((result, index) => (
-            <div key={index} className={styles.execution_result}>
-              <div>입출력 예 {index + 1}번째 : {result.isCorrect ? '성공' : '실패'}</div>
-              <div>output : {result.output}</div>
+          {executionError.errorMessage && (
+            <div className={styles.execution_error}>
+              실행 중 에러가 발생했습니다: {executionError.errorMessage}
             </div>
-          ))}
+          )}
+          {executionError.responseMessage && (
+            <div className={styles.execution_error}>
+              서버 응답 오류: {executionError.responseMessage}
+            </div>
+          )}
+          {/* 실행 결과가 있을 경우 실행 결과 표시 */}
+          {executionResults.length > 0 && (
+            executionResults.map((result, index) => (
+              <div key={index} className={styles.execution_result}>
+                <div>입출력 예 {index + 1}번째 : {result.isCorrect ? '성공' : '실패'}</div>
+                <div>output : {result.output}</div>
+              </div>
+            ))
+          )}
         </div>
         <div className={styles.button_container}>
           <Button value="코드 초기화" className={styles.initialize_btn} onClick={handleInitializeCode} />
