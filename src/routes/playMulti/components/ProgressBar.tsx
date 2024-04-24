@@ -76,7 +76,7 @@ const ProgressBar: React.FC<{ limitTime: number }> = ({ limitTime }) => {
       if (elapsedMilliseconds >= limitTimeMilliseconds) {
         clearInterval(interval);
         socketClient?.publish({
-          destination: `/pub/room/${roomId}/join`,
+          destination: `/pub/room/${roomId}/gameEnd`,
         });
         CustomAlert.fire({
           title: '시간 종료',
