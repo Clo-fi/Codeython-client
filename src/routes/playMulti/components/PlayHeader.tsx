@@ -1,10 +1,12 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './PlayHeader.module.scss';
 import ProgressBar from './ProgressBar';
 import useToggleStore from '../../../store/ToggleStore';
 import { ProblemInfo } from '../../../types/problem';
+import useUserStore from '../../../store/UserStore';
+import { useWebSocket } from '../../../libs/stomp/useWebSocket';
+import { CustomAlert } from '../../../libs/sweetAlert/alert';
 
 interface Props {
   problemInfo: ProblemInfo;
@@ -15,15 +17,22 @@ const PlayHeader = ({ problemInfo, isLoading }: Props) => {
   const navigate = useNavigate();
   const { isPeopleToggleActive, isChatToggleActive, handlePeopleToggle, handleChatToggle } = useToggleStore();
 
+  const socketClient = useWebSocket();
+  const { nickname } = useUserStore();
+  const { roomId } = useParams<{ roomId: string }>();
   const exitHandle = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    Swal.fire({
+    CustomAlert.fire({
       title: "정말 나가시겠습니까?",
       showCancelButton: true,
       confirmButtonText: "나가기",
     }).then((result) => {
       if (result.isConfirmed) {
         // 이부분에 소켓 디스커넥트 로직
+        socketClient?.publish({
+          destination: `/pub/room/${roomId}/leave`,
+          headers: { nickname }
+        });
         navigate('/home');
       }
     });

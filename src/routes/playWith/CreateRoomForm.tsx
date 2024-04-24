@@ -3,12 +3,12 @@ import styles from "./CreateRoomForm.module.scss";
 import Button from "../../components/common/Button";
 import { create } from "zustand";
 import instance from "../../api/axios";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { CustomAlert } from '../../libs/sweetAlert/alert';
 
 interface CreateFactor {
   roomName: string;
-  problemId: number;
+  problemId: number | null;
   limitMemberCnt: number;
   isSecret: boolean;
   password: string | null;
@@ -36,7 +36,7 @@ interface CreateRoomFormProps {
 const useCreateFactorStore = create<CreateFactor>((set) => ({
   // 초기값을 빈 문자열로 설정
   roomName: "",
-  problemId: 1,
+  problemId: null,
   limitMemberCnt: 4,
   isSecret: false,
   password: "",
@@ -106,6 +106,11 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
       const { roomId } = response.data;
       await enterRoom(roomId);
     } catch (error) {
+      CustomAlert.fire({
+        icon: 'error',
+        title: '방 생성 실패!!',
+        text: '방 이름과 문제를 확인해주세요!!'
+      })
       console.error("방 생성 오류:", error);
     }
   };
@@ -122,6 +127,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
         roomName,
         inviteCode,
         isSoloPlay,
+        limitMemberCnt
       } = enterResponse.data;
 
       // 쿼리 파라미터로 인코딩하여 URL 생성
@@ -134,13 +140,19 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
         inviteCode,
         isSoloplay: isSoloPlay.toString(), // 불리언인 경우 문자열로 변환
         roomId: roomId.toString(), // 숫자인 경우 문자열로 변환
+        limitMemberCnt
       }).toString();
 
       // navigate 함수를 사용하여 쿼리 파라미터와 함께 페이지 이동
       navigate(`/waiting/${roomId}?${queryParams}`);
     } catch (error) {
       console.log(error);
-      Swal.fire("오류", "방 입장에 실패했습니다. 다시 시도해주세요.", "error");
+
+      CustomAlert.fire({
+        icon: "error",
+        title: "에러 발생!",
+        text: "방 입장에 실패했습니다. 다시 시도해주세요"
+      })
     }
   };
 

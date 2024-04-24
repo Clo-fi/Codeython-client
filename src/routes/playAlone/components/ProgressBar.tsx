@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { create } from 'zustand';
 import styles from './ProgressBar.module.scss';
-import Swal from 'sweetalert2';
+import { CustomAlert } from '../../../libs/sweetAlert/alert';
 
 // Zustand 상태 타입 정의
 interface ProgressState {
@@ -12,7 +12,7 @@ interface ProgressState {
 // 초기 상태
 const initialState: ProgressState = {
   progress: 0,
-  setProgress: () => {},
+  setProgress: () => { },
 };
 
 // Zustand 스토어 생성
@@ -42,7 +42,7 @@ const ProgressBar: React.FC<{ limitTime: number }> = ({ limitTime }) => {
   const { progress, setProgress } = useProgressStore();
   const [elapsedTime, setElapsedTime] = React.useState(0);
   const [remainingTime, setRemainingTime] = React.useState(limitTime * 60);
-  const { showElapsedTime, toggleTimeDisplay } = useTimeDisplayStore(); 
+  const { showElapsedTime, toggleTimeDisplay } = useTimeDisplayStore();
 
   useEffect(() => {
     const startTime = Date.now();
@@ -61,7 +61,7 @@ const ProgressBar: React.FC<{ limitTime: number }> = ({ limitTime }) => {
       if (elapsedMilliseconds >= limitTimeMilliseconds) {
         clearInterval(interval);
         // 남은 시간이 0이 되면 모달 창 띄우기
-        Swal.fire({
+        CustomAlert.fire({
           title: '시간 종료',
           text: '풀이 권장 시간이 종료되었습니다.',
           showCancelButton: true,

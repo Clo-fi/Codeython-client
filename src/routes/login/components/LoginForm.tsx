@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styles from './LoginForm.module.scss'
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { useCookies } from 'react-cookie';
 import instance from '../../../api/axios';
 import useAuthStore from '../../../store/AuthStore';
+import { CustomAlert } from '../../../libs/sweetAlert/alert';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const LoginForm = () => {
       setCookies('refreshToken', refreshToken, { path: '/' })
       setLogined();
     } catch (error) {
-      Swal.fire({
+      CustomAlert.fire({
         icon: "error",
         title: "Oops...",
         text: `${error}`,

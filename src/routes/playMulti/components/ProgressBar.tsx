@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { create } from 'zustand';
 import styles from './ProgressBar.module.scss';
-import Swal from 'sweetalert2';
+import { CustomAlert } from '../../../libs/sweetAlert/alert';
 
 // Zustand 상태 타입 정의
 interface ProgressState {
@@ -69,7 +69,7 @@ const ProgressBar: React.FC<{ limitTime: number }> = ({ limitTime }) => {
       }
       if (elapsedMilliseconds >= limitTimeMilliseconds) {
         clearInterval(interval);
-        Swal.fire({
+        CustomAlert.fire({
           title: '시간 종료',
           text: '풀이 권장 시간이 종료되었습니다.',
           showCancelButton: true,
