@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import styles from './CodeEditor.module.scss';
 import SelectLanguageBtn from './SelectLanguage';
 import { Editor } from '@monaco-editor/react';
-import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../../api/axios';
+import { useWebSocket } from '../../../libs/stomp/useWebSocket';
+import useUserStore from '../../../store/UserStore';
+import { CustomAlert } from '../../../libs/sweetAlert/alert';
 
 interface LanguageState {
   isOpen: boolean;
@@ -39,6 +41,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
   });
   const navigate = useNavigate();
 
+  const socketClient = useWebSocket();
+  const { nickname } = useUserStore();
   const [code, setCode] = useState<string>('');
   const [successState, setSuccessState] = useState<SuccessState | null>();
   const [executionResults, setExecutionResults] = useState<{ isCorrect: boolean; output: string }[]>([]);
@@ -59,7 +63,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
   // 선택된 언어가 변경될 때마다 해당 언어에 대한 기본 코드 설정
   useEffect(() => {
     setDefaultCode(languageState.selectedOption);
-  }, [languageState.selectedOption, baseCode, setDefaultCode]);
+  }, [languageState.selectedOption, baseCode]);
 
   const handleOptionSelect = (option: string) => {
     setLanguageState((prevState) => ({ ...prevState, selectedOption: option, isOpen: false }));
@@ -82,7 +86,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
       const requestData = {
         code: userCode,
         language: selectedLanguage,
-        roomId: null
+        roomId: roomId
       };
 
       console.log(userCode, selectedLanguage);
@@ -116,7 +120,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
 
       if (successState) {
         const { accuracy, grade, gainExp } = successState;
-        Swal.fire({
+        CustomAlert.fire({
           icon: 'success',
           title: '제출 성공!!',
           text: `정확도 : ${accuracy}%`,
@@ -125,7 +129,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
         }).then((result) => {
           if (result.isConfirmed) {
             if (accuracy === 100) {
-              Swal.fire({
+              CustomAlert.fire({
                 icon: 'success',
                 title: `${grade}등 이에요!!`,
                 text: `경험치 ${gainExp} 만큼 받았어요!`,
@@ -134,11 +138,16 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId, roomId }) 
                 cancelButtonText: '에디터로 돌아가기'
               }).then((result) => {
                 if (result.isConfirmed) {
+                  socketClient?.publish({
+                    destination: `/pub/room/${roomId}/leave`,
+                    headers: { nickname }
+                  });
+                  console.log('디스커넥트');
                   navigate('/home')
                 }
               });
             } else {
-              Swal.fire({
+              CustomAlert.fire({
                 icon: 'info',
                 title: '정확도 100이 아닙니다',
                 text: '계속 노력해 주세요.',
