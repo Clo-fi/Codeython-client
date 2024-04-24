@@ -9,8 +9,9 @@ import { UserInfo } from "../../types/user";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Chat } from "../../types/chat";
 import { CustomAlert } from "../../libs/sweetAlert/alert";
+import withCheckingNavigationType from "../../hoc/withCheckingNavigationType";
 
-const WaitingRoomPage = () => {
+const WaitingRoomPage = withCheckingNavigationType(() => {
   const { nickname, exp, level, setUserInfo } = useUserStore();
   const socketClient = useWebSocket();
   const [users, setUsers] = useState<UserInfo[]>([]);
@@ -18,6 +19,7 @@ const WaitingRoomPage = () => {
   const [tmpChatList, setTmpChatList] = useState<Chat[]>([]);
   const { roomId } = useParams();
   const [searchParams] = useSearchParams();
+  const [owner, setOwner] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +36,11 @@ const WaitingRoomPage = () => {
 
         if (type === MESSAGE_TYPE.USER) {
           setUsers(data);
+          for (const user of data) {
+            if (user.isOwner) {
+              setOwner(user.nickname);
+            }
+          }
         } else if (type === MESSAGE_TYPE.CHAT) {
           setChatList((prev) => [...prev, data]);
           setTmpChatList((prev) => [...prev, data]);
@@ -72,13 +79,30 @@ const WaitingRoomPage = () => {
 
   return (
     <>
-      <SideBar nickname={nickname} exp={exp} level={level} />
+      <SideBar
+        nickname={nickname}
+        exp={exp}
+        level={level}
+        onOut={() => {
+          socketClient?.publish({
+            destination: `/pub/room/${roomId}/leave`,
+            headers: { nickname },
+          });
+
+          navigate("/roomList");
+        }}
+      />
       <main style={{ position: "relative", paddingLeft: "250px" }}>
-        <UserContainer users={users} roomId={roomId} chatList={tmpChatList} />
+        <UserContainer
+          users={users}
+          roomId={roomId}
+          chatList={tmpChatList}
+          owner={owner}
+        />
       </main>
       <ChatPopup chatList={chatList} />
     </>
   );
-};
+});
 
 export default WaitingRoomPage;

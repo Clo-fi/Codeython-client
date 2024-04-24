@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import styles from './CreateRoomForm.module.scss';
-import Button from '../../components/common/Button';
-import { create } from 'zustand';
-import instance from '../../api/axios';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import styles from "./CreateRoomForm.module.scss";
+import Button from "../../components/common/Button";
+import { create } from "zustand";
+import instance from "../../api/axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 interface CreateFactor {
   roomName: string;
   problemId: number;
   limitMemberCnt: number;
   isSecret: boolean;
-  password: string | null ;
+  password: string | null;
   isSoloPlay: boolean;
   setRoomName: (name: string) => void;
   setLimitMemberCnt: (cnt: number) => void;
@@ -28,34 +28,48 @@ interface Problem {
 }
 
 interface CreateRoomFormProps {
-  problemList: Problem[],
+  problemList: Problem[];
   selectedProblem: Problem | null;
   setSelectedProblem: (problem: Problem | null) => void;
 }
 
 const useCreateFactorStore = create<CreateFactor>((set) => ({
   // 초기값을 빈 문자열로 설정
-  roomName: '',
+  roomName: "",
   problemId: 1,
   limitMemberCnt: 4,
   isSecret: false,
-  password: '',
+  password: "",
   isSoloPlay: true,
   setRoomName: (name) => set({ roomName: name }),
   setLimitMemberCnt: (cnt) => set({ limitMemberCnt: cnt }),
-  toggleIsSecret: () => set((state) => ({
-    isSecret: !state.isSecret,
-    password: !state.isSecret ? '' : state.password // 비밀방을 비활성화할 때 빈 문자열로 설정
-  })),
+  toggleIsSecret: () =>
+    set((state) => ({
+      isSecret: !state.isSecret,
+      password: !state.isSecret ? "" : state.password, // 비밀방을 비활성화할 때 빈 문자열로 설정
+    })),
   setPassword: (password) => set({ password }),
 }));
 
-
-
-const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedProblem, setSelectedProblem }) => {
+const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
+  problemList,
+  selectedProblem,
+  setSelectedProblem,
+}) => {
   const [selectedLimit, setSelectedLimit] = useState(4);
   const [showProblemList, setShowProblemList] = useState(false);
-  const { roomName, problemId, limitMemberCnt, isSecret, password, isSoloPlay, setRoomName, toggleIsSecret, setPassword, setLimitMemberCnt } = useCreateFactorStore();
+  const {
+    roomName,
+    problemId,
+    limitMemberCnt,
+    isSecret,
+    password,
+    isSoloPlay,
+    setRoomName,
+    toggleIsSecret,
+    setPassword,
+    setLimitMemberCnt,
+  } = useCreateFactorStore();
   const navigate = useNavigate();
 
   const handleLimitCnt = (cnt: number) => () => {
@@ -64,7 +78,9 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedPr
   };
 
   const getButtonClass = (cnt: number) => {
-    return cnt === selectedLimit ? `${styles.limit_btn} ${styles.selected}` : styles.limit_btn;
+    return cnt === selectedLimit
+      ? `${styles.limit_btn} ${styles.selected}`
+      : styles.limit_btn;
   };
 
   const handleSelectProblem = (problem: Problem) => {
@@ -81,21 +97,20 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedPr
         limitMemberCnt,
         isSecret,
         password: isSecret ? password : null, // isSecret이 false일 경우, password를 null로 설정
-        isSoloPlay
+        isSoloPlay,
       };
-  
-      const response = await instance.post('/rooms', postData);
-      console.log('방 생성 성공:', response.data);
-  
+
+      const response = await instance.post("/rooms", postData);
+      console.log("방 생성 성공:", response.data);
+
       const { roomId } = response.data;
-      await enterRoom(roomId); 
-  
+      await enterRoom(roomId);
     } catch (error) {
-      console.error('방 생성 오류:', error);
+      console.error("방 생성 오류:", error);
     }
   };
-  
-  const enterRoom = async (roomId:number) => {
+
+  const enterRoom = async (roomId: number) => {
     const payload = { password: isSecret ? password : null };
     try {
       const enterResponse = await instance.post(`/rooms/${roomId}`, payload);
@@ -106,9 +121,9 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedPr
         difficulty,
         roomName,
         inviteCode,
-        isSoloplay: isSoloPlay
+        isSoloPlay,
       } = enterResponse.data;
-  
+
       // 쿼리 파라미터로 인코딩하여 URL 생성
       const queryParams = new URLSearchParams({
         problemId: problemId.toString(),
@@ -118,17 +133,16 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedPr
         roomName,
         inviteCode,
         isSoloplay: isSoloPlay.toString(), // 불리언인 경우 문자열로 변환
-        roomId: roomId.toString() // 숫자인 경우 문자열로 변환
+        roomId: roomId.toString(), // 숫자인 경우 문자열로 변환
       }).toString();
-  
+
       // navigate 함수를 사용하여 쿼리 파라미터와 함께 페이지 이동
       navigate(`/waiting/${roomId}?${queryParams}`);
     } catch (error) {
+      console.log(error);
       Swal.fire("오류", "방 입장에 실패했습니다. 다시 시도해주세요.", "error");
     }
   };
-  
-  
 
   return (
     <div className={styles.create_contaier}>
@@ -149,7 +163,9 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedPr
           >
             {selectedProblem ? (
               <>
-                <span>{selectedProblem.title} - 난이도: {selectedProblem.difficulty}</span>
+                <span>
+                  {selectedProblem.title} - 난이도: {selectedProblem.difficulty}
+                </span>
               </>
             ) : (
               <span>문제를 선택해 주세요.</span>
@@ -158,7 +174,11 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedPr
           {showProblemList && (
             <div className={styles.toggle_problem}>
               {problemList.map((problem) => (
-                <div key={problem.problemId} onClick={() => handleSelectProblem(problem)} className={styles.problem_item}>
+                <div
+                  key={problem.problemId}
+                  onClick={() => handleSelectProblem(problem)}
+                  className={styles.problem_item}
+                >
                   {problem.title} - 난이도: {problem.difficulty}
                 </div>
               ))}
@@ -167,12 +187,16 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedPr
         </div>
       </div>
       <div className={styles.limit_section}>
-        <div>
-          선수 입장 제한 인원 : {limitMemberCnt}명
-        </div>
-        <button onClick={handleLimitCnt(2)} className={getButtonClass(2)}>2</button>
-        <button onClick={handleLimitCnt(4)} className={getButtonClass(4)}>4</button>
-        <button onClick={handleLimitCnt(6)} className={getButtonClass(6)}>6</button>
+        <div>선수 입장 제한 인원 : {limitMemberCnt}명</div>
+        <button onClick={handleLimitCnt(2)} className={getButtonClass(2)}>
+          2
+        </button>
+        <button onClick={handleLimitCnt(4)} className={getButtonClass(4)}>
+          4
+        </button>
+        <button onClick={handleLimitCnt(6)} className={getButtonClass(6)}>
+          6
+        </button>
       </div>
       <div className={styles.secret_create_section}>
         <div className={styles.secret_section}>
@@ -191,10 +215,14 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ problemList, selectedPr
             placeholder="비밀번호 입력"
             value={password!}
             onChange={(e) => setPassword(e.target.value)}
-            disabled={!isSecret}  // isSecret이 false일 경우 비활성화
+            disabled={!isSecret} // isSecret이 false일 경우 비활성화
           />
         </div>
-        <Button className={styles.create_btn} onClick={handleCreate} value="경기장 생성하기" />
+        <Button
+          className={styles.create_btn}
+          onClick={handleCreate}
+          value="경기장 생성하기"
+        />
       </div>
     </div>
   );
