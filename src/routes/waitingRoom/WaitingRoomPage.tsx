@@ -83,7 +83,9 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
     };
 
     return () => {
-      subscription.unsubscribe();
+      if (socketClient.connected && subscription) {
+        subscription.unsubscribe();
+      }
     };
   }, [setUserInfo, socketClient, roomId, nickname, navigate, searchParams]);
 
