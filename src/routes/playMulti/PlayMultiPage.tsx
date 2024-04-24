@@ -50,13 +50,13 @@ const PlayMultiPage = () => {
       destination: `/pub/room/${roomId}/join`,
     });
 
-    // return () => {
-    //   socketClient?.publish({
-    //     destination: `/pub/room/${roomId}/leave`,
-    //     headers: { nickname }
-    //   });
-    //   console.log('디스커넥트');
-    // }
+    return () => {
+      socketClient?.publish({
+        destination: `/pub/room/${roomId}/leave`,
+        headers: { nickname }
+      });
+      console.log('디스커넥트');
+    }
 
   }, [nickname, roomId, socketClient])
 
