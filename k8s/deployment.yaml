@@ -13,5 +13,5 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_b088912005ba
+          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_0c663e1881ec
           imagePullPolicy: Always
