@@ -6,7 +6,7 @@ import CustomProgressBar from "./CustomProgressBar";
 import useAuthStore from "../../store/AuthStore";
 import { useCookies } from "react-cookie";
 import instance from "../../api/axios";
-import { CustomAlert } from '../../libs/sweetAlert/alert';
+import { CustomAlert } from "../../libs/sweetAlert/alert";
 
 interface Props {
   nickname: string;
@@ -52,27 +52,39 @@ const SideBar = ({ nickname, exp, level }: Props) => {
           throw new Error(`Request failed: ${error}`);
         }
       },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        if (result.value && result.value.inviteCode) {
-          const { problemTitle, limitTime, difficulty, roomName, inviteCode, isSoloPlay, roomId } = result.value;
-          navigate(`/waiting/${roomId}?problemTitle=${problemTitle}&limitTime=${limitTime}&difficulty=${difficulty}&roomName=${roomName}&inviteCode=${inviteCode}&isSoloPlay=${isSoloPlay}`);
-        } else {
-          // 값이 없거나 잘못된 값이 반환된 경우에 대한 처리
-          CustomAlert.fire({
-            icon: 'error',
-            title: '코드를 찾을 수 없음',
-            text: '입력한 코드가 유효하지 않습니다. 다시 시도하세요.',
-          });
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          if (result.value && result.value.inviteCode) {
+            const {
+              problemTitle,
+              limitTime,
+              difficulty,
+              roomName,
+              inviteCode,
+              isSoloPlay,
+              roomId,
+            } = result.value;
+            navigate(
+              `/waiting/${roomId}?problemTitle=${problemTitle}&limitTime=${limitTime}&difficulty=${difficulty}&roomName=${roomName}&inviteCode=${inviteCode}&isSoloPlay=${isSoloPlay}`
+            );
+          } else {
+            // 값이 없거나 잘못된 값이 반환된 경우에 대한 처리
+            CustomAlert.fire({
+              icon: "error",
+              title: "코드를 찾을 수 없음",
+              text: "입력한 코드가 유효하지 않습니다. 다시 시도하세요.",
+            });
+          }
         }
-      }
-    }).catch((error) => {
-      CustomAlert.fire({
-        icon: 'error',
-        title: '요청 실패',
-        text: error.message,
+      })
+      .catch((error) => {
+        CustomAlert.fire({
+          icon: "error",
+          title: "요청 실패",
+          text: error.message,
+        });
       });
-    });
   };
   const logoutHandler = () => {
     removeCookie("accessToken");
@@ -135,13 +147,19 @@ const SideBar = ({ nickname, exp, level }: Props) => {
           프로필
         </button>
         <button
-          className={styles.action_button}
+          className={`
+          ${styles.action_button}
+          ${location.pathname === "/problemlist" && styles.selected}
+          `}
           onClick={() => navigate("/problemlist")}
         >
           알고리즘 연습하기
         </button>
         <button
-          className={styles.action_button}
+          className={`
+          ${styles.action_button}
+          ${location.pathname === "/createroom" && styles.selected}
+          `}
           onClick={() => navigate("/createroom")}
         >
           코디톤 방 만들기
