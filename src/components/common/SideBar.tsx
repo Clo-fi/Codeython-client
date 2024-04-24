@@ -55,8 +55,8 @@ const SideBar = ({ nickname, exp, level }: Props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         if (result.value && result.value.inviteCode) {
-          const { problemTitle, limitTime, difficulty, roomName, inviteCode, isSoloPlay, roomId } = result.value;
-          navigate(`/waiting/${roomId}?problemTitle=${problemTitle}&limitTime=${limitTime}&difficulty=${difficulty}&roomName=${roomName}&inviteCode=${inviteCode}&isSoloPlay=${isSoloPlay}`);
+          const { problemTitle, limitTime, difficulty, roomName, inviteCode, isSoloPlay, roomId, limitMemberCnt } = result.value;
+          navigate(`/waiting/${roomId}?problemTitle=${problemTitle}&limitTime=${limitTime}&difficulty=${difficulty}&roomName=${roomName}&inviteCode=${inviteCode}&isSoloPlay=${isSoloPlay}&=${limitMemberCnt}`);
         } else {
           // 값이 없거나 잘못된 값이 반환된 경우에 대한 처리
           CustomAlert.fire({
