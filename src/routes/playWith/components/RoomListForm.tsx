@@ -23,7 +23,7 @@ interface RoomListStore {
   fetchRooms: () => Promise<void>;
 }
 
-const useRoomListStore = create<RoomListStore>((set) => ({
+export const useRoomListStore = create<RoomListStore>((set) => ({
   rooms: [],
   loading: false,
   error: null,
