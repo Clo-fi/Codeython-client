@@ -129,7 +129,7 @@ const PlayMultiPage = () => {
   return (
     <>
       <PlayHeader
-        blockSubmit={blockSubmit} setBlockSubmit={setBlockSubmit}
+        setBlockSubmit={setBlockSubmit}
         exitRoom={exitRoom}
         problemInfo={problemInfo!}
         isLoading={isLoading}
