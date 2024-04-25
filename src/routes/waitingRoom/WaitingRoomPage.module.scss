@@ -22,7 +22,7 @@
   height: 100px;
 }
 
-.invite_code {
+.room_info {
   position: absolute;
   right: 60px;
   bottom: 10px;
@@ -36,19 +36,15 @@
   text-align: center;
   font-size: 13px;
   font-weight: bold;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 .room_name {
-  position: absolute;
-  left: 60px;
-  bottom: 32px;
-  padding: 10px;
+  display: flex;
+  gap: 5px;
   width: 100%;
-
-  border: 2px solid var(--color-brown);
-  border-radius: 14px;
-  width: 200px;
-
-  text-align: center;
-  font-size: 13px;
-  font-weight: bold;
+  justify-content: center;
+  align-items: center;
 }
