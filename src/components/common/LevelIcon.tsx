@@ -34,7 +34,8 @@ interface Props {
 const LevelIcon = ({ level, className }: Props) => {
   const IconComponent = iconMapper[level];
   if (!IconComponent) {
-    return iconMapper[10];
+    const DefaultComponent = iconMapper[10];
+    return <DefaultComponent />;
   }
 
   return <IconComponent className={className} />;
