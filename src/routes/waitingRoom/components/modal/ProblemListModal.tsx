@@ -4,7 +4,11 @@ import Button from "../../../../components/common/Button";
 import { useState } from "react";
 import ProblemBlock from "./ProblemBlock";
 import useFetching from "../../../../hooks/useFetching";
-import { getProblemList } from "../../../../api/problem/problem";
+import {
+  getProblemList,
+  patchSelectedProblem,
+} from "../../../../api/problem/problem";
+import { useSearchParams } from "react-router-dom";
 
 interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +17,21 @@ interface Props {
 const Modal = ({ setModal }: Props) => {
   const [selected, setSelected] = useState<null | number>(null);
   const { data } = useFetching(getProblemList);
+  const [searchParams] = useSearchParams();
 
+  const changeSelectedProblem = async () => {
+    if (!selected) setModal(false);
+
+    try {
+      await patchSelectedProblem(
+        Number(searchParams.get("roomId")),
+        Number(selected)
+      );
+      setModal(false);
+    } catch (err) {
+      console.log("변경 실패");
+    }
+  };
   return (
     <>
       <div className={styles.backdrop} />
@@ -35,7 +53,7 @@ const Modal = ({ setModal }: Props) => {
               ))}
             </div>
           </div>
-          <Button value="선택하기" onClick={() => setModal(false)} />
+          <Button value="선택하기" onClick={changeSelectedProblem} />
         </div>
       </div>
     </>

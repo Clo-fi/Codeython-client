@@ -99,6 +99,24 @@ const WaitingRoomPage = () => {
             }).then(() => {
               navigate(`/playmulti/${searchParams.get("problemId")}/${roomId}`);
             });
+          } else if (type === MESSAGE_TYPE.GAME_CHANGE) {
+            const { problemTitle, problemNo, limitTime, difficulty } = data;
+            searchParams.set("problemId", problemNo);
+            searchParams.set("problemTitle", problemTitle);
+            searchParams.set("limitTime", limitTime);
+            searchParams.set("difficulty", difficulty);
+
+            CustomAlert.fire({
+              icon: "info",
+              title: "문제가 변경되었습니다.",
+            });
+            navigate(
+              {
+                pathname: window.location.pathname,
+                search: searchParams.toString(),
+              },
+              { replace: true }
+            );
           }
         }
       );
