@@ -63,11 +63,12 @@ const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo, problemId })
                 <div className={styles.header_cell}>Input Case</div>
                 <div className={styles.header_cell}>Output Case</div>
               </div>
-              {problemInfo.testcase[0].inputCase.map((input, index) => (
+              {problemInfo.testcase.map((input, index) => (
                 <div key={index} className={styles.testcase_row}>
-                  <div className={styles.cell}>{input}</div>
-                  <div className={styles.cell}>{problemInfo.testcase[0].outputCase[index]}</div>
+                  <div className={styles.cell}>{input.inputCase}</div>
+                  <div className={styles.cell}>{input.outputCase}</div>
                 </div>
+
               ))}
             </div>
             <div className={styles.description}>

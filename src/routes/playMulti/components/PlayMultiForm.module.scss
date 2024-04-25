@@ -46,7 +46,6 @@
 
   display: flex;
   flex-direction: column;
-  overflow: scroll;
 }
 
 .testcase_title_container {
@@ -68,6 +67,7 @@
 
   display: flex;
   flex-direction: column;
+  overflow: scroll;
 }
 
 .description {
@@ -95,6 +95,8 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--color-darkgrey);
 }
 
 .testcase_table {
@@ -106,4 +108,9 @@
 .limit_factor_list {
   margin-top: 10px;
   list-style: disc;
+}
+
+.cell {
+  word-wrap: break-word;
+  width: 50%;
 }
