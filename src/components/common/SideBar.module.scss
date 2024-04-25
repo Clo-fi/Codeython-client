@@ -51,6 +51,13 @@
   align-items: center;
   justify-content: center;
 }
+.level {
+  flex-grow: 1;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .level_block {
   width: 90%;

@@ -5,6 +5,7 @@ export const MESSAGE_TYPE = {
   USER: "USER",
   GAME_START: "GAME_START",
   GAME_END: "GAME_END",
+  GAME_CHANGE: "GAME_CHANGE",
 } as const;
 
 interface MessageDto {

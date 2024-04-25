@@ -17,7 +17,7 @@ const SideBar = ({ nickname, exp, level, onOut }: Props) => {
           <div className={styles.user_nickname}>{nickname}</div>
         </div>
         <div className={styles.level_block}>
-          <div>LV {level}</div>
+          <div className={styles.level}>LV {level}</div>
           <CustomProgressBar exp={exp} width={"80%"} />
         </div>
       </div>
