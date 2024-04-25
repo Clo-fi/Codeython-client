@@ -38,7 +38,10 @@ const TimeDisplay: React.FC<{ timeInSeconds: number }> = ({ timeInSeconds }) => 
   return <p className={styles.progressbar__time}>{`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}</p>;
 };
 
-const ProgressBar: React.FC<{ limitTime: number }> = ({ limitTime }) => {
+const ProgressBar: React.FC<{
+  limitTime: number;
+  setBlockSubmit: (newValue: boolean) => void
+}> = ({ limitTime, setBlockSubmit }) => {
   const { progress, setProgress } = useProgressStore();
   const [elapsedTime, setElapsedTime] = React.useState(0);
   const [remainingTime, setRemainingTime] = React.useState(limitTime * 60);
@@ -78,6 +81,7 @@ const ProgressBar: React.FC<{ limitTime: number }> = ({ limitTime }) => {
         socketClient?.publish({
           destination: `/pub/room/${roomId}/gameEnd`,
         });
+        setBlockSubmit(true);
         CustomAlert.fire({
           title: '시간 종료',
           text: '풀이 권장 시간이 종료되었습니다.',
