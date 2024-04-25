@@ -99,8 +99,9 @@ function ChatPopup({ chatList, setOnPopup, onPopup }: Props) {
           <MinimizeIcon onClick={() => setOnPopup(false)} />
         </div>
         <div className={styles.chatting_section} ref={scrollRef}>
-          {chatList.map((chat) => (
+          {chatList.map((chat, i) => (
             <ChatBalloon
+              key={`${chat.message}-${i}`}
               nickname={chat.from}
               message={chat.message}
               isMine={chat.from === nickname}
