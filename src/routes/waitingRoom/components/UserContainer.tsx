@@ -34,7 +34,7 @@ const UserContainer = withEnterRoom(
                 <UserBox
                   key={user.nickname}
                   nickname={user.nickname}
-                  level={1}
+                  level={user.level}
                   message={
                     chatList
                       .reverse()
