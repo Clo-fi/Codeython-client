@@ -15,6 +15,7 @@ interface CreateFactor {
   isSoloPlay: boolean;
   setRoomName: (name: string) => void;
   setLimitMemberCnt: (cnt: number) => void;
+  setProblemId: (id: number | null) => void;
   toggleIsSecret: () => void;
   setPassword: (password: string) => void;
 }
@@ -41,6 +42,7 @@ const useCreateFactorStore = create<CreateFactor>((set) => ({
   isSecret: false,
   password: "",
   isSoloPlay: true,
+  setProblemId: (id) => set({ problemId: id }),
   setRoomName: (name) => set({ roomName: name }),
   setLimitMemberCnt: (cnt) => set({ limitMemberCnt: cnt }),
   toggleIsSecret: () =>
@@ -69,6 +71,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
     toggleIsSecret,
     setPassword,
     setLimitMemberCnt,
+    setProblemId,
   } = useCreateFactorStore();
   const navigate = useNavigate();
 
@@ -103,6 +106,9 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
       const response = await instance.post("/rooms", postData);
       console.log("방 생성 성공:", response.data);
 
+      setPassword("");
+      setRoomName("");
+      setProblemId(null);
       const { roomId } = response.data;
       await enterRoom(roomId);
     } catch (error) {
