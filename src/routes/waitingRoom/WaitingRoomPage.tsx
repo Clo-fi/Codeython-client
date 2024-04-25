@@ -9,12 +9,11 @@ import { UserInfo } from "../../types/user";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Chat } from "../../types/chat";
 import { CustomAlert } from "../../libs/sweetAlert/alert";
-import withCheckingNavigationType from "../../hoc/withCheckingNavigationType";
 import { StompSubscription } from "@stomp/stompjs";
 import styles from "./WaitingRoomPage.module.scss";
 import Spinner from "../../assets/spinner.svg?react";
 
-const WaitingRoomPage = withCheckingNavigationType(() => {
+const WaitingRoomPage = () => {
   const { nickname, exp, level, setUserInfo } = useUserStore();
   const socketClient = useWebSocket();
   const [users, setUsers] = useState<UserInfo[]>([]);
@@ -164,6 +163,6 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
       </main>
     </>
   );
-});
+};
 
 export default WaitingRoomPage;

@@ -27,12 +27,6 @@ const UserContainer = withEnterRoom(
 
     return (
       <>
-        <section className={styles.header}>
-          <img className={styles.user_img} src="/Imgs/CodeythonLogo_star.png" />
-          <div className={styles.invite_code}>
-            초대 코드 : {searchParams.get("inviteCode")}
-          </div>
-        </section>
         <section className={styles.container}>
           <div className={styles.container_group}>
             <div className={styles.user_container}>
