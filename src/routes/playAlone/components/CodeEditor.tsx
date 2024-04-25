@@ -217,6 +217,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ baseCode, problemId }) => {
           <Editor
             value={code}
             onChange={handleCodeChange}
+            language={languageState.selectedOption?.toLowerCase()}
             options={{
               fontSize: 15,
               minimap: { enabled: false },
