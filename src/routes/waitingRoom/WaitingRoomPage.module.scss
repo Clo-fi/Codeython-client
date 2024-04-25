@@ -22,17 +22,11 @@
   height: 100px;
 }
 
-.room_info {
+.invite_code {
   position: absolute;
   right: 60px;
   bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
 
-.invite_code {
   padding: 10px;
   width: 100%;
 
