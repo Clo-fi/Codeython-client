@@ -67,11 +67,16 @@ const WaitingRoomPage = () => {
           if (type === MESSAGE_TYPE.USER) {
             if (data instanceof Array) {
               setUsers(data);
+              let userInRoom = false;
               for (const user of data) {
+                if (user.nickname === nickname) {
+                  userInRoom = true;
+                }
                 if (user.isOwner) {
                   setOwner(user.nickname);
                 }
               }
+              if (!userInRoom) navigate("/home");
             }
           } else if (type === MESSAGE_TYPE.CHAT) {
             setChatList((prev) => [...prev, data]);
