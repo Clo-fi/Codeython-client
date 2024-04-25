@@ -55,7 +55,7 @@ const PlayHeader = ({ setBlockSubmit, exitRoom, problemInfo, isLoading }: Props)
           </div>
           <div className={styles.header__progressbar}>
             <ProgressBar setBlockSubmit={setBlockSubmit} limitTime={problemInfo.limitTime} />
-          </div>
+          </div >
           <div className={styles.header__toggle_box}>
             <img
               className={styles.header__toggle}
@@ -70,7 +70,7 @@ const PlayHeader = ({ setBlockSubmit, exitRoom, problemInfo, isLoading }: Props)
               onClick={handleChatToggle}
             />
           </div>
-        </div>
+        </div >
       )}
     </>
   )
