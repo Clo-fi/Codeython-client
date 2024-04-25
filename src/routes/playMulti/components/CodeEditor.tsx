@@ -208,6 +208,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ blockSubmit, setBlockSubmit, ex
           <Editor
             value={code}
             onChange={handleCodeChange}
+            language={languageState.selectedOption?.toLowerCase()}
             options={{
               fontSize: 15,
               minimap: { enabled: false },
