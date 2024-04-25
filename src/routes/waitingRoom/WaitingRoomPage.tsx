@@ -12,6 +12,7 @@ import { CustomAlert } from "../../libs/sweetAlert/alert";
 import { StompSubscription } from "@stomp/stompjs";
 import styles from "./WaitingRoomPage.module.scss";
 import Spinner from "../../assets/spinner.svg?react";
+import RoomIcon from "../../assets/icons/room.svg?react";
 
 const WaitingRoomPage = () => {
   const { nickname, exp, level, setUserInfo } = useUserStore();
@@ -147,8 +148,12 @@ const WaitingRoomPage = () => {
           <>
             <section className={styles.header}>
               <img className={styles.logo} src="/Imgs/CodeythonLogo_star.png" />
-              <div className={styles.invite_code}>
-                초대 코드 : {searchParams.get("inviteCode")}
+              <div className={styles.room_info}>
+                <div className={styles.room_name}>
+                  <RoomIcon />
+                  {searchParams.get("roomName")}
+                </div>
+                <div>초대 코드 : {searchParams.get("inviteCode")}</div>
               </div>
             </section>
             <UserContainer
