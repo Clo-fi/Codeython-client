@@ -1,81 +1,83 @@
 .modal__chat_container {
   position: absolute;
   right: 0;
+  top: -2px;
   background-color: var(--color-background);
   width: 300px;
   height: 80%;
 
   z-index: 20;
-  
+
   transition: opacity 0.1s ease-in-out;
+
+  border-radius: 0 0 20px 20px;
 }
 
 .modal__chat_container_none {
   opacity: 0;
   pointer-events: none;
 }
-.modal__chat_box{
+.modal__chat_box {
   width: inherit;
   height: 85%;
-  margin-left: 10px ;
+  margin-left: 10px;
   margin-top: 10px;
   overflow: auto;
 }
-.modal__chat_username{
+.modal__chat_username {
   width: 100%;
   margin: 5px;
 }
-.modal__chat_message{
+.modal__chat_message {
   width: 70%;
-  min-height: 40px; 
-  background-color: #DDE5DE;
+  min-height: 40px;
+  background-color: #dde5de;
   border-radius: 20px;
   margin-top: 5px;
   margin-bottom: 5px;
   display: flex;
   align-items: center;
-  
+
   word-wrap: break-word;
   white-space: wrap;
-  span{
+  span {
     margin-top: 10px;
     margin-bottom: 10px;
     width: inherit;
     margin-left: 10px;
   }
 }
-.modal__chat_my_box{
+.modal__chat_my_box {
   width: inherit;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   padding-right: 30px;
 }
-.modal__chat_my_name{ 
+.modal__chat_my_name {
 }
 
-.modal__chat_my_message{
-
+.modal__chat_my_message {
   width: 70%;
-  
-  min-height: 40px; 
+
+  min-height: 40px;
   background-color: var(--color-grey);
   border-radius: 20px;
   margin-top: 5px;
   margin-bottom: 5px;
   display: flex;
   align-items: center;
-  
+
   word-wrap: break-word;
   white-space: wrap;
-  span{
+  span {
     margin-top: 10px;
     margin-bottom: 10px;
     width: inherit;
     margin-left: 10px;
   }
 }
-.modal__chat_form{
+.modal__chat_form {
   width: inherit;
   height: 15%;
   display: flex;
@@ -84,17 +86,16 @@
   justify-content: space-around;
 }
 
-.modal__chat_input{
-   width: 80%;
-   height: 35px;
-   background-color: #D9D9D9;
-   border-radius: 10px;
-   border: none;
+.modal__chat_input {
+  width: 80%;
+  height: 35px;
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  border: none;
 }
-.modal__chat_submit{
-
+.modal__chat_submit {
   transition: all 0.2s ease-in-out;
 }
-.modal__chat_submit:hover{
-scale: 1.1;
+.modal__chat_submit:hover {
+  scale: 1.1;
 }
