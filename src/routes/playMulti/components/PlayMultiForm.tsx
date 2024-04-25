@@ -17,9 +17,11 @@ interface PlayMultiFormProps {
   users: UserInfo[];
   chatList: ChatInfo[];
   exitRoom: any;
+  blockSubmit: boolean
+  setBlockSubmit: (newValue: boolean) => void
 }
 
-const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ exitRoom, chatList, users, isLoading, roomId, problemInfo, problemId }) => {
+const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ blockSubmit, setBlockSubmit, exitRoom, chatList, users, isLoading, roomId, problemInfo, problemId }) => {
   const { isPeopleToggleActive, isChatToggleActive } = useToggleStore();
   return (
     <>
@@ -99,7 +101,7 @@ const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ exitRoom, chatList, users
             </div>t
           </div>
           <div className={styles.codeEditor_conainer}>
-            <CodeEditor exitRoom={exitRoom} baseCode={problemInfo.baseCode} problemId={problemId} roomId={roomId} />
+            <CodeEditor blockSubmit={blockSubmit} setBlockSubmit={setBlockSubmit} exitRoom={exitRoom} baseCode={problemInfo.baseCode} problemId={problemId} roomId={roomId} />
           </div>
           <ChatModal chatList={chatList} isChatToggleActive={isChatToggleActive} />
           <PeopleModal users={users} isPeopleToggleActive={isPeopleToggleActive} />

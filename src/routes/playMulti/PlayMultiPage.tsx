@@ -26,6 +26,7 @@ const PlayMultiPage = () => {
   const { problemId } = useParams<{ problemId: string }>();
   const { roomId } = useParams<{ roomId: string }>();
   const { problemInfo, isLoading } = useProblemFetching(problemId!);
+  const [blockSubmit, setBlockSubmit] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const { nickname } = useUserStore();
@@ -118,8 +119,14 @@ const PlayMultiPage = () => {
 
   return (
     <>
-      <PlayHeader exitRoom={exitRoom} problemInfo={problemInfo!} isLoading={isLoading} />
+      <PlayHeader
+        blockSubmit={blockSubmit} setBlockSubmit={setBlockSubmit}
+        exitRoom={exitRoom}
+        problemInfo={problemInfo!}
+        isLoading={isLoading}
+      />
       <PlayMultiForm
+        blockSubmit={blockSubmit} setBlockSubmit={setBlockSubmit}
         exitRoom={exitRoom}
         users={users} chatList={chatList}
         problemInfo={problemInfo!}

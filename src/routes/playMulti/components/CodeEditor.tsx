@@ -21,9 +21,11 @@ interface CodeEditorProps {
   problemId: string;
   roomId: string;
   exitRoom: any;
+  blockSubmit: boolean
+  setBlockSubmit: (newValue: boolean) => void
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({ exitRoom, baseCode, problemId, roomId }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({ blockSubmit, setBlockSubmit, exitRoom, baseCode, problemId, roomId }) => {
   const [languageState, setLanguageState] = useState<LanguageState>({
     isOpen: false,
     options: baseCode.map(item => item.language), // baseCode에서 언어 옵션 추출하여 설정
@@ -33,7 +35,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ exitRoom, baseCode, problemId, 
   const [executionResults, setExecutionResults] = useState<{ isCorrect: boolean; output: string }[]>([]);
   const [executionError, setExecutionError] = useState<ExecutionError>({ errorMessage: null, responseMessage: null });
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [blockSubmit, setBlockSubmit] = useState<boolean>(false);
   const setDefaultCode = (selectedLanguage: string | null) => {
     if (selectedLanguage) {
       const defaultCode = baseCode.find((item) => item.language === selectedLanguage)?.code;
@@ -107,7 +108,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ exitRoom, baseCode, problemId, 
 
         ClearFunc();
         setIsLoading(true);
-        setBlockSubmit(true);
+
         const requestData = {
           code,
           language: selectedLanguage,
@@ -119,7 +120,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ exitRoom, baseCode, problemId, 
             icon: 'warning',
             title: '언어를 선택해주세요!!',
             timer: 1200
-          })
+          });
+          return; // 언어 선택이 없을 경우 함수 종료
         }
 
         console.log(code, selectedLanguage);
@@ -134,7 +136,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ exitRoom, baseCode, problemId, 
         }).then((result) => {
           if (result.isConfirmed) {
             if (responseData.accuracy === 100) {
-              setBlockSubmit(true);
+              setBlockSubmit(true); // 정확도가 100일 때에만 제출 막기
               CustomAlert.fire({
                 icon: 'success',
                 title: `${responseData.grade}등 이에요!!`,
@@ -145,12 +147,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ exitRoom, baseCode, problemId, 
               }).then((result) => {
                 if (result.isConfirmed) {
                   exitRoom();
-                  // socketClient?.publish({
-                  //   destination: `/pub/room/${roomId}/leave`,
-                  //   headers: { nickname }
-                  // });
-                  // console.log('디스커넥트');
-                  // navigate('/home')
                 }
               });
             } else {
@@ -170,18 +166,19 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ exitRoom, baseCode, problemId, 
         setExecutionResults(executionResult);
         setExecutionError({ errorMessage: null, responseMessage: null });
       } catch (err: any) {
+        setIsLoading(false);
         console.error('Error executing code:', err);
         setExecutionResults([]);
         setExecutionError({ errorMessage: err.toString(), responseMessage: err.response?.data.message || null }); // 에러 스테이트에 에러 저장
-      } finally {
-        setIsLoading(false);
       }
     } else {
       CustomAlert.fire({
         title: '이미 제출 했습니다!',
-      })
+      });
     }
   };
+
+
 
   const handleInitializeCode = () => {
     const selectedLanguage = languageState.selectedOption;

@@ -8,9 +8,11 @@ interface Props {
   problemInfo: ProblemInfo;
   isLoading: boolean;
   exitRoom: any;
+  blockSubmit: boolean
+  setBlockSubmit: (newValue: boolean) => void
 }
 
-const PlayHeader = ({ exitRoom, problemInfo, isLoading }: Props) => {
+const PlayHeader = ({ blockSubmit, setBlockSubmit, exitRoom, problemInfo, isLoading }: Props) => {
   const { isPeopleToggleActive, isChatToggleActive, handlePeopleToggle, handleChatToggle } = useToggleStore();
 
   const exitHandle = (e: React.MouseEvent<HTMLElement>) => {
@@ -28,7 +30,7 @@ const PlayHeader = ({ exitRoom, problemInfo, isLoading }: Props) => {
               <button className={styles.header__button} onClick={exitHandle}>나가기</button>
             </div>
             <div className={styles.header__progressbar}>
-              <ProgressBar limitTime={20} />
+              {/* <ProgressBar limitTime={20} /> */}
             </div>
             <div className={styles.header__toggle_box}>
               <img
@@ -53,7 +55,7 @@ const PlayHeader = ({ exitRoom, problemInfo, isLoading }: Props) => {
             <button className={styles.header__button} onClick={exitHandle}>나가기</button>
           </div>
           <div className={styles.header__progressbar}>
-            <ProgressBar limitTime={problemInfo.limitTime} />
+            <ProgressBar blockSubmit={blockSubmit} setBlockSubmit={setBlockSubmit} limitTime={problemInfo.limitTime} />
           </div>
           <div className={styles.header__toggle_box}>
             <img
