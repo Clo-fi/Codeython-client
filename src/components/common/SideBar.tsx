@@ -107,29 +107,6 @@ const SideBar = ({ nickname, exp, level }: Props) => {
     navigate("/");
   };
 
-  const removeAccountHandler = () => {
-    CustomAlert.fire({
-      icon: "warning",
-      title: "정말로 탈퇴 하시겠습니까?",
-      text: "결정을 되돌릴 수 없습니다.",
-      showCancelButton: true,
-      confirmButtonText: "탈퇴하기",
-      cancelButtonText: "돌아가기",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        CustomAlert.fire({
-          icon: "error",
-          title: "정말로 탈퇴하기",
-          showCancelButton: true,
-          confirmButtonText: "탈퇴하기",
-          cancelButtonText: "돌아가기",
-        }).then((result) => {
-          if (result.isConfirmed) instance.delete("/api/users/delete");
-        });
-      }
-    });
-  };
-
   return (
     <div className={`${styles.container} ${styles.slideInFromLeft}`}>
       <div className={styles.user_info_block}>
@@ -190,7 +167,6 @@ const SideBar = ({ nickname, exp, level }: Props) => {
         <button className={styles.action_button} onClick={logoutHandler}>
           로그아웃
         </button>
-        <span onClick={removeAccountHandler}>탈퇴하기</span>
       </div>
     </div>
   );
