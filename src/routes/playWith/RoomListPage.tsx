@@ -2,11 +2,14 @@ import React from "react";
 import styles from "./RoomListPage.module.scss";
 import Button from "../../components/common/Button";
 import RoomListForm from "./components/RoomListForm";
+import { useRoomListStore } from "./components/RoomListForm";
 
 const RoomListPage: React.FC = () => {
 
+  const { fetchRooms } = useRoomListStore();
+
   const handleRefresh = () => {
-    location.reload();
+    fetchRooms();
   }
 
   return (
