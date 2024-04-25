@@ -1,6 +1,6 @@
 import SideBar from "./components/Sidebar";
 import useUserStore from "../../store/UserStore";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import UserContainer from "./components/UserContainer";
 import ChatPopup from "./components/ChatPopUp";
 import { useWebSocket } from "../../libs/stomp/useWebSocket";
@@ -29,6 +29,29 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
   useEffect(() => {
     setUserInfo();
   }, [setUserInfo]);
+
+  const sendExitEvent = useCallback(() => {
+    socketClient?.publish({
+      destination: `/pub/room/${roomId}/leave`,
+      headers: { nickname },
+    });
+  }, [nickname, roomId, socketClient]);
+
+  const exitRoom = useCallback(() => {
+    CustomAlert.fire({
+      icon: "question",
+      title: "퇴장하시겠습니까?",
+      showConfirmButton: true,
+      confirmButtonText: "퇴장하기",
+      showCancelButton: true,
+      cancelButtonText: "돌아가기",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        sendExitEvent();
+        navigate("/roomList");
+      }
+    });
+  }, [navigate, sendExitEvent]);
 
   useEffect(() => {
     if (!socketClient) return;
@@ -91,32 +114,26 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
     };
   }, [setUserInfo, socketClient, roomId, nickname, navigate, searchParams]);
 
+  useEffect(() => {
+    history.pushState(null, "", "");
+    window.addEventListener("popstate", exitRoom);
+
+    return () => {
+      window.removeEventListener("popstate", exitRoom);
+    };
+  }, [exitRoom]);
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", sendExitEvent);
+
+    return () => {
+      window.removeEventListener("beforeunload", sendExitEvent);
+    };
+  }, [nickname, roomId, sendExitEvent, socketClient]);
+
   return (
     <>
-      <SideBar
-        nickname={nickname}
-        exp={exp}
-        level={level}
-        onOut={() => {
-          CustomAlert.fire({
-            icon: "question",
-            title: "퇴장하시겠습니까?",
-            showConfirmButton: true,
-            confirmButtonText: "퇴장하기",
-            showCancelButton: true,
-            cancelButtonText: "돌아가기",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              socketClient?.publish({
-                destination: `/pub/room/${roomId}/leave`,
-                headers: { nickname },
-              });
-
-              navigate("/roomList");
-            }
-          });
-        }}
-      />
+      <SideBar nickname={nickname} exp={exp} level={level} onOut={exitRoom} />
       <main className={styles.main}>
         {users.length <= 0 && (
           <div className={styles.spinner}>
@@ -127,11 +144,8 @@ const WaitingRoomPage = withCheckingNavigationType(() => {
           <>
             <section className={styles.header}>
               <img className={styles.logo} src="/Imgs/CodeythonLogo_star.png" />
-              <div className={styles.room_info}>
-                <div>{searchParams.get("roomName")}</div>
-                <div className={styles.invite_code}>
-                  초대 코드 : {searchParams.get("inviteCode")}
-                </div>
+              <div className={styles.invite_code}>
+                초대 코드 : {searchParams.get("inviteCode")}
               </div>
             </section>
             <UserContainer
