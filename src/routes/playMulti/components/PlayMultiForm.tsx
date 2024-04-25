@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import styles from './PlayMultiForm.module.scss';
 import CodeEditor from './CodeEditor';
@@ -15,10 +16,10 @@ interface PlayMultiFormProps {
   roomId: string;
   users: UserInfo[];
   chatList: ChatInfo[];
+  exitRoom: any;
 }
 
-/* return form */
-const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ chatList, users, isLoading, roomId, problemInfo, problemId }) => {
+const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ exitRoom, chatList, users, isLoading, roomId, problemInfo, problemId }) => {
   const { isPeopleToggleActive, isChatToggleActive } = useToggleStore();
   return (
     <>
@@ -98,7 +99,7 @@ const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ chatList, users, isLoadin
             </div>t
           </div>
           <div className={styles.codeEditor_conainer}>
-            <CodeEditor baseCode={problemInfo.baseCode} problemId={problemId} roomId={roomId} />
+            <CodeEditor exitRoom={exitRoom} baseCode={problemInfo.baseCode} problemId={problemId} roomId={roomId} />
           </div>
           <ChatModal chatList={chatList} isChatToggleActive={isChatToggleActive} />
           <PeopleModal users={users} isPeopleToggleActive={isPeopleToggleActive} />

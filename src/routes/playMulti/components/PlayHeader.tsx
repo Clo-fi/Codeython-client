@@ -1,41 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
 import styles from './PlayHeader.module.scss';
 import ProgressBar from './ProgressBar';
 import useToggleStore from '../../../store/ToggleStore';
 import { ProblemInfo } from '../../../types/problem';
-import useUserStore from '../../../store/UserStore';
-import { useWebSocket } from '../../../libs/stomp/useWebSocket';
-import { CustomAlert } from '../../../libs/sweetAlert/alert';
-
 interface Props {
   problemInfo: ProblemInfo;
   isLoading: boolean;
+  exitRoom: any;
 }
 
-const PlayHeader = ({ problemInfo, isLoading }: Props) => {
-  const navigate = useNavigate();
+const PlayHeader = ({ exitRoom, problemInfo, isLoading }: Props) => {
   const { isPeopleToggleActive, isChatToggleActive, handlePeopleToggle, handleChatToggle } = useToggleStore();
 
-  const socketClient = useWebSocket();
-  const { nickname } = useUserStore();
-  const { roomId } = useParams<{ roomId: string }>();
   const exitHandle = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    CustomAlert.fire({
-      title: "정말 나가시겠습니까?",
-      showCancelButton: true,
-      confirmButtonText: "나가기",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // 이부분에 소켓 디스커넥트 로직
-        socketClient?.publish({
-          destination: `/pub/room/${roomId}/leave`,
-          headers: { nickname }
-        });
-        navigate('/home');
-      }
-    });
+    exitRoom();
   }
 
   return (
