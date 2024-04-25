@@ -134,7 +134,7 @@ const WaitingRoomPage = () => {
         subscription.unsubscribe();
       }
     };
-  }, [setUserInfo, socketClient, roomId, nickname, navigate, searchParams]);
+  }, [setUserInfo, socketClient, roomId, nickname, navigate]);
 
   useEffect(() => {
     history.pushState(null, "", "");
