@@ -1,4 +1,4 @@
-.modal__people_container{
+.modal__people_container {
   position: absolute;
   right: 0;
   background-color: var(--color-background);
@@ -9,31 +9,42 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  padding-top: 30px;
+  gap: 15px;
 
   z-index: 20;
-  
-  transition: opacity 0.2s ease-in-out;
-  box-shadow: 0px 0px 50px -10px rgba(0,0,0,0.3);
-  -webkit-box-shadow: 0px 0px 50px -10px rgba(0,0,0,0.3);
-  -moz-box-shadow: 0px 0px 50px -10px rgba(0,0,0,0.3);
 
-  p{
+  transition: opacity 0.2s ease-in-out;
+  box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.3);
+
+  p {
     width: 70%;
     background-color: var(--color-grey);
     height: 10%;
     border-radius: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    span{
+    justify-content: start;
+    padding: 0 20px;
+    span {
       font-size: 10px;
       margin-top: 10px;
     }
   }
 }
 
-.modal__people_container_none{
+.modal__people_container_none {
   opacity: 0;
   pointer-events: none;
+}
+
+.modal__user {
+  display: flex;
+  gap: 5px;
+
+  span {
+    color: var(--color-brown);
+  }
 }
