@@ -80,7 +80,7 @@ function ChatPopup({ chatList, setOnPopup, onPopup }: Props) {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [chatList]);
+  }, [chatList, onPopup]);
 
   if (!onPopup)
     return (
