@@ -6,7 +6,7 @@ import useProblemFetching from '../../hooks/useProblemFetching';
 import { useWebSocket } from '../../libs/stomp/useWebSocket';
 import useUserStore from '../../store/UserStore';
 import { UserInfo } from '../../types/user';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { MESSAGE_TYPE, decode } from '../../libs/stomp/decoder';
 import { CustomAlert } from '../../libs/sweetAlert/alert';
 
@@ -38,12 +38,35 @@ const PlayMultiPage = () => {
   useEffect(() => {
     setUserInfo();
   }, [setUserInfo]);
+  const sendExitEvent = useCallback(() => {
+    socketClient?.publish({
+      destination: `/pub/room/${roomId}/leave`,
+      headers: { nickname },
+    });
+  }, [nickname, roomId, socketClient]);
+
+  const exitRoom = useCallback(() => {
+    CustomAlert.fire({
+      icon: "question",
+      title: "퇴장하시겠습니까?",
+      showConfirmButton: true,
+      confirmButtonText: "퇴장하기",
+      showCancelButton: true,
+      cancelButtonText: "돌아가기",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        sendExitEvent();
+        navigate("/roomList");
+      }
+    });
+  }, [navigate, sendExitEvent]);
 
   useEffect(() => {
     if (!socketClient) return;
 
     socketClient?.subscribe(`/sub/room/${roomId}`, (message) => {
       console.log('구독 부분')
+
       const { type, data } = decode(message);
       if (type === MESSAGE_TYPE.USER) {
         setUsers(data);
@@ -69,9 +92,7 @@ const PlayMultiPage = () => {
         })
 
       }
-    }
-    )
-
+    })
     socketClient?.publish({
       destination: `/pub/room/${roomId}/join`,
     });
@@ -86,10 +107,20 @@ const PlayMultiPage = () => {
 
   }, [nickname, roomId, socketClient])
 
+  useEffect(() => {
+    history.pushState(null, "", "");
+    window.addEventListener("popstate", exitRoom);
+
+    return () => {
+      window.removeEventListener("popstate", exitRoom);
+    };
+  }, [exitRoom]);
+
   return (
     <>
-      <PlayHeader problemInfo={problemInfo!} isLoading={isLoading} />
+      <PlayHeader exitRoom={exitRoom} problemInfo={problemInfo!} isLoading={isLoading} />
       <PlayMultiForm
+        exitRoom={exitRoom}
         users={users} chatList={chatList}
         problemInfo={problemInfo!}
         isLoading={isLoading}
