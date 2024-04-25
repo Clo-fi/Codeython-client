@@ -72,7 +72,11 @@ const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ blockSubmit, setBlockSubm
             </div>
             <div className={styles.problem_description}>
               <div className={styles.description}>
-                {problemInfo.content}
+                <ul className={styles.limit_factor_list}>
+                  {problemInfo.limitFactors.map((factor, index) => (
+                    <li key={index}>{factor}</li>
+                  ))}
+                </ul>
               </div>
             </div>
             <div className={styles.problem_testcase}>

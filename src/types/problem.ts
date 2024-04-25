@@ -9,7 +9,7 @@ export interface Problem {
 export interface ProblemInfo {
   title: string;
   content: string;
-  limitFactors: { factor: string }[];
+  limitFactors: string[];
   limitTime: number;
   baseCode: { language: string; code: string }[];
   testcase: {
