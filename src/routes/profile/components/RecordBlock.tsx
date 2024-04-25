@@ -22,11 +22,13 @@ const RecordBlock = ({
         <span>{title}</span>
       </div>
       <div className={styles.rank}>
-        <span>${accuracy}%</span>
-        <span></span>
-        <span>
-          {grade}등 ({grade}/{memberCnt})
-        </span>
+        <span>{accuracy}%</span>
+        {grade && (
+          <span>
+            {grade}등 ({grade}/{memberCnt})
+          </span>
+        )}
+        {!grade && <span>(혼자놀기)</span>}
       </div>
     </div>
   );
