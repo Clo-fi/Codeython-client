@@ -102,7 +102,7 @@ const PlayMultiForm: React.FC<PlayMultiFormProps> = ({ blockSubmit, setBlockSubm
                   {problemInfo.testcase[0].description}
                 </div>
               </div>
-            </div>t
+            </div>
           </div>
           <div className={styles.codeEditor_conainer}>
             <CodeEditor blockSubmit={blockSubmit} setBlockSubmit={setBlockSubmit} exitRoom={exitRoom} baseCode={problemInfo.baseCode} problemId={problemId} roomId={roomId} />
