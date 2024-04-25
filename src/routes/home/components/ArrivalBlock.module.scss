@@ -10,7 +10,6 @@
   background-color: var(--color-white);
   padding: 15px 10px;
   border-radius: 20px;
-  overflow: hidden;
 }
 
 .info_wrapper {
@@ -27,8 +26,14 @@
 }
 
 .title {
+  text-align: center;
+  width: 100%;
   font-size: 16px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
 }
 
 .tags {
