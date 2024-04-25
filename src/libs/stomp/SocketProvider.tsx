@@ -11,7 +11,8 @@ export const WebSocketProvider = () => {
 
   useEffect(() => {
     const cookies = new Cookies(["accessToken"]);
-    const stompClient = new AuthSocketClient(cookies.get("accessToken"));
+    const accessToken = cookies.get("accessToken");
+    const stompClient = new AuthSocketClient(accessToken);
 
     stompClient.activate();
     setClient(stompClient);

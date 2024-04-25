@@ -67,11 +67,10 @@ const WaitingRoomPage = () => {
           if (type === MESSAGE_TYPE.USER) {
             if (data instanceof Array) {
               setUsers(data);
-            }
-
-            for (const user of data) {
-              if (user.isOwner) {
-                setOwner(user.nickname);
+              for (const user of data) {
+                if (user.isOwner) {
+                  setOwner(user.nickname);
+                }
               }
             }
           } else if (type === MESSAGE_TYPE.CHAT) {
