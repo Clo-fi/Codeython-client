@@ -120,15 +120,9 @@
   width: 90%;
 
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  span {
-    text-decoration: underline;
-    font-size: 10px;
-    display: flex;
-    align-items: flex-end;
-    cursor: pointer;
-  }
+
+justify-content: center;
+
 }
 
 @keyframes slideInFromLeft {
