@@ -4,16 +4,14 @@ import { Cookies } from "react-cookie";
 import { Outlet } from "react-router-dom";
 import { AuthSocketClient } from "./AuthSocketClient";
 
-const cookies = new Cookies(["accessToken"]);
-const accessToken = cookies.get("accessToken");
-
 export const WebSocketContext = createContext<null | Client>(null);
 
 export const WebSocketProvider = () => {
   const [client, setClient] = useState<null | Client>(null);
 
   useEffect(() => {
-    const stompClient = new AuthSocketClient(accessToken);
+    const cookies = new Cookies(["accessToken"]);
+    const stompClient = new AuthSocketClient(cookies.get("accessToken"));
 
     stompClient.activate();
     setClient(stompClient);
