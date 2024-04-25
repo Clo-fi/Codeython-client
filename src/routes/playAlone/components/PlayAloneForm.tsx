@@ -7,7 +7,7 @@ import CodeEditor from './CodeEditor';
 interface ProblemInfo {
   title: string;
   content: string;
-  limitFactors: { factor: string }[];
+  limitFactors: string[];
   limitTime: number;
   baseCode: { language: string; code: string }[];
   testcase: {
@@ -43,6 +43,12 @@ const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo, problemId })
           <div className={styles.description}>
             {/* 문제 내용 */}
             {problemInfo.content}
+            <ul className={styles.limit_factor_list}>
+              {problemInfo.limitFactors.map((factor, index) => (
+                <li key={index}>{factor}</li>
+              ))}
+            </ul>
+
           </div>
         </div>
         <div className={styles.problem_testcase}>
@@ -65,7 +71,7 @@ const PlayAloneForm: React.FC<PlayAloneFormProps> = ({ problemInfo, problemId })
               ))}
             </div>
             <div className={styles.description}>
-                {problemInfo.testcase[0].description}
+              {problemInfo.testcase[0].description}
             </div>
           </div>
         </div>
