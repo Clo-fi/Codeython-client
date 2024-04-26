@@ -12,6 +12,7 @@ import useAuthStore from "./store/AuthStore";
 import WaitingRoomPage from "./routes/waitingRoom/WaitingRoomPage";
 import PlayMultiPage from "./routes/playMulti/PlayMultiPage";
 import { WebSocketProvider } from "./libs/stomp/SocketProvider";
+import NotFoundPage from "./routes/NotFoundPage";
 
 function App() {
   const { isLogined } = useAuthStore();
@@ -45,6 +46,7 @@ function App() {
             />
           </Route>
         </>
+        <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </>
   );
