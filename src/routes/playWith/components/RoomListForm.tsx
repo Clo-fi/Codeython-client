@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./RoomListForm.module.scss";
 import instance from "../../../api/axios";
 import { CustomAlert } from "../../../libs/sweetAlert/alert";
+import Spinner from "../../../assets/spinner.svg?react";
 
 interface Room {
   roomId: number;
@@ -112,10 +113,6 @@ const RoomListForm: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return <div>로딩 중입니다...</div>;
-  }
-
   if (error) {
     return (
       <div>
@@ -128,6 +125,11 @@ const RoomListForm: React.FC = () => {
   return (
     <div className={styles.roomForm__container}>
       <div className={styles.roomForm_component__list}>
+        {loading && (
+          <div className={styles.full_wrapper}>
+            <Spinner />
+          </div>
+        )}
         {rooms.length > 0 ? (
           rooms.map((room) => (
             <div
@@ -153,7 +155,7 @@ const RoomListForm: React.FC = () => {
             </div>
           ))
         ) : (
-          <div>No rooms available.</div>
+          <div className={styles.full_wrapper}>No rooms available.</div>
         )}
       </div>
     </div>
