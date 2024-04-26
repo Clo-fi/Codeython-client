@@ -42,7 +42,7 @@
   position: relative;
 }
 
-.roomForm_component__soloOrnot{
+.roomForm_component__soloOrnot {
   border-radius: 20px;
   display: flex;
   background-color: var(--color-white);
@@ -56,7 +56,7 @@
   cursor: grab;
 }
 
-.lock_icon{
+.lock_icon {
   height: 20px;
   position: absolute;
   right: 20px;
@@ -74,4 +74,13 @@
   text-align: center;
   align-items: center;
   cursor: grab;
+}
+
+.full_wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
