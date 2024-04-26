@@ -76,6 +76,12 @@ function ChatPopup({ chatList, setOnPopup, onPopup }: Props) {
     inputRef.current.value = "";
   };
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+      sendChat();
+    }
+  };
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -114,11 +120,7 @@ function ChatPopup({ chatList, setOnPopup, onPopup }: Props) {
           type="text"
           className={styles.input}
           ref={inputRef}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              sendChat();
-            }
-          }}
+          onKeyDown={onKeyDown}
         />
         <SendIcon
           width={20}
