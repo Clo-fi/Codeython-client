@@ -23,6 +23,10 @@
 | 이민규 | 백엔드 |
 | 이혁준 | 백엔드 |
 
+## Process Architecture
+
+![사진5](/public/readmeImgs/img5.png)
+
 ## Front-End Tech Stack
 
 - React
