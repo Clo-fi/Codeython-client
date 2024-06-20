@@ -7,7 +7,7 @@
 
 ## Codython from Clo-fi
 
-- 프로젝트 진행 기간: 2023.04.11 ~ 2023.04.25
+- 프로젝트 진행 기간: 2024.04.11 ~ 2024.04.25
 - https://kc3837296ecb6a.user-app.krampoline.com/
 - https://www.notion.so/goorm/1-Clo-fi-477b1a613baf4cdd8ce5d6539f993e0c?pvs=4
 
